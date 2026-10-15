@@ -26,10 +26,12 @@ Or with Docker: see `docs/docker_quickstart.md`.
 ```bash
 freqtrade create-userdir --userdir user_data
 cp config_examples/config_micro.example.json config.json
-freqtrade new-strategy --strategy MicroStrategy --template sample
+freqtrade new-strategy --strategy MicroStrategy --template full
 ```
 
-`config.json` is git-ignored, so your keys stay private.
+`config.json` is git-ignored, so your keys stay private. (The `full` template is a
+starting point with RSI indicators; the repo's `user_data/strategies/sample_strategy.py`
+also works, use `--strategy SampleStrategy`.)
 
 ## Step 3: Paper trade first (no real money)
 
@@ -72,5 +74,5 @@ freqtrade backtesting --config config.json --strategy MicroStrategy --timerange 
 - Add a stoploss in your strategy (the sample has one) and don't remove it.
 - Never share `config.json`. Never commit keys.
 - Increase size only after weeks of results you understand.
-- Other exchanges (e.g. Kraken) may have lower minimums; change `exchange.name` and pairs
+- Kraken's minimum order is about $5 for ADA, DOGE and ETH (tested), so it suits tiny balances; change `exchange.name` and pairs
   (see `config_examples/config_kraken.example.json`).
