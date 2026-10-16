@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-16 05:38 UTC",
+  "budget_usd": 20,
+  "prices": {
+    "XRP/USD": 1.33487,
+    "DOGE/USD": 0.0820257,
+    "ADA/USD": 0.230198,
+    "TRX/USD": 0.334439,
+    "ETH/USD": 2444.94,
+    "SOL/USD": 105.76
+  },
+  "min_order_usd": {
+    "XRP/USD": 5.34,
+    "DOGE/USD": 4.1,
+    "ADA/USD": 4.6,
+    "TRX/USD": 5.35,
+    "ETH/USD": 4.89,
+    "SOL/USD": 5.29
+  }
+}
