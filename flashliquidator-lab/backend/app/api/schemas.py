@@ -124,7 +124,7 @@ class SimulationRequest(BaseModel):
     debt_to_cover_raw: str = Field(pattern=r"^[0-9]+$")
     block_number: int | None = None
     slippage_bps: int = Field(default=50, ge=1, le=5000)
-    min_profit_usd: Decimal = Decimal("0")
+    min_profit_usd: Decimal = Decimal(0)
     gas_price_wei: str | None = Field(default=None, pattern=r"^[0-9]+$")
     flash_loan_provider: str = "aave_v3"
 

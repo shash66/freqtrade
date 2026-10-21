@@ -27,3 +27,11 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 110
 target-version = "py312"
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "PERF", "BLE", "SIM"]
+ignore = [
+  "B008",   # FastAPI Depends()/Query() in parameter defaults is the framework idiom
+  "BLE001", # catch-all handlers at job/RPC boundaries log and degrade on purpose (spec §15: fail safely)
+  "E501",   # line length handled by the formatter
+  "UP046",  # pydantic generics keep the Generic[T] form for pydantic 2.x compatibility
+]

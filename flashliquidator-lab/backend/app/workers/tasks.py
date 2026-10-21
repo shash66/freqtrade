@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import delete
 
@@ -8,8 +8,8 @@ from app.chains.config import build_networks
 from app.chains.rpc import RpcClient
 from app.core.config import get_settings
 from app.core.logging import get_logger
-from app.database.base import get_sessionmaker
 from app.database import models as m
+from app.database.base import get_sessionmaker
 from app.workers.celery_app import celery
 from app.workers.jobs import job_run
 
@@ -67,7 +67,7 @@ def reconcile_borrowers(slug: str):
 @celery.task(name="app.workers.tasks.retention_cleanup")
 def retention_cleanup():
     s = get_settings()
-    cutoff = datetime.now(timezone.utc) - timedelta(days=s.raw_data_retention_days)
+    cutoff = datetime.now(UTC) - timedelta(days=s.raw_data_retention_days)
     with job_run("retention_cleanup") as detail:
         Session = get_sessionmaker()
         with Session() as db:
@@ -103,14 +103,14 @@ def simulate_run(self, run_id: int):
 
 @celery.task(name="app.workers.tasks.run_backtest")
 def run_backtest(strategy_run_id: int):
-    from app.simulation.service import create_replay_runs_for_backtest, execute_simulation_run
     from app.competition.summary import summarize_backtest
+    from app.simulation.service import create_replay_runs_for_backtest, execute_simulation_run
     nets = _networks()
     with job_run("run_backtest") as detail:
         Session = get_sessionmaker()
         with Session() as db:
             sr = db.get(m.StrategyRun, strategy_run_id)
-            sr.status, sr.started_at = m.JobStatus.running, datetime.now(timezone.utc)
+            sr.status, sr.started_at = m.JobStatus.running, datetime.now(UTC)
             db.commit()
             ids = create_replay_runs_for_backtest(db, sr, nets)
         detail["replays"] = len(ids)
@@ -123,13 +123,13 @@ def run_backtest(strategy_run_id: int):
         with Session() as db:
             sr = db.get(m.StrategyRun, strategy_run_id)
             sr.summary, sr.assumptions, sr.data_quality = summarize_backtest(db, sr)
-            sr.status, sr.finished_at, sr.progress = m.JobStatus.succeeded, datetime.now(timezone.utc), 100
+            sr.status, sr.finished_at, sr.progress = m.JobStatus.succeeded, datetime.now(UTC), 100
             db.commit()
 
 
 @celery.task(name="app.workers.tasks.shadow_tick_all")
 def shadow_tick_all():
     from app.strategies.shadow import shadow_tick
-    for slug, net in _networks().items():
+    for net in _networks().values():
         with job_run("shadow_tick", net.chain_id) as detail:
             detail.update(shadow_tick(net))

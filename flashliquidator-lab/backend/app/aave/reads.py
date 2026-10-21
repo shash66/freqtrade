@@ -38,7 +38,7 @@ class ReserveConfig:
     virtual_accounting_active: bool
 
     @classmethod
-    def from_bitmap(cls, data: int) -> "ReserveConfig":
+    def from_bitmap(cls, data: int) -> ReserveConfig:
         return cls(
             ltv_bps=_bits(data, 0, 16),
             liquidation_threshold_bps=_bits(data, 16, 16),
@@ -127,7 +127,7 @@ class AaveReader:
     def asset_prices(self, assets: list[str], block="latest") -> dict[str, int]:
         cs = [Web3.to_checksum_address(a) for a in assets]
         prices = self._call(self.oracle.functions.getAssetsPrices(cs), block)
-        return {a: int(p) for a, p in zip(cs, prices)}
+        return {a: int(p) for a, p in zip(cs, prices, strict=False)}
 
     def base_currency_unit(self, block="latest") -> int:
         return int(self._call(self.oracle.functions.BASE_CURRENCY_UNIT(), block))

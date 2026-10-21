@@ -11,8 +11,8 @@ from sqlalchemy.orm import Session
 from app.api.schemas import BorrowerOut, OpportunityOut, Page
 from app.core.money import to_units
 from app.core.security import rate_limit
-from app.database.base import get_db
 from app.database import models as m
+from app.database.base import get_db
 from app.indexer.reconcile import hf_str
 
 router = APIRouter(prefix="/api", dependencies=[Depends(rate_limit)])

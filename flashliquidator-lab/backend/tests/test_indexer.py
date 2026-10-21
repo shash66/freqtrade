@@ -8,8 +8,8 @@ from sqlalchemy import select
 
 from app.chains.config import build_networks
 from app.core.config import get_settings
-from app.database.base import get_sessionmaker
 from app.database import models as m
+from app.database.base import get_sessionmaker
 from app.indexer import pool_indexer as pi
 
 

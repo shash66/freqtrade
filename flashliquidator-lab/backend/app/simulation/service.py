@@ -1,7 +1,7 @@
 """Persist simulation runs/results and drive historical replay batches."""
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -9,8 +9,8 @@ from sqlalchemy.orm import Session
 from app.chains.config import NetworkConfig
 from app.core.config import get_settings
 from app.core.logging import get_logger
-from app.database.base import get_sessionmaker
 from app.database import models as m
+from app.database.base import get_sessionmaker
 from app.simulation.replay import ReplayRequest, ReplayResult, run_replay
 
 log = get_logger(__name__)
@@ -22,7 +22,7 @@ def _store_result(db: Session, run: m.SimulationRun, r: ReplayResult) -> None:
     run.block_boundary_approximation = r.block_boundary_approximation
     run.rpc_capability = r.rpc_capability
     run.error = None if r.success else r.revert_reason
-    run.finished_at = datetime.now(timezone.utc)
+    run.finished_at = datetime.now(UTC)
     db.add(m.SimulationResult(run_id=run.id, success=r.success, revert_reason=r.revert_reason, debt_repaid_raw=r.debt_repaid_raw,
                               collateral_seized_raw=r.collateral_seized_raw, swap_proceeds_raw=r.swap_proceeds_raw,
                               flash_premium_raw=r.flash_premium_raw, gas_used=r.gas_used, gas_price_wei=r.gas_price_wei,
@@ -33,7 +33,7 @@ def _store_result(db: Session, run: m.SimulationRun, r: ReplayResult) -> None:
 
 
 def execute_simulation_run(run_id: int, networks: dict[str, NetworkConfig]) -> dict:
-    s = get_settings()
+    get_settings()
     with get_sessionmaker()() as db:
         run = db.get(m.SimulationRun, run_id)
         if run is None:
@@ -43,7 +43,7 @@ def execute_simulation_run(run_id: int, networks: dict[str, NetworkConfig]) -> d
             run.status, run.error = m.JobStatus.failed, "network disabled"
             db.commit()
             return {"error": "network disabled"}
-        run.status, run.started_at = m.JobStatus.running, datetime.now(timezone.utc)
+        run.status, run.started_at = m.JobStatus.running, datetime.now(UTC)
         db.commit()
         p = run.input_params
         req = ReplayRequest(network=net, borrower=p["borrower"], collateral_asset=p["collateral_asset"], debt_asset=p["debt_asset"],
@@ -53,7 +53,7 @@ def execute_simulation_run(run_id: int, networks: dict[str, NetworkConfig]) -> d
         try:
             r = run_replay(req)
         except Exception as e:  # any failure is recorded on the run; never silently dropped
-            run.status, run.error, run.finished_at = m.JobStatus.failed, f"{type(e).__name__}: {str(e)[:400]}", datetime.now(timezone.utc)
+            run.status, run.error, run.finished_at = m.JobStatus.failed, f"{type(e).__name__}: {str(e)[:400]}", datetime.now(UTC)
             db.commit()
             log.error("simulation_crashed", run_id=run_id, error=run.error)
             return {"error": run.error}

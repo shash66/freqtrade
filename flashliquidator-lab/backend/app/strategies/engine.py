@@ -14,8 +14,8 @@ from app.chains.rpc import RpcClient
 from app.core.config import get_settings
 from app.core.logging import get_logger
 from app.core.money import WAD, usd_to_raw
-from app.database.base import get_sessionmaker
 from app.database import models as m
+from app.database.base import get_sessionmaker
 from app.strategies import profitability as pf
 from app.strategies.quotes import UniswapV3Quoter, price_impact_bps
 

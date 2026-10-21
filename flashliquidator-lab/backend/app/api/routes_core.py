@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import PlainTextResponse
@@ -12,8 +12,8 @@ from app.api.schemas import Health, NetworkOut, Overview, RpcStatus, StrategyPer
 from app.core.config import Settings, get_settings
 from app.core.money import WAD
 from app.core.security import rate_limit, require_admin
-from app.database.base import get_db
 from app.database import models as m
+from app.database.base import get_db
 
 router = APIRouter(prefix="/api", dependencies=[Depends(rate_limit)])
 
@@ -51,7 +51,7 @@ def health(request: Request, db: Session = Depends(get_db), settings: Settings =
             for slug in request.app.state.networks}
     status = "ok" if db_ok and redis_ok and any(nets.values()) else "degraded"
     return Health(status=status, version=settings.app_version, app_mode=settings.app_mode, database=db_ok,
-                  redis=redis_ok, networks=nets, time=datetime.now(timezone.utc))
+                  redis=redis_ok, networks=nets, time=datetime.now(UTC))
 
 
 @router.get("/networks", response_model=list[NetworkOut])
@@ -91,7 +91,7 @@ def overview(request: Request, db: Session = Depends(get_db), settings: Settings
     return Overview(networks=nets, active_borrowers=active, near_liquidation_positions=near, eligible_positions=eligible,
                     profitable_simulated_opportunities=int(prof[0]), estimated_total_simulated_profit_usd=prof[1],
                     strategies=strategies, simulation_service=sim, indexer=indexer,
-                    generated_at=datetime.now(timezone.utc))
+                    generated_at=datetime.now(UTC))
 
 
 @router.get("/metrics", dependencies=[Depends(require_admin)])

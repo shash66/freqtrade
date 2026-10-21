@@ -129,9 +129,7 @@ def check_eligibility(p: PositionInputs, rules: LiquidationRules) -> Eligibility
     # *in the chosen reserves* is below MIN_BASE_MAX_LIQUIDATION_THRESHOLD (per-reserve, not the whole position).
     reserve_debt_base = p.user_debt_raw * p.debt.price_raw // 10**p.debt.decimals
     reserve_coll_base = p.user_collateral_raw * p.collateral.price_raw // 10**p.collateral.decimals
-    if p.health_factor_wad < rules.close_factor_hf_threshold_wad:
-        cf = rules.max_close_factor_bps
-    elif rules.min_base_max_liquidation_threshold and (
+    if p.health_factor_wad < rules.close_factor_hf_threshold_wad or rules.min_base_max_liquidation_threshold and (
         reserve_debt_base < rules.min_base_max_liquidation_threshold
         or reserve_coll_base < rules.min_base_max_liquidation_threshold
     ):

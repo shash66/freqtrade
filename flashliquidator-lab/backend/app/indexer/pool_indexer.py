@@ -6,7 +6,7 @@ A failure on one network only fails that network's job."""
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sqlalchemy import select, update
 from sqlalchemy.dialects.postgresql import insert
@@ -19,8 +19,8 @@ from app.chains.rpc import RpcClient, RpcUnavailable
 from app.chains.validation import load_abi
 from app.core.config import get_settings
 from app.core.logging import get_logger
-from app.database.base import get_sessionmaker
 from app.database import models as m
+from app.database.base import get_sessionmaker
 
 log = get_logger(__name__)
 
@@ -178,10 +178,10 @@ class PoolIndexer:
     def store(self, logs: list[DecodedLog]) -> dict:
         if not logs:
             return {"events": 0, "borrowers_touched": 0, "liquidations": 0}
-        rows = [dict(chain_id=self.net.chain_id, deployment_id=self.deployment.id, block_number=d.block_number,
-                     block_hash=_norm_hash(d.block_hash), tx_hash=_norm_hash(d.tx_hash), log_index=d.log_index,
-                     event_name=d.event, user=_user_of(d), reserve=d.args.get("reserve") or d.args.get("collateralAsset"),
-                     args=d.args, orphaned=False) for d in logs]
+        rows = [{"chain_id": self.net.chain_id, "deployment_id": self.deployment.id, "block_number": d.block_number,
+                     "block_hash": _norm_hash(d.block_hash), "tx_hash": _norm_hash(d.tx_hash), "log_index": d.log_index,
+                     "event_name": d.event, "user": _user_of(d), "reserve": d.args.get("reserve") or d.args.get("collateralAsset"),
+                     "args": d.args, "orphaned": False} for d in logs]
         stmt = insert(m.PoolEvent).values(rows).on_conflict_do_update(
             constraint="uq_pool_event", set_={"orphaned": False, "block_hash": insert(m.PoolEvent).excluded.block_hash})
         self.db.execute(stmt)
@@ -205,17 +205,17 @@ class PoolIndexer:
 
     def _store_liquidation(self, d: DecodedLog) -> None:
         a = d.args
-        row = dict(chain_id=self.net.chain_id, deployment_id=self.deployment.id, tx_hash=_norm_hash(d.tx_hash), log_index=d.log_index,
-                   block_number=d.block_number, block_hash=_norm_hash(d.block_hash), borrower=a["user"], liquidator=a["liquidator"],
-                   debt_asset=a["debtAsset"], collateral_asset=a["collateralAsset"], debt_repaid_raw=int(a["debtToCover"]),
-                   collateral_seized_raw=int(a["liquidatedCollateralAmount"]), receive_a_token=bool(a["receiveAToken"]),
-                   pool_impl_address=self.net.market.pool_impl)
+        row = {"chain_id": self.net.chain_id, "deployment_id": self.deployment.id, "tx_hash": _norm_hash(d.tx_hash), "log_index": d.log_index,
+                   "block_number": d.block_number, "block_hash": _norm_hash(d.block_hash), "borrower": a["user"], "liquidator": a["liquidator"],
+                   "debt_asset": a["debtAsset"], "collateral_asset": a["collateralAsset"], "debt_repaid_raw": int(a["debtToCover"]),
+                   "collateral_seized_raw": int(a["liquidatedCollateralAmount"]), "receive_a_token": bool(a["receiveAToken"]),
+                   "pool_impl_address": self.net.market.pool_impl}
         try:  # receipt enrichment is best-effort; missing gas data is recorded as NULL, never estimated
             rc = self.client.call(self.w3.eth.get_transaction_receipt, d.tx_hash if d.tx_hash.startswith("0x") else "0x" + d.tx_hash)
             blk = self.client.call(self.w3.eth.get_block, d.block_number)
             row.update(gas_used=int(rc["gasUsed"]), effective_gas_price_wei=int(rc.get("effectiveGasPrice", 0)),
                        tx_status=int(rc["status"]), tx_index=int(rc["transactionIndex"]),
-                       block_timestamp=datetime.fromtimestamp(int(blk["timestamp"]), tz=timezone.utc))
+                       block_timestamp=datetime.fromtimestamp(int(blk["timestamp"]), tz=UTC))
         except Exception as e:
             log.warning("liquidation_receipt_unavailable", tx=d.tx_hash, error=str(e)[:120])
         stmt = insert(m.HistoricalLiquidation).values(row)

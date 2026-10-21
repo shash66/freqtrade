@@ -4,7 +4,7 @@ with a monotonic clock between block observation and candidate creation; block t
 as latency. Nothing here can submit a transaction."""
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from prometheus_client import Counter, Gauge, Histogram
 from sqlalchemy import func, select
@@ -14,8 +14,8 @@ from app.chains.config import NetworkConfig
 from app.core.config import get_settings
 from app.core.logging import get_logger
 from app.core.money import WAD
-from app.database.base import get_sessionmaker
 from app.database import models as m
+from app.database.base import get_sessionmaker
 
 log = get_logger(__name__)
 
@@ -29,7 +29,7 @@ LATENCY = Histogram("fll_detection_to_candidate_seconds", "block observation -> 
 
 
 def track_outcomes(net: NetworkConfig, db: Session, lookback_hours: int = 24) -> dict:
-    since = datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
+    since = datetime.now(UTC) - timedelta(hours=lookback_hours)
     open_c = db.scalars(select(m.LiquidationCandidate).where(m.LiquidationCandidate.chain_id == net.chain_id,
                                                              m.LiquidationCandidate.status.in_([m.CandidateStatus.candidate, m.CandidateStatus.simulated]),
                                                              m.LiquidationCandidate.created_at >= since)).all()
@@ -105,7 +105,8 @@ def shadow_summary(db: Session, chains: dict[str, int]) -> dict:
     out = {"outcome_classes": {"candidates": "theoretical", "simulations": "simulated", "competitor_liquidations": "onchain_actual"},
            "networks": {}}
     for slug, cid in chains.items():
-        cnt = lambda *w: db.scalar(select(func.count()).select_from(m.LiquidationCandidate).where(m.LiquidationCandidate.chain_id == cid, *w)) or 0
+        def cnt(*w, cid=cid):
+            return db.scalar(select(func.count()).select_from(m.LiquidationCandidate).where(m.LiquidationCandidate.chain_id == cid, *w)) or 0
         sims = db.execute(select(m.SimulationRun.status, func.count()).where(m.SimulationRun.chain_id == cid, m.SimulationRun.kind == "candidate")
                           .group_by(m.SimulationRun.status)).all()
         ok = db.scalar(select(func.count()).select_from(m.SimulationResult).join(m.SimulationRun, m.SimulationRun.id == m.SimulationResult.run_id)
@@ -117,7 +118,7 @@ def shadow_summary(db: Session, chains: dict[str, int]) -> dict:
         taken = db.scalar(select(func.count()).select_from(m.CompetitorObservation).where(m.CompetitorObservation.chain_id == cid,
                                                                                          m.CompetitorObservation.candidate_id.is_not(None))) or 0
         rpc_err = db.scalar(select(func.count()).select_from(m.RpcHealthMetric).where(m.RpcHealthMetric.chain_id == cid, m.RpcHealthMetric.ok.is_(False),
-                                                                                    m.RpcHealthMetric.observed_at >= datetime.now(timezone.utc) - timedelta(hours=24))) or 0
+                                                                                    m.RpcHealthMetric.observed_at >= datetime.now(UTC) - timedelta(hours=24))) or 0
         out["networks"][slug] = {
             "opportunities_discovered": cnt(), "candidates_complete": cnt(m.LiquidationCandidate.status.in_([m.CandidateStatus.candidate, m.CandidateStatus.simulated])),
             "candidates_incomplete": cnt(m.LiquidationCandidate.status == m.CandidateStatus.incomplete),

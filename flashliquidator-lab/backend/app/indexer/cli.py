@@ -13,8 +13,7 @@ from app.chains.rpc import RpcClient
 from app.core.config import get_settings
 from app.core.logging import configure_logging
 from app.database.base import get_sessionmaker
-from app.database import models as m
-from app.indexer.pool_indexer import STREAM, PoolIndexer, run_indexer_once
+from app.indexer.pool_indexer import PoolIndexer, run_indexer_once
 from app.indexer.reconcile import reconcile_network
 
 

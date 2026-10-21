@@ -40,7 +40,7 @@ class NetworkConfig:
 def build_networks(s: Settings) -> dict[str, NetworkConfig]:
     nets: dict[str, NetworkConfig] = {}
     defs = [
-        ("base", 8453, "Base", "ETH", "https://basescan.org", Decimal("2"), True,
+        ("base", 8453, "Base", "ETH", "https://basescan.org", Decimal(2), True,
          GasModel(900_000, True, 1_000_000), s.indexer_start_block_base),
         ("arbitrum", 42161, "Arbitrum One", "ETH", "https://arbiscan.io", Decimal("0.25"), True,
          GasModel(1_500_000, True, 10_000_000), s.indexer_start_block_arbitrum),

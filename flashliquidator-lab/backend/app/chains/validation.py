@@ -3,7 +3,7 @@ pool ↔ addresses-provider round trip, flash-loan premium readable. Failures ar
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from importlib import resources
 
 from app.aave.address_book import ADDRESS_BOOK_VERSION
@@ -44,7 +44,7 @@ def verify_deployment(net: NetworkConfig, client: RpcClient) -> dict:
         out["flashloan_premium_total_bps"] = int(client.call(pool.functions.FLASHLOAN_PREMIUM_TOTAL().call))
         out["flashloan_premium_to_protocol_bps"] = int(client.call(pool.functions.FLASHLOAN_PREMIUM_TO_PROTOCOL().call))
         out["verified"] = True
-        out["checked_at"] = datetime.now(timezone.utc).isoformat()
+        out["checked_at"] = datetime.now(UTC).isoformat()
         log.info("deployment_verified", network=net.slug, chain_id=cid, premium_bps=out["flashloan_premium_total_bps"])
     except RpcUnavailable as e:
         out["error"] = f"rpc unavailable: {e}"
