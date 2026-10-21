@@ -141,9 +141,11 @@ class PoolIndexer:
 
     def rollback(self, cp: m.IndexerCheckpoint, ancestor: int) -> int:
         res = self.db.execute(update(m.PoolEvent).where(m.PoolEvent.chain_id == self.net.chain_id,
+                                                        m.PoolEvent.deployment_id == self.deployment.id,
                                                         m.PoolEvent.block_number > ancestor,
                                                         m.PoolEvent.orphaned.is_(False)).values(orphaned=True))
         self.db.execute(update(m.HistoricalLiquidation).where(m.HistoricalLiquidation.chain_id == self.net.chain_id,
+                                                              m.HistoricalLiquidation.deployment_id == self.deployment.id,
                                                               m.HistoricalLiquidation.block_number > ancestor)
                         .values(tx_status=-1))  # -1 marks "orphaned by reorg"; re-indexed rows overwrite it
         cp.last_block = ancestor

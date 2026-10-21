@@ -17,6 +17,7 @@ celery.conf.update(
         "index-pool-events": {"task": "app.workers.tasks.index_pool_events_all", "schedule": schedule(s.indexer_poll_interval_seconds)},
         "reconcile-borrowers": {"task": "app.workers.tasks.reconcile_borrowers_all", "schedule": schedule(s.monitor_interval_seconds)},
         "build-candidates": {"task": "app.workers.tasks.build_candidates_all", "schedule": schedule(s.monitor_interval_seconds)},
+        "shadow-tick": {"task": "app.workers.tasks.shadow_tick_all", "schedule": schedule(s.monitor_interval_seconds)},
         "retention-cleanup": {"task": "app.workers.tasks.retention_cleanup", "schedule": 6 * 3600},
     },
 )

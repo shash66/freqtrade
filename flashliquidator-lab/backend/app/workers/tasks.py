@@ -92,3 +92,44 @@ def build_candidates_task(slug: str):
     net = _networks()[slug]
     with job_run("build_candidates", net.chain_id) as detail:
         detail.update(build_candidates(net))
+
+
+@celery.task(name="app.workers.tasks.simulate_run", bind=True)
+def simulate_run(self, run_id: int):
+    from app.simulation.service import execute_simulation_run
+    with job_run("simulate_run") as detail:
+        detail.update(execute_simulation_run(run_id, _networks()))
+
+
+@celery.task(name="app.workers.tasks.run_backtest")
+def run_backtest(strategy_run_id: int):
+    from app.simulation.service import create_replay_runs_for_backtest, execute_simulation_run
+    from app.competition.summary import summarize_backtest
+    nets = _networks()
+    with job_run("run_backtest") as detail:
+        Session = get_sessionmaker()
+        with Session() as db:
+            sr = db.get(m.StrategyRun, strategy_run_id)
+            sr.status, sr.started_at = m.JobStatus.running, datetime.now(timezone.utc)
+            db.commit()
+            ids = create_replay_runs_for_backtest(db, sr, nets)
+        detail["replays"] = len(ids)
+        for i, rid in enumerate(ids, 1):
+            execute_simulation_run(rid, nets)
+            with Session() as db:
+                sr = db.get(m.StrategyRun, strategy_run_id)
+                sr.progress = 100 * i // max(len(ids), 1)
+                db.commit()
+        with Session() as db:
+            sr = db.get(m.StrategyRun, strategy_run_id)
+            sr.summary, sr.assumptions, sr.data_quality = summarize_backtest(db, sr)
+            sr.status, sr.finished_at, sr.progress = m.JobStatus.succeeded, datetime.now(timezone.utc), 100
+            db.commit()
+
+
+@celery.task(name="app.workers.tasks.shadow_tick_all")
+def shadow_tick_all():
+    from app.strategies.shadow import shadow_tick
+    for slug, net in _networks().items():
+        with job_run("shadow_tick", net.chain_id) as detail:
+            detail.update(shadow_tick(net))
