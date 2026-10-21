@@ -1,0 +1,76 @@
+{
+ "generated_at": "2026-10-21T15:33:52.814356+00:00",
+ "network": "arbitrum",
+ "items": [
+  {
+   "key": "readonly",
+   "title": "Application read-only, no broadcast path",
+   "status": "EXECUTED",
+   "reason": null,
+   "detail": {
+    "live_trading_enabled": false,
+    "app_mode": "simulation",
+    "signer": "none",
+    "broadcast_code_path": "none"
+   }
+  },
+  {
+   "key": "rpc",
+   "title": "Connect to RPC and verify the Aave deployment (chain id, bytecode, ADDRESSES_PROVIDER, premium)",
+   "status": "EXECUTED",
+   "reason": null,
+   "detail": {
+    "rpc_block": 516955190,
+    "latency_ms": 424,
+    "address_book_version": "4.44.22",
+    "verified": true,
+    "error": null,
+    "checked_at": "2026-10-21T15:33:55.124883+00:00",
+    "flashloan_premium_total_bps": 5,
+    "flashloan_premium_to_protocol_bps": 10000
+   }
+  },
+  {
+   "key": "index",
+   "title": "Index the last 5000 blocks of Pool events: borrowers and LiquidationCall records",
+   "status": "FAILED",
+   "reason": "RpcUnavailable: arbitrum: 403 Client Error: Forbidden for url: https://arbitrum-one-rpc.publicnode.com/ :: {\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Archive requests require a personal token. Get one at: https://www.allnodes.com/publicnode\"},\"id\":26}\n",
+   "detail": {}
+  },
+  {
+   "key": "reconcile",
+   "title": "Reconcile indexed borrowers against on-chain account data; count eligible and near-liquidation positions",
+   "status": "EXECUTED",
+   "reason": null,
+   "detail": {
+    "block": 516955297,
+    "reconciled": 200,
+    "detail_reads": 0,
+    "eligible": 0,
+    "near": 0,
+    "errors": 0
+   }
+  },
+  {
+   "key": "replay",
+   "title": "Replay up to 0 recorded liquidations through the flash-loan receiver on Anvil forks",
+   "status": "SKIPPED",
+   "reason": "no recorded liquidations to replay (index a wider range first)",
+   "detail": {}
+  },
+  {
+   "key": "triage",
+   "title": "Classify failed simulations: code defect vs. not eligible at block boundary vs. unprofitable",
+   "status": "BLOCKED",
+   "reason": "no executed replays to triage",
+   "detail": {}
+  },
+  {
+   "key": "competitors",
+   "title": "Observed competing liquidators from recorded LiquidationCall events",
+   "status": "SKIPPED",
+   "reason": "no recorded liquidations",
+   "detail": {}
+  }
+ ]
+}

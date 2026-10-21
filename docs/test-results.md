@@ -75,6 +75,13 @@ executed here, reason given · N/A = not applicable.
 | Frontend Playwright (local build and containerised) | PASS 6/6 both |
 | Contracts `forge test` | BLOCKED (see 3) |
 
+## Phase 2 (live chains) addendum
+
+Executed later the same day once RPC hosts were allowed: see `phase2-results.md`. Headline: Base deployment
+verified live; 4,226 borrowers and 24 liquidations indexed; 19 replays executed through the real flash-loan
+receiver (3 succeeded, measured); Forge fork tests still blocked by the archive provider's quota; Arbitrum
+replays blocked for lack of an archive provider.
+
 ## Not done, and why
 - Nothing on a real chain: every RPC host is blocked in this sandbox. First action on the target host: set
   `BASE_RPC_HTTP` / `ARBITRUM_RPC_HTTP` (+ archive URLs), confirm `deployment_verified: true` on the Overview,

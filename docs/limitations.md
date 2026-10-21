@@ -19,6 +19,8 @@
 - **Funding path in simulations.** The default simulation path deploys the compiled receiver and takes a real
   Aave flash loan on the fork. The simplified direct-call path (impersonated funding, quoted swap, analytical
   premium) remains only as a labeled fallback (`simplified = true`).
+- **Phase 2 live validation (Base).** Executed with public endpoints under strict quotas: 19 of 24 replays done,
+  5 pending; Arbitrum replays need an archive provider. Details and per-replay data in `phase2-results.md`.
 - **Environment in which this build was produced.** No blockchain RPC was reachable, Foundry could not be
   installed (its build needs `binaries.soliditylang.org`), and the sandbox's Docker daemon had no NAT. So: the
   contract was compiled with solc-js, not `forge`; Forge fork tests and any fork simulation were not run; the
