@@ -10,7 +10,7 @@ build:
 migrate:
 	docker compose run --rm migrate
 admin-hash:    ## make admin-hash PASSWORD='...'  -> prints ADMIN_PASSWORD_HASH value
-	@docker compose run --rm -T api python -c "from app.core.security import hash_password; print(hash_password('$(PASSWORD)'))"
+	@docker compose run --rm -T api python -c "from app.core.security import hash_password; print(hash_password('$(PASSWORD)'))" | sed 's/\$$/$$$$/g'
 test: test-backend test-contracts
 test-backend:
 	cd backend && python -m pytest -q

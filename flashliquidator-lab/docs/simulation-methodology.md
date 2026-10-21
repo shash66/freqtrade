@@ -22,15 +22,19 @@ Formulas mirror `LiquidationLogic.sol` of aave-v3-origin:
 
 ## Fork simulation (simulated)
 1. Anvil forks the archive RPC at block N−1 (historical) or the latest block (candidate).
-2. The simulator account is funded with the debt asset from the reserve's aToken (impersonated). This
-   replaces the flash loan; the premium is added from `FLASHLOAN_PREMIUM_TOTAL` read on the fork. When the
-   compiled `FlashLiquidator` contract is available the real flash-loan path can be exercised with Forge
-   (see `contracts/`).
-3. `Pool.liquidationCall` is executed for real on the fork; results come from balances and events.
-4. Swap proceeds are quoted (QuoterV2) on the fork, not executed. Price impact is reported against oracle value.
-5. Gas = measured `liquidationCall` gas + modeled flash-loan/swap overhead; priced at the historical
-   effective gas price when replaying, otherwise the fork's gas price. L1 data fees on L2s are not included
-   and are listed as an assumption.
+2. **Execution path `flash_loan_receiver`** (default): the compiled `FlashLiquidator` receiver is deployed on
+   the fork, allow-listed for the two tokens and Uniswap SwapRouter02, and `liquidate()` is called. The
+   receiver takes a real `flashLoanSimple`, calls `Pool.liquidationCall`, swaps the collateral on-chain and
+   repays principal plus premium. Premium, swap output, collateral received, gas and surplus are **measured**
+   from the transaction and its `SimulatedLiquidation` event. `simplified = false` on these results.
+3. **Execution path `direct_liquidation_call`** (fallback only; `simplified = true`, warning attached): used
+   when the artifact or SwapRouter02 is unavailable on the fork or `force_direct_path` is requested. The
+   simulator account is funded from the reserve's aToken, `liquidationCall` runs for real, the swap is quoted
+   (QuoterV2, not executed) and the premium is added analytically.
+4. Fees: L2 execution = measured gas × gas price (historical effective gas price when replaying, otherwise
+   the fork's, flagged). L1 data fee = chain fee-oracle estimate on the actual calldata (`source: estimated`);
+   verified L1 fees come only from mined receipts (`source: verified`, stored on historical liquidations).
+   A missing figure is `unknown`, never zero.
 
 Every historical result is labeled `block_boundary_approximation = true`: forking at N−1 does not reproduce
 transaction ordering inside block N. A borrower who was only liquidatable because of an earlier transaction

@@ -1,0 +1,12 @@
+# Build-time overrides for sandboxed hosts whose only route out is an HTTP proxy with a private CA and whose
+# Docker daemon has no NAT (containers cannot reach the internet, but builds can via the host network).
+#   docker compose -f docker-compose.yml -f docker-compose.sandbox.yml build
+# Runtime behaviour is unchanged: nothing here publishes ports or weakens isolation.
+services:
+  api:
+    build: { context: ./backend, network: host, args: [HTTP_PROXY, HTTPS_PROXY, NO_PROXY], secrets: [proxy_ca] }
+  frontend:
+    build: { context: ./frontend, network: host, args: [HTTP_PROXY, HTTPS_PROXY, NO_PROXY, API_INTERNAL_URL], secrets: [proxy_ca] }
+secrets:
+  proxy_ca:
+    file: ${PROXY_CA_FILE:-/dev/null}

@@ -2,6 +2,7 @@
 name: flashliquidator-lab
 
 x-backend: &backend
+  image: flashliquidator-lab-backend:${APP_VERSION:-latest}   # one image shared by api, migrate, indexer, worker, scheduler
   build: ./backend
   env_file: .env
   restart: unless-stopped
@@ -66,6 +67,12 @@ services:
   indexer:
     <<: *backend
     networks: [internal, egress]
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A app.workers.celery_app:celery inspect ping -d indexer@$$HOSTNAME --timeout 10 >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 40s
     command: ["celery", "-A", "app.workers.celery_app:celery", "worker", "-Q", "indexer", "-n", "indexer@%h", "--concurrency=2", "--loglevel=INFO"]
     depends_on:
       migrate: { condition: service_completed_successfully }
@@ -74,6 +81,12 @@ services:
   worker:
     <<: *backend
     networks: [internal, egress]
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A app.workers.celery_app:celery inspect ping -d worker@$$HOSTNAME --timeout 10 >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 40s
     command: ["celery", "-A", "app.workers.celery_app:celery", "worker", "-Q", "celery,simulation", "-n", "worker@%h", "--concurrency=${SIMULATION_CONCURRENCY:-2}", "--loglevel=INFO"]
     depends_on:
       migrate: { condition: service_completed_successfully }
@@ -83,12 +96,18 @@ services:
   scheduler:
     <<: *backend
     networks: [internal, egress]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os,sys; sys.exit(0 if any(b'beat' in open(f'/proc/{p}/cmdline','rb').read() for p in os.listdir('/proc') if p.isdigit()) else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     command: ["celery", "-A", "app.workers.celery_app:celery", "beat", "--loglevel=INFO", "-s", "/tmp/celerybeat-schedule"]
     depends_on:
       migrate: { condition: service_completed_successfully }
       redis: { condition: service_healthy }
 
   frontend:
+    image: flashliquidator-lab-frontend:${APP_VERSION:-latest}
     build: ./frontend
     env_file: .env
     environment:
@@ -109,9 +128,9 @@ services:
     image: caddy:2-alpine
     profiles: [edge]
     environment:
-      PUBLIC_HOSTNAME: ${PUBLIC_HOSTNAME:?set PUBLIC_HOSTNAME for the caddy profile}
+      PUBLIC_HOSTNAME: ${PUBLIC_HOSTNAME:-}   # required when the edge profile is enabled; Caddy refuses an empty site address
       EDGE_BASICAUTH_USER: ${EDGE_BASICAUTH_USER:-admin}
-      EDGE_BASICAUTH_HASH: ${EDGE_BASICAUTH_HASH:?set EDGE_BASICAUTH_HASH (bcrypt) for the caddy profile}
+      EDGE_BASICAUTH_HASH: ${EDGE_BASICAUTH_HASH:-}
     volumes:
       - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddydata:/data

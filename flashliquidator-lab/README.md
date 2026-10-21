@@ -37,9 +37,9 @@ Docs: [implementation plan](docs/implementation-plan.md), [architecture](docs/ar
 
 ## Status
 
-See `docs/implementation-plan.md` for the per-milestone state and the environment caveats of the initial build
-(no Docker daemon, Foundry or chain RPC was reachable while it was written, so live acceptance tests are the
-first thing to run after deployment).
+`docs/implementation-plan.md` has the per-milestone state and `docs/test-results.md` the deployment-readiness
+results: the Docker stack has been run end-to-end, the contract compiles, and everything that touches a real
+chain (indexing, fork simulation, Forge fork tests) is still waiting for RPC access on the target host.
 
 ## Tests
 

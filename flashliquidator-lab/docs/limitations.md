@@ -16,7 +16,12 @@
   target; the dashboard reports the actual sample size and never extrapolates.
 - **e-mode bonuses.** Candidates use the reserve liquidation bonus unless an e-mode override is supplied; the
   assumption is recorded on each candidate.
-- **Environment in which this build was produced.** No Docker daemon, no Foundry, and no blockchain RPC were
-  reachable, so: Compose files were validated but not started; Solidity was written but not compiled; the
-  indexer, reconciliation, candidate engine and replay service were exercised with unit tests and fakes, not
-  against live chains. Each of these is a first thing to run after deployment.
+- **Funding path in simulations.** The default simulation path deploys the compiled receiver and takes a real
+  Aave flash loan on the fork. The simplified direct-call path (impersonated funding, quoted swap, analytical
+  premium) remains only as a labeled fallback (`simplified = true`).
+- **Environment in which this build was produced.** No blockchain RPC was reachable, Foundry could not be
+  installed (its build needs `binaries.soliditylang.org`), and the sandbox's Docker daemon had no NAT. So: the
+  contract was compiled with solc-js, not `forge`; Forge fork tests and any fork simulation were not run; the
+  Docker stack was started and verified (migrations, health checks, workers, persistence, browser tests) but
+  host-port publishing and outbound RPC traffic from containers could not be exercised. `docs/test-results.md`
+  lists every check with its actual result.
