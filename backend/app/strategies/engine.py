@@ -2,6 +2,7 @@
 with a full, reproducible breakdown and explicit incomplete states."""
 from __future__ import annotations
 
+import time
 from decimal import Decimal
 
 from sqlalchemy import select
@@ -34,6 +35,7 @@ def build_candidates(net: NetworkConfig, limit: int = 50) -> dict:
     if not client.configured:
         return {"skipped": True, "reason": "no RPC configured"}
     reader = AaveReader(net, client)
+    t_observe = time.monotonic()
     block = int(client.call(lambda: reader.w3.eth.block_number))
     blk = client.call(reader.w3.eth.get_block, block)
     block_hash = blk["hash"].hex() if hasattr(blk["hash"], "hex") else str(blk["hash"])
@@ -103,6 +105,12 @@ def build_candidates(net: NetworkConfig, limit: int = 50) -> dict:
             status = m.CandidateStatus.incomplete if not report.complete else m.CandidateStatus.candidate
             cand = _store(db, net, b, block, block_hash, pos, outcome, report, rules, status=status, reasons=report.incomplete_reasons,
                           debt_asset=da, coll_asset=ca, elig=elig, swap_quote_id=sq.id)
+            if cand is not None:
+                lat = time.monotonic() - t_observe
+                cand.data_sources = dict(cand.data_sources or {}, detection_to_candidate_seconds=round(lat, 3))
+                from app.strategies.shadow import LATENCY, OPPORTUNITIES
+                LATENCY.labels(net.slug).observe(lat)
+                OPPORTUNITIES.labels(net.slug).inc()
             out["candidates" if status == m.CandidateStatus.candidate else "incomplete"] += 1
         db.commit()
     return out

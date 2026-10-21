@@ -125,13 +125,17 @@ def check_eligibility(p: PositionInputs, rules: LiquidationRules) -> Eligibility
     if e.reasons:
         return e
     cf = rules.default_close_factor_bps
+    # v3.3 LiquidationLogic: 100% close factor when HF < 0.95, or when the user's debt or collateral
+    # *in the chosen reserves* is below MIN_BASE_MAX_LIQUIDATION_THRESHOLD (per-reserve, not the whole position).
+    reserve_debt_base = p.user_debt_raw * p.debt.price_raw // 10**p.debt.decimals
+    reserve_coll_base = p.user_collateral_raw * p.collateral.price_raw // 10**p.collateral.decimals
     if p.health_factor_wad < rules.close_factor_hf_threshold_wad:
         cf = rules.max_close_factor_bps
     elif rules.min_base_max_liquidation_threshold and (
-        p.total_debt_base < rules.min_base_max_liquidation_threshold
-        or p.total_collateral_base < rules.min_base_max_liquidation_threshold
+        reserve_debt_base < rules.min_base_max_liquidation_threshold
+        or reserve_coll_base < rules.min_base_max_liquidation_threshold
     ):
-        cf = rules.max_close_factor_bps  # v3.3: small positions can be closed fully
+        cf = rules.max_close_factor_bps
     e.close_factor_bps = cf
     e.max_debt_to_cover_raw = percent_mul(p.user_debt_raw, cf)
     e.eligible = True
@@ -176,12 +180,14 @@ def dust_check(p: PositionInputs, rules: LiquidationRules, outcome: LiquidationO
         return []
     problems = []
     rem_debt = p.user_debt_raw - outcome.debt_to_cover_raw
-    rem_coll = p.user_collateral_raw - outcome.collateral_seized_raw
+    rem_coll = p.user_collateral_raw - outcome.collateral_seized_raw  # seized includes the protocol fee amount
+    if rem_debt <= 0 or rem_coll <= 0:
+        return []  # all debt repaid or all collateral taken: the protocol skips the dust check
     rem_debt_base = rem_debt * p.debt.price_raw // 10**p.debt.decimals
     rem_coll_base = rem_coll * p.collateral.price_raw // 10**p.collateral.decimals
-    if 0 < rem_debt_base < rules.min_leftover_base:
+    if rem_debt_base < rules.min_leftover_base:
         problems.append(f"would leave debt dust ({rem_debt_base / BASE_UNIT:.2f} USD < min leftover); full repayment required")
-    if 0 < rem_coll_base < rules.min_leftover_base:
+    if rem_coll_base < rules.min_leftover_base:
         problems.append(f"would leave collateral dust ({rem_coll_base / BASE_UNIT:.2f} USD < min leftover)")
     return problems
 

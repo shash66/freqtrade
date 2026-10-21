@@ -68,3 +68,41 @@ def test_data_routes_empty_and_validation(client):
     assert client.get("/api/opportunities?status=bogus").status_code == 422
     assert client.get("/api/opportunities/999999999").status_code == 404
     assert client.get("/api/positions/base/0x0000000000000000000000000000000000000001").status_code == 404
+
+
+def test_strategies_and_compare(client):
+    ks = {s["key"] for s in client.get("/api/strategies").json()}
+    assert ks == {"A", "B", "C"}
+    r = client.post("/api/strategies/compare", json={"strategies": ["A", "C"], "seed": 1, "trials": 500})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["outcome_class"] == "modeled_capturable" and set(body["results"]) == {"A", "C"}
+    assert body["results"]["C"]["win_rate"] >= body["results"]["A"]["win_rate"]
+    assert client.post("/api/strategies/compare", json={"strategies": ["Z"]}).status_code == 422
+
+
+def test_competition_summary_shape(client):
+    body = client.get("/api/competition/summary").json()
+    assert body["competitors"]["outcome_class"] == "onchain_actual"
+    assert set(body["competitors"]["networks"]) == {"base", "arbitrum"}
+    assert "simulated profit is not earned revenue" in body["shadow"]["networks"]["base"]["note"]
+
+
+def test_simulation_and_backtest_jobs_require_admin_and_queue(client):
+    sim = {"network": "base", "borrower": "0x" + "1" * 40, "collateral_asset": "0x" + "2" * 40, "debt_asset": "0x" + "3" * 40,
+           "debt_to_cover_raw": "1000000"}
+    assert client.post("/api/simulations", json=sim).status_code == 401
+    r = client.post("/api/simulations", json=sim, auth=("admin", "testpass"))
+    assert r.status_code == 202 and r.json()["status"] == "queued"
+    job = client.get(r.json()["status_url"]).json()
+    assert job["kind"] == "manual" and job["status"] == "queued" and job["result"] is None
+    bad = dict(sim, network="nope")
+    assert client.post("/api/simulations", json=bad, auth=("admin", "testpass")).status_code == 404
+    bt = {"networks": ["base"], "date_from": "2026-09-01T00:00:00Z", "date_to": "2026-10-01T00:00:00Z"}
+    r = client.post("/api/backtests", json=bt, auth=("admin", "testpass"))
+    assert r.status_code == 202
+    b = client.get(r.json()["status_url"]).json()
+    assert b["outcome_class"] == "simulated" and b["replays"] == []
+    csv = client.get(r.json()["status_url"] + "?format=csv")
+    assert csv.status_code == 200 and csv.text.startswith("sim_id,")
+    assert client.post("/api/backtests", json=dict(bt, date_to=bt["date_from"]), auth=("admin", "testpass")).status_code == 422
