@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from importlib import resources
 
 from web3 import Web3
+from web3.logs import DISCARD
 
 from app.simulation.anvil import AnvilFork
 
@@ -87,7 +88,7 @@ def run_receiver_liquidation(anvil: AnvilFork, owner: str, provider: str, chain_
     event = None
     if rc.get("status") == 1:
         try:
-            logs = c.events.SimulatedLiquidation().process_receipt(rc)
+            logs = c.events.SimulatedLiquidation().process_receipt(rc, errors=DISCARD)
             if logs:
                 event = {k: (str(v) if isinstance(v, int) else v) for k, v in dict(logs[0]["args"]).items()}
         except Exception:  # event parsing never masks the measured result

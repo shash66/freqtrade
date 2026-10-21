@@ -135,6 +135,8 @@ def step_replays(rep: Report, net: NetworkConfig, max_replays: int) -> None:
                         "simplified": r.execution_path != "flash_loan_receiver", "revert_reason": r.revert_reason,
                         "eligible_at_fork": r.eligible_at_fork, "net_profit_usd": None if r.net_profit_usd is None else str(r.net_profit_usd),
                         "premium_raw": r.flash_premium_raw, "swap_out_raw": r.swap_proceeds_raw, "gas_used": r.gas_used, "fees": r.fees,
+                        "collateral_seized_raw": r.collateral_seized_raw, "debt_repaid_raw": r.debt_repaid_raw, "gas_cost_usd": None if r.gas_cost_usd is None else str(r.gas_cost_usd),
+                        "retried": r.retried, "historical_collateral_seized_raw": h.collateral_seized_raw, "historical_gas_used": h.gas_used,
                         "warnings": r.warnings, "historical_liquidator": h.liquidator, "historical_l1_fee_wei": h.l1_fee_wei,
                         "historical_fee_source": h.fee_source})
     paths = Counter(x["execution_path"] for x in results)
@@ -163,6 +165,8 @@ def step_failure_triage(rep: Report) -> None:
             c = "profitable"
         elif r["eligible_at_fork"] is False:
             c = "not_eligible_at_block_boundary"
+        elif r["revert_reason"] and ("MustNotLeaveDust" in r["revert_reason"] or "HealthFactorNotBelowThreshold" in r["revert_reason"]):
+            c = "aave_rule_revert_while_eligible_at_boundary"
         elif r["revert_reason"] and any(k in r["revert_reason"] for k in ("InsufficientProfit", "Too little received", "SwapFailed")):
             c = "unprofitable_revert_by_receiver_guard"
         elif r["revert_reason"] and any(k in r["revert_reason"] for k in ("funding failed", "anvil", "artifact", "RouterNotAllowed", "TokenNotAllowed", "NotPool", "BadInitiator")):
