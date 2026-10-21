@@ -6,6 +6,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { NAV } from "@/components/nav";
 import { Badge, StatusDot } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { AdminControl } from "@/components/admin-control";
 import { useLive } from "@/lib/use-live";
 import { useApi } from "@/lib/use-api";
 import type { Health } from "@/lib/api";
@@ -156,6 +157,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Badge>
               <HealthChip />
               <LiveIndicator />
+              <AdminControl />
               <ThemeToggle />
             </div>
           </div>

@@ -29,7 +29,21 @@ test("backtest launch requires the administrator (no credentials -> visible auth
   await page.goto("/backtests");
   const run = page.getByRole("button", { name: /run backtest/i }).first();
   await run.click();
-  await expect(page.getByText(/401|unauthori|credential|admin/i).first()).toBeVisible({ timeout: 15_000 });
+  // No native Basic-auth prompt: the dashboard shows an inline message and the button recovers.
+  await expect(page.getByText(/Administrator sign-in required/i).first()).toBeVisible({ timeout: 15_000 });
+  await expect(run).toBeEnabled();
+
+  // Sign in through the header control (credentials of the local dev backend).
+  await page.getByRole("button", { name: /admin sign-in/i }).click();
+  const form = page.getByRole("form", { name: /administrator sign-in/i });
+  await form.getByLabel(/username/i).fill("admin");
+  await form.getByLabel(/password/i).fill("devpass");
+  await form.getByRole("button", { name: /^sign in$/i }).click();
+  await expect(page.getByTestId("admin-control").getByText("admin", { exact: true })).toBeVisible({ timeout: 15_000 });
+
+  // Launch again as administrator: the job is accepted and its status is shown.
+  await run.click();
+  await expect(page.getByTestId("job-status")).toHaveText(/queued|succeeded/, { timeout: 20_000 });
 });
 
 test("results survive a refresh (backtest list is server state)", async ({ page }) => {

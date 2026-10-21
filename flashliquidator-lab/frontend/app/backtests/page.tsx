@@ -13,6 +13,7 @@ import { Table, TableWrap, TBody, Td, Th, THead, Tr } from "@/components/ui/tabl
 import { EmptyState, MilestoneState } from "@/components/ui/empty-state";
 import { KV } from "@/components/ui/kv";
 import { fmtRelative, isoDate } from "@/lib/format";
+import { AdminRequiredNotice } from "@/components/admin-control";
 
 const STRATEGIES = [
   { key: "A", name: "Basic polling" },
@@ -137,6 +138,7 @@ export default function BacktestsPage() {
 
   const rows = resultRows(job);
   const notReady = submitError?.notFound;
+  const needsAdmin = submitError?.unauthorized;
   const canRun = networks.length > 0 && strategies.length > 0 && from <= to && !submitting;
 
   return (
@@ -221,22 +223,30 @@ export default function BacktestsPage() {
           <Card>
             <CardHeader
               title="Job status"
-              actions={job ? <Badge tone={TERMINAL.has(String(job.status).toLowerCase()) ? (/fail|error|cancel/i.test(String(job.status)) ? "bad" : "good") : "warn"}>{String(job.status)}</Badge> : null}
+              actions={
+                job ? (
+                  <Badge data-testid="job-status" tone={TERMINAL.has(String(job.status).toLowerCase()) ? (/fail|error|cancel/i.test(String(job.status)) ? "bad" : "good") : "warn"}>
+                    {String(job.status)}
+                  </Badge>
+                ) : accepted ? (
+                  <Badge data-testid="job-status" tone="warn">{accepted.status}</Badge>
+                ) : null
+              }
             />
             <CardBody className="flex flex-col gap-2">
               {notReady ? (
                 <MilestoneState feature="Backtesting" milestone={4} />
               ) : (
                 <>
-                  <ApiErrorBanner error={submitError} />
-                  <ApiErrorBanner error={pollError} stale={Boolean(job)} />
+                  {needsAdmin ? <AdminRequiredNotice /> : <ApiErrorBanner error={submitError} />}
+                  {pollError?.unauthorized ? <AdminRequiredNotice /> : <ApiErrorBanner error={pollError} stale={Boolean(job)} />}
                   {!accepted ? (
                     <EmptyState className="py-5" title="No job submitted" description="Configure the parameters and press Run backtest." />
                   ) : (
                     <>
                       <KV
                         items={[
-                          { k: "Job id", v: accepted.job_id, mono: true },
+                          { k: "Job id", v: String(accepted.job_id), mono: true },
                           { k: "Status URL", v: accepted.status_url, mono: true },
                           { k: "Status", v: job ? String(job.status) : accepted.status },
                           ...(job?.message ? [{ k: "Message", v: String(job.message) }] : []),
