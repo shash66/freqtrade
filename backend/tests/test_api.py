@@ -106,3 +106,11 @@ def test_simulation_and_backtest_jobs_require_admin_and_queue(client):
     csv = client.get(r.json()["status_url"] + "?format=csv")
     assert csv.status_code == 200 and csv.text.startswith("sim_id,")
     assert client.post("/api/backtests", json=dict(bt, date_to=bt["date_from"]), auth=("admin", "testpass")).status_code == 422
+
+
+def test_401_omits_browser_prompt_for_dashboard_fetches(client):
+    r = client.get("/api/metrics")
+    assert r.status_code == 401 and r.headers.get("www-authenticate") == "Basic"
+    r = client.get("/api/metrics", headers={"X-Requested-With": "fetch"})
+    assert r.status_code == 401 and "www-authenticate" not in r.headers
+    assert r.json()["error"] == "administrator credentials required"
