@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  color-scheme: light;
+  --background: #f6f6f4;
+  --surface: #ffffff;
+  --surface-2: #f0f0ee;
+  --surface-3: #e6e6e3;
+  --border: #dcdcd8;
+  --border-strong: #c2c2bd;
+  --foreground: #0b0b0b;
+  --muted: #52514e;
+  --faint: #8a8984;
+  --accent: #2a78d6;
+  --accent-fg: #ffffff;
+  --good: #008300;
+  --good-bg: #e6f4e6;
+  --warn: #b26b00;
+  --warn-bg: #fdf1dc;
+  --bad: #c73434;
+  --bad-bg: #fbe5e5;
+  --info-bg: #e4eefb;
+  --sim: #6250d6;
+  --sim-bg: #ebe8fa;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --ring: #2a78d6;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #111110;
+  --surface: #1a1a19;
+  --surface-2: #222221;
+  --surface-3: #2c2c2a;
+  --border: #2f2f2d;
+  --border-strong: #454543;
+  --foreground: #f0efec;
+  --muted: #c3c2b7;
+  --faint: #86857e;
+  --accent: #3987e5;
+  --accent-fg: #ffffff;
+  --good: #4bbf4b;
+  --good-bg: #16301a;
+  --warn: #e0a23a;
+  --warn-bg: #352a12;
+  --bad: #e66767;
+  --bad-bg: #3a1a1a;
+  --info-bg: #182640;
+  --sim: #9085e9;
+  --sim-bg: #262349;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --ring: #3987e5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-good: var(--good);
+  --color-good-bg: var(--good-bg);
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+  --color-bad: var(--bad);
+  --color-bad-bg: var(--bad-bg);
+  --color-info-bg: var(--info-bg);
+  --color-sim: var(--sim);
+  --color-sim-bg: var(--sim-bg);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  /* Tailwind v4 only emits theme variables that utilities use, so reference the next/font variables directly. */
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-width: 320px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  accent-color: var(--accent);
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.animate-pulse-soft {
+  animation: pulse-soft 1.4s ease-in-out infinite;
+}

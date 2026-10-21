@@ -1,0 +1,9 @@
+# Foundry build artefacts and dependencies (installed with `forge install`)
+out/
+cache/
+lib/
+broadcast/
+# Never commit RPC URLs or keys
+.env
+.env.*
+!.env.example
