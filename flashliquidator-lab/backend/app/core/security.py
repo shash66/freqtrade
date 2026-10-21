@@ -24,7 +24,14 @@ def verify_password(password: str, password_hash: str) -> bool:
         return False
 
 
+def _challenge(request: Request) -> dict | None:
+    """Browsers open a native login prompt on `WWW-Authenticate: Basic`, which hangs fetch() calls from the
+    dashboard. The dashboard marks its requests with X-Requested-With and handles 401 itself."""
+    return None if request.headers.get("x-requested-with") else {"WWW-Authenticate": "Basic"}
+
+
 def require_admin(
+    request: Request,
     credentials: HTTPBasicCredentials | None = Depends(_basic),
     settings: Settings = Depends(get_settings),
 ) -> str:
@@ -34,10 +41,10 @@ def require_admin(
             detail="ADMIN_PASSWORD_HASH is not configured; set it before using authenticated endpoints.",
         )
     if credentials is None:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, headers={"WWW-Authenticate": "Basic"})
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="administrator credentials required", headers=_challenge(request))
     user_ok = secrets.compare_digest(credentials.username.encode(), settings.admin_username.encode())
     if not (user_ok and verify_password(credentials.password, settings.admin_password_hash)):
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="invalid credentials", headers={"WWW-Authenticate": "Basic"})
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="invalid credentials", headers=_challenge(request))
     return credentials.username
 
 

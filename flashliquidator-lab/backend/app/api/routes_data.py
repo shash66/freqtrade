@@ -165,3 +165,30 @@ def _opportunity_out(request: Request, db: Session, c: m.LiquidationCandidate) -
         gas_usd=None if c.gas_cost_usd is None else str(c.gas_cost_usd), net_profit_usd=None if c.net_profit_usd is None else str(c.net_profit_usd),
         status=c.status.value, outcome_class=c.outcome_class.value, block_number=c.block_number,
         incomplete_reasons=c.incomplete_reasons, created_at=c.created_at)
+
+
+@router.get("/positions/{network}/{address}/scenarios")
+def position_scenarios(network: str, address: str, request: Request, db: Session = Depends(get_db)):
+    from app.strategies.predictive import ReserveLeg, scenarios
+    cid = _chain(request, network)[network]
+    b = db.scalar(select(m.Borrower).where(m.Borrower.chain_id == cid, func.lower(m.Borrower.address) == address.lower()))
+    if b is None:
+        raise HTTPException(404, "borrower not indexed")
+    rows = db.execute(select(m.BorrowerReserveState, m.Asset).join(m.Asset, m.Asset.id == m.BorrowerReserveState.asset_id)
+                      .where(m.BorrowerReserveState.borrower_id == b.id)).all()
+    if not rows:
+        raise HTTPException(409, "per-reserve state not yet read for this borrower (only near-liquidation borrowers get detail reads)")
+    prices = {}
+    for a in {a.address for _, a in rows}:
+        p = db.scalar(select(m.OraclePriceObservation).where(m.OraclePriceObservation.chain_id == cid, m.OraclePriceObservation.asset_address == a)
+                      .order_by(m.OraclePriceObservation.block_number.desc()).limit(1))
+        if p:
+            prices[a.lower()] = int(p.price_raw)
+    missing = [a.symbol for _, a in rows if a.address.lower() not in prices]
+    if missing:
+        raise HTTPException(409, f"no oracle price observation for {missing}")
+    colls = [ReserveLeg(a.symbol, a.address, a.decimals, prices[a.address.lower()], int(r.a_token_balance), a.liquidation_threshold_bps or 0, True)
+             for r, a in rows if r.a_token_balance > 0 and r.usage_as_collateral]
+    debts = [ReserveLeg(a.symbol, a.address, a.decimals, prices[a.address.lower()], int(r.variable_debt + r.stable_debt), 0, False)
+             for r, a in rows if (r.variable_debt + r.stable_debt) > 0]
+    return {"network": network, "address": b.address, "onchain_health_factor": hf_str(b.health_factor_wad), **scenarios(colls, debts)}
