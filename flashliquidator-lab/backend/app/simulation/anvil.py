@@ -2,6 +2,7 @@
 Anvil is only reachable inside the compose network; this module never talks to a public chain for writes."""
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass
 from typing import Any
 
@@ -49,8 +50,20 @@ class AnvilFork:
         forking: dict = {"jsonRpcUrl": fork_url}
         if block_number is not None:
             forking["blockNumber"] = block_number
-        self.rpc("anvil_reset", [{"forking": forking}])
-        self.rpc("anvil_setBlockTimestampInterval", [1]) if False else None
+        # The upstream archive provider may rate-limit the burst of reads a reset triggers: back off and retry.
+        delay, deadline = 5.0, time.monotonic() + 600
+        while True:
+            try:
+                self.rpc("anvil_reset", [{"forking": forking}])
+                break
+            except AnvilUnavailable as e:
+                msg = str(e).lower()
+                if time.monotonic() < deadline and ("429" in msg or "limit" in msg or "too many" in msg):
+                    log.warning("anvil_reset_rate_limited", backoff_s=delay)
+                    time.sleep(delay)
+                    delay = min(delay * 2, 60.0)
+                    continue
+                raise
         info = {"chain_id": self.w3.eth.chain_id, "block": self.w3.eth.block_number}
         blk = self.w3.eth.get_block("latest")
         info["block_hash"] = blk["hash"].hex() if hasattr(blk["hash"], "hex") else str(blk["hash"])

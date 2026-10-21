@@ -78,9 +78,38 @@ class ReplayResult:
     funding_path: str = "impersonated_atoken"
     execution_path: str = "direct_liquidation_call"   # or flash_loan_receiver
     fees: dict | None = None                          # FeeAccounting.as_dict()
+    retried: bool = False
+
+
+AAVE_ELIGIBILITY_SELECTORS = {"0x930bb771": "HealthFactorNotBelowThreshold", "0xb629b0e4": "MustNotLeaveDust"}
 
 
 def run_replay(req: ReplayRequest) -> ReplayResult:
+    """Run once; if an *eligible* position reverts with an Aave eligibility/dust error, rerun once on a fresh
+    fork. Rate-limited archive providers have produced one-off inconsistent fork state in live validation;
+    a result that changes between two forks is reported with `retried` so it can be triaged as infrastructure."""
+    r = _run_replay_once(req)
+    if (not r.success and r.eligible_at_fork and r.revert_reason
+            and any(sel in r.revert_reason for sel in AAVE_ELIGIBILITY_SELECTORS)):
+        first = r.revert_reason
+        r = _run_replay_once(req)
+        r.warnings.append(f"retried on a fresh fork after an Aave eligibility revert ({_decode_sel(first)}); "
+                          + ("second attempt succeeded: first revert attributed to inconsistent fork state" if r.success
+                             else "second attempt reverted too: treated as a real protocol-rule revert"))
+        r.retried = True
+    elif not r.success and r.revert_reason:
+        r.revert_reason = f"{r.revert_reason} [{_decode_sel(r.revert_reason)}]" if _decode_sel(r.revert_reason) else r.revert_reason
+    return r
+
+
+def _decode_sel(reason: str) -> str:
+    for sel, name in AAVE_ELIGIBILITY_SELECTORS.items():
+        if sel in reason:
+            return name
+    return ""
+
+
+def _run_replay_once(req: ReplayRequest) -> ReplayResult:
     s = get_settings()
     net = req.network
     fork_src = net.archive_rpc if req.block_number is not None else (net.rpc_http or net.archive_rpc)

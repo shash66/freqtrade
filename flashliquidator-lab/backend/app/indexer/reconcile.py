@@ -41,15 +41,15 @@ def priority_score(hf_wad: int, total_debt_base: int, base_unit: int) -> Decimal
 def refresh_reserves(db: Session, net: NetworkConfig, reader: AaveReader, block: int) -> dict[str, m.Asset]:
     assets: dict[str, m.Asset] = {}
     prices = {}
-    reserves = reader.reserves_list(block)
+    reserves = reader.reserves_list()
     try:
-        prices = reader.asset_prices(reserves, block)
+        prices = reader.asset_prices(reserves)
     except Exception as e:
         log.warning("oracle_prices_unavailable", network=net.slug, error=str(e)[:120])
     known = {r.address.lower(): r for r in net.market.reserves}
     for addr in reserves:
-        cfg = reader.reserve_config(addr, block)
-        a_tok, _s, v_tok = reader.reserve_tokens(addr, block)
+        cfg = reader.reserve_config(addr)
+        a_tok, _s, v_tok = reader.reserve_tokens(addr)
         sym = known[addr.lower()].symbol if addr.lower() in known else addr[:10]
         stmt = insert(m.Asset).values(
             chain_id=net.chain_id, address=addr, symbol=sym, decimals=cfg.decimals, a_token=a_tok, variable_debt_token=v_tok,
@@ -79,7 +79,7 @@ def reconcile_network(net: NetworkConfig, batch: int = BATCH) -> dict:
         return {"skipped": True, "reason": "no RPC configured"}
     reader = AaveReader(net, client)
     block = int(client.call(lambda: reader.w3.eth.block_number))
-    base_unit = reader.base_currency_unit(block)
+    base_unit = reader.base_currency_unit()
     alert_wad = int(s.position_health_factor_alert * WAD)
     out = {"block": block, "reconciled": 0, "detail_reads": 0, "eligible": 0, "near": 0, "errors": 0}
     with get_sessionmaker()() as db:
@@ -99,7 +99,7 @@ def reconcile_network(net: NetworkConfig, batch: int = BATCH) -> dict:
         detail_done = 0
         for b in todo:
             try:
-                acct = reader.user_account_data(b.address, block)
+                acct = reader.user_account_data(b.address)  # latest: pinned blocks turn into archive reads on fast chains
             except Exception as e:
                 out["errors"] += 1
                 log.warning("account_read_failed", network=net.slug, user=b.address, error=str(e)[:120])
@@ -125,9 +125,9 @@ def reconcile_network(net: NetworkConfig, batch: int = BATCH) -> dict:
             if near and detail_done < DETAIL_BATCH:
                 detail_done += 1
                 try:
-                    b.emode_category = reader.user_emode(b.address, block)
+                    b.emode_category = reader.user_emode(b.address)
                     for asset in assets.values():
-                        urd = reader.user_reserve_data(asset.address, b.address, block)
+                        urd = reader.user_reserve_data(asset.address, b.address)
                         # zero balances are written too, so a repaid or withdrawn reserve never lingers as phantom state
                         stmt = insert(m.BorrowerReserveState).values(
                             borrower_id=b.id, asset_id=asset.id, a_token_balance=urd.a_token_balance,

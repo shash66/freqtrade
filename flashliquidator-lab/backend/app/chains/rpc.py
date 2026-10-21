@@ -97,8 +97,8 @@ class RpcClient:
             return RpcHealth(False, None, None, None, "not configured")
         t0 = time.monotonic()
         try:
-            cid = self.w3.eth.chain_id
-            bn = self.w3.eth.block_number
+            cid = self.call(lambda: self.w3.eth.chain_id)      # through call(): rate-limit backoff applies
+            bn = self.call(lambda: self.w3.eth.block_number)
             return RpcHealth(True, int((time.monotonic() - t0) * 1000), bn, cid, None)
         except Exception as e:  # any failure is a health failure, reported, not raised
             return RpcHealth(False, int((time.monotonic() - t0) * 1000), None, None, str(e)[:300])
