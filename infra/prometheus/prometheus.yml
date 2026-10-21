@@ -1,0 +1,6 @@
+global: { scrape_interval: 30s }
+scrape_configs:
+  - job_name: fll-api
+    metrics_path: /api/metrics
+    basic_auth: { username: admin, password_file: /etc/prometheus/admin_password }
+    static_configs: [{ targets: ["api:8000"] }]

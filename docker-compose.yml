@@ -1,0 +1,109 @@
+# FlashLiquidator Lab — simulation-only research platform. No service holds keys or can broadcast transactions.
+name: flashliquidator-lab
+
+x-backend: &backend
+  build: ./backend
+  env_file: .env
+  restart: unless-stopped
+  read_only: true
+  tmpfs: [/tmp]
+  security_opt: [no-new-privileges:true]
+  depends_on:
+    postgres: { condition: service_healthy }
+    redis: { condition: service_healthy }
+  networks: [internal]
+  deploy:
+    resources:
+      limits: { cpus: "1.0", memory: 1g }
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: flashliquidator
+      POSTGRES_USER: fll
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U fll -d flashliquidator"], interval: 10s, timeout: 5s, retries: 10 }
+    restart: unless-stopped
+    networks: [internal]
+    deploy: { resources: { limits: { cpus: "1.0", memory: 1g } } }
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "60", "1", "--appendonly", "no", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    volumes: [redisdata:/data]
+    healthcheck: { test: ["CMD", "redis-cli", "ping"], interval: 10s, timeout: 3s, retries: 10 }
+    restart: unless-stopped
+    networks: [internal]
+
+  anvil:
+    # Isolated fork simulator. Not published on any host port; reachable only as http://anvil:8545 inside the network.
+    image: ghcr.io/foundry-rs/foundry:v1.0.0
+    entrypoint: ["anvil", "--host", "0.0.0.0", "--port", "8545", "--silent", "--no-mining", "--steps-tracing"]
+    restart: unless-stopped
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "cast chain-id --rpc-url http://127.0.0.1:8545 >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    deploy: { resources: { limits: { cpus: "2.0", memory: 2g } } }
+
+  migrate:
+    <<: *backend
+    restart: "no"
+    command: ["alembic", "upgrade", "head"]
+
+  api:
+    <<: *backend
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+    networks: [internal, edge]
+
+  indexer:
+    <<: *backend
+    command: ["celery", "-A", "app.workers.celery_app:celery", "worker", "-Q", "indexer", "-n", "indexer@%h", "--concurrency=2", "--loglevel=INFO"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+
+  worker:
+    <<: *backend
+    command: ["celery", "-A", "app.workers.celery_app:celery", "worker", "-Q", "celery,simulation", "-n", "worker@%h", "--concurrency=${SIMULATION_CONCURRENCY:-2}", "--loglevel=INFO"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+      anvil: { condition: service_started }
+
+  scheduler:
+    <<: *backend
+    command: ["celery", "-A", "app.workers.celery_app:celery", "beat", "--loglevel=INFO", "-s", "/tmp/celerybeat-schedule"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+
+  frontend:
+    build: ./frontend
+    env_file: .env
+    environment:
+      API_INTERNAL_URL: http://api:8000
+    ports: ["3000:3000"]
+    depends_on: [api]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: [/tmp, /app/.next/cache]
+    security_opt: [no-new-privileges:true]
+    networks: [edge]
+    deploy: { resources: { limits: { cpus: "0.5", memory: 512m } } }
+
+volumes:
+  pgdata:
+  redisdata:
+
+networks:
+  internal:
+    internal: true   # postgres, redis, anvil and workers cannot be reached from the host
+  edge:

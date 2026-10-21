@@ -1,0 +1,4 @@
+# Optional reverse proxy with TLS. Replace the hostname. Only the frontend is exposed; it proxies /api itself.
+lab.example.com {
+    reverse_proxy frontend:3000
+}
