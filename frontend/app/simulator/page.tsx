@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState, MilestoneState } from "@/components/ui/empty-state";
 import { KV } from "@/components/ui/kv";
 import { fmtUsd } from "@/lib/format";
+import { AdminRequiredNotice } from "@/components/admin-control";
 
 const ADDR = /^0x[0-9a-fA-F]{40}$/;
 const DIGITS = /^[0-9]+$/;
@@ -185,7 +186,7 @@ export default function SimulatorPage() {
               <MilestoneState feature="Fork simulation" milestone={4} />
             ) : (
               <>
-                <ApiErrorBanner error={error} />
+                {error?.unauthorized ? <AdminRequiredNotice /> : <ApiErrorBanner error={error} />}
                 {!result ? (
                   <EmptyState className="py-5" title="No simulation yet" description="Fill in the request and press Run simulation." />
                 ) : (
