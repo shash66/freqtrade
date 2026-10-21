@@ -5,7 +5,7 @@ from decimal import Decimal
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field, field_validator
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -40,9 +40,9 @@ class Settings(BaseSettings):
     # bcrypt hash of the admin password. Generate with: make admin-hash PASSWORD=...
     admin_password_hash: str = ""
 
-    min_net_profit_usd: Decimal = Decimal("5")
-    max_flash_loan_usd: Decimal = Decimal("100000")
-    min_flash_loan_usd: Decimal = Decimal("1000")
+    min_net_profit_usd: Decimal = Decimal(5)
+    max_flash_loan_usd: Decimal = Decimal(100000)
+    min_flash_loan_usd: Decimal = Decimal(1000)
     position_health_factor_alert: Decimal = Decimal("1.05")
     indexer_start_block_base: int | None = None
     indexer_start_block_arbitrum: int | None = None

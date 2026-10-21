@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import csv
 import io
-from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.responses import PlainTextResponse
@@ -13,8 +12,8 @@ from sqlalchemy.orm import Session
 from app.api.schemas import BacktestRequest, JobAccepted, SimulationRequest
 from app.core.config import Settings, get_settings
 from app.core.security import rate_limit, require_admin
-from app.database.base import get_db
 from app.database import models as m
+from app.database.base import get_db
 
 router = APIRouter(prefix="/api", dependencies=[Depends(rate_limit)])
 

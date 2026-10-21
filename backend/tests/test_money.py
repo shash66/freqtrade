@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from app.core.money import (WAD, health_factor, percent_mul, raw_to_usd, to_raw, to_units, usd_to_raw)
+from app.core.money import WAD, health_factor, percent_mul, raw_to_usd, to_raw, to_units, usd_to_raw
 
 
 def test_units_roundtrip_exact():
@@ -17,8 +17,8 @@ def test_to_raw_truncates_not_rounds():
 
 def test_usd_conversion_uses_8_decimal_oracle():
     # 2 WETH at $2,500.00 -> $5,000
-    assert raw_to_usd(2 * 10**18, 18, 2_500 * 10**8) == Decimal("5000")
-    assert usd_to_raw(Decimal("5000"), 18, 2_500 * 10**8) == 2 * 10**18
+    assert raw_to_usd(2 * 10**18, 18, 2_500 * 10**8) == Decimal(5000)
+    assert usd_to_raw(Decimal(5000), 18, 2_500 * 10**8) == 2 * 10**18
 
 
 def test_percent_mul_matches_aave_rounding():

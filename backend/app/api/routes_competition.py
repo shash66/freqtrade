@@ -9,8 +9,8 @@ from app.competition.analysis import competitor_summary
 from app.competition.montecarlo import delay_sensitivity, simulate
 from app.competition.strategies import COMPETITOR_DEFAULTS, STRATEGIES
 from app.core.security import rate_limit
-from app.database.base import get_db
 from app.database import models as m
+from app.database.base import get_db
 from app.strategies.shadow import shadow_summary
 
 router = APIRouter(prefix="/api", dependencies=[Depends(rate_limit)])

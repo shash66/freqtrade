@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from statistics import median
 
 from sqlalchemy import select
@@ -19,7 +19,7 @@ def _pct(xs: list[int], q: float) -> int | None:
 
 
 def competitor_summary(db: Session, chain_ids: dict[str, int], days: int = 30) -> dict:
-    since = datetime.now(timezone.utc) - timedelta(days=days)
+    since = datetime.now(UTC) - timedelta(days=days)
     out = {"outcome_class": "onchain_actual", "window_days": days, "networks": {}, "notes": [
         "timestamps are block timestamps; they are not execution latency",
         "eligibility-to-liquidation blocks are only reported where this system observed eligibility first (shadow mode)",

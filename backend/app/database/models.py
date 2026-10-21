@@ -20,7 +20,7 @@ from sqlalchemy import (
     UniqueConstraint,
     func,
 )
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.base import Base
 
@@ -30,7 +30,7 @@ ADDR = String(42)
 HASH = String(66)
 
 
-class OutcomeClass(str, enum.Enum):
+class OutcomeClass(enum.StrEnum):
     """The four result classes the spec says must never be mixed."""
     theoretical = "theoretical"
     simulated = "simulated"
@@ -38,7 +38,7 @@ class OutcomeClass(str, enum.Enum):
     onchain_actual = "onchain_actual"
 
 
-class CandidateStatus(str, enum.Enum):
+class CandidateStatus(enum.StrEnum):
     candidate = "candidate"
     simulated = "simulated"
     invalid = "invalid"
@@ -46,7 +46,7 @@ class CandidateStatus(str, enum.Enum):
     incomplete = "incomplete"
 
 
-class JobStatus(str, enum.Enum):
+class JobStatus(enum.StrEnum):
     queued = "queued"
     running = "running"
     succeeded = "succeeded"

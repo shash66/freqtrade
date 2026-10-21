@@ -2,11 +2,11 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from app.core.logging import get_logger
-from app.database.base import get_sessionmaker
 from app.database import models as m
+from app.database.base import get_sessionmaker
 
 log = get_logger(__name__)
 
@@ -32,5 +32,5 @@ def job_run(job_name: str, chain_id: int | None = None):
             run = db.get(m.WorkerJobRun, run_id)
             if run:
                 run.status, run.error, run.detail = status, error, detail
-                run.finished_at = datetime.now(timezone.utc)
+                run.finished_at = datetime.now(UTC)
                 db.commit()

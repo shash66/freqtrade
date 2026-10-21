@@ -15,7 +15,6 @@ Methodology (also in docs/simulation-methodology.md):
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from decimal import Decimal
 
 from web3 import Web3

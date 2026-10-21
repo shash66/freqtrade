@@ -8,7 +8,7 @@ USDC = pf.ReserveParams("0xusdc", "USDC", 6, 1 * 10**8, 10_450, 1000, 7800)
 WETH = pf.ReserveParams("0xweth", "WETH", 18, 2_000 * 10**8, 10_500, 1000, 8300)  # 5% bonus, 10% protocol fee on bonus
 
 
-def position(hf=Decimal("0.97"), debt_usdc=10_000, coll_weth=Decimal("6"), total_debt_base=None, total_coll_base=None):
+def position(hf=Decimal("0.97"), debt_usdc=10_000, coll_weth=Decimal(6), total_debt_base=None, total_coll_base=None):
     return pf.PositionInputs(
         health_factor_wad=int(hf * WAD), total_collateral_base=total_coll_base or int(coll_weth * 2_000 * 10**8),
         total_debt_base=total_debt_base or debt_usdc * 10**8, debt=USDC, collateral=WETH,
@@ -49,7 +49,7 @@ def test_collateral_math_matches_aave_formula():
 
 
 def test_collateral_cap_reduces_debt_to_cover():
-    p = position(coll_weth=Decimal("1"))  # only 1 WETH available
+    p = position(coll_weth=Decimal(1))  # only 1 WETH available
     out = pf.apply_liquidation(p, pf.LiquidationRules(), 5_000 * 10**6)
     assert out.capped_by_collateral and out.collateral_seized_raw == 10**18
     # debt covered = 1 WETH * 2000 / 1.05 = 1904.76 USDC (percentDiv rounding)
@@ -58,8 +58,8 @@ def test_collateral_cap_reduces_debt_to_cover():
 
 def test_dust_rule_forces_full_repayment_when_allowed():
     # HF 0.90 -> 100% close factor allowed; 50% would leave $900 debt (< $1000 min leftover)
-    p = position(hf=Decimal("0.90"), debt_usdc=1_800, coll_weth=Decimal("1"))
-    e = pf.check_eligibility(p, pf.LiquidationRules())
+    p = position(hf=Decimal("0.90"), debt_usdc=1_800, coll_weth=Decimal(1))
+    pf.check_eligibility(p, pf.LiquidationRules())
     rules = pf.LiquidationRules()
     half = pf.apply_liquidation(p, rules, 900 * 10**6)
     assert pf.dust_check(p, rules, half)  # leaves 900 USD debt -> dust
@@ -83,7 +83,7 @@ def test_profit_report_complete_case():
     assert r.breakeven_gas_usd == Decimal("197.5")
     assert r.return_on_notional == Decimal("0.0394988")
     assert r.breakeven_slippage_bps == int(197.494 * 10**6 * 10_000 // (5_200 * 10**6))
-    assert r.gross_bonus_usd == Decimal("225")  # 2.6125 WETH * 2000 - 5000
+    assert r.gross_bonus_usd == Decimal(225)  # 2.6125 WETH * 2000 - 5000
     assert set(r.sensitivity) == {"collateral_-1%", "collateral_-5%", "collateral_+1%"}
 
 

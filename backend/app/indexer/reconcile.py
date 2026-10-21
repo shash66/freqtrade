@@ -3,7 +3,7 @@ every run refreshes account data for a bounded batch ordered by priority, and re
 only for borrowers near liquidation. Oracle prices and reserve configuration are refreshed each run."""
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from decimal import Decimal
 
 from sqlalchemy import select
@@ -16,8 +16,8 @@ from app.chains.rpc import RpcClient
 from app.core.config import get_settings
 from app.core.logging import get_logger
 from app.core.money import WAD, health_factor
-from app.database.base import get_sessionmaker
 from app.database import models as m
+from app.database.base import get_sessionmaker
 
 log = get_logger(__name__)
 
@@ -95,7 +95,7 @@ def reconcile_network(net: NetworkConfig, batch: int = BATCH) -> dict:
                 seen.add(b.id)
                 todo.append(b)
         todo = todo[:batch]
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         detail_done = 0
         for b in todo:
             try:
@@ -126,7 +126,7 @@ def reconcile_network(net: NetworkConfig, batch: int = BATCH) -> dict:
                 reserves_state = []
                 try:
                     b.emode_category = reader.user_emode(b.address, block)
-                    for addr, asset in assets.items():
+                    for asset in assets.values():
                         urd = reader.user_reserve_data(asset.address, b.address, block)
                         if urd.a_token_balance == 0 and urd.variable_debt == 0 and urd.stable_debt == 0:
                             continue
@@ -151,7 +151,7 @@ def reconcile_network(net: NetworkConfig, batch: int = BATCH) -> dict:
                                               total_collateral_base=acct.total_collateral_base,
                                               total_debt_base=acct.total_debt_base, reserves=reserves_state))
         db.commit()
-    log.info("reconcile_done", network=net.slug, **{k: v for k, v in out.items()})
+    log.info("reconcile_done", network=net.slug, **dict(out.items()))
     return out
 
 
