@@ -50,6 +50,8 @@ class Settings(BaseSettings):
 
     rpc_timeout_seconds: float = 10.0
     rpc_max_retries: int = 3
+    rpc_rate_limit_retries: int = 6        # extra attempts with exponential backoff on HTTP 429 / quota errors
+    rpc_min_interval_ms: int = 0           # per-client throttle for public endpoints (0 = none)
     monitor_interval_seconds: int = 30
     indexer_poll_interval_seconds: int = 12
     indexer_max_block_range: int = 2000

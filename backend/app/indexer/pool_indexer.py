@@ -28,6 +28,7 @@ log = get_logger(__name__)
 STREAM = "pool_events"
 DEFAULT_LOOKBACK_BLOCKS = 50_000
 HASH_HISTORY = 128  # how many recent block hashes we retain for reorg detection
+MIN_LOG_RANGE = 25   # smallest eth_getLogs span we will split down to before giving up
 
 BORROWER_FIELD = {
     "Supply": "onBehalfOf", "Borrow": "onBehalfOf", "Repay": "user", "Withdraw": "user",
@@ -164,9 +165,11 @@ class PoolIndexer:
             raws = self.client.call(self.w3.eth.get_logs, {"address": self.pool_addr, "fromBlock": from_block,
                                                            "toBlock": to_block})
         except RpcUnavailable as e:
-            msg = str(e).lower()
-            if to_block > from_block and any(k in msg for k in ("too many", "block range", "response size", "query returned more")):
+            # Providers cap eth_getLogs by block span, log count or response size and report it inconsistently
+            # (HTTP 400/413/429 or JSON-RPC -32005/-32602 with varying messages). Halve the span down to a floor.
+            if to_block - from_block + 1 > MIN_LOG_RANGE:
                 mid = (from_block + to_block) // 2
+                log.info("get_logs_split", network=self.net.slug, span=to_block - from_block + 1, error=str(e)[:120])
                 return self.fetch_logs(from_block, mid) + self.fetch_logs(mid + 1, to_block)
             raise
         out = []
