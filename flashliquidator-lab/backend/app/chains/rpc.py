@@ -28,11 +28,17 @@ class RpcHealth:
 
 
 class RpcClient:
-    def __init__(self, slug: str, url: str, timeout: float = 10.0, max_retries: int = 3):
+    def __init__(self, slug: str, url: str, timeout: float = 10.0, max_retries: int = 3,
+                 rate_limit_retries: int | None = None, min_interval_ms: int | None = None):
+        from app.core.config import get_settings
+        s = get_settings()
         self.slug = slug
         self.url = url
         self.timeout = timeout
         self.max_retries = max_retries
+        self.rate_limit_retries = s.rpc_rate_limit_retries if rate_limit_retries is None else rate_limit_retries
+        self.min_interval = (s.rpc_min_interval_ms if min_interval_ms is None else min_interval_ms) / 1000.0
+        self._last_call = 0.0
         self._w3: Web3 | None = None
 
     @property
@@ -49,21 +55,42 @@ class RpcClient:
             self._w3 = w3
         return self._w3
 
+    def _throttle(self) -> None:
+        if self.min_interval > 0:
+            wait = self._last_call + self.min_interval - time.monotonic()
+            if wait > 0:
+                time.sleep(wait)
+        self._last_call = time.monotonic()
+
     def call(self, fn, *args, **kwargs):
-        """Run fn with retries on transient RPC errors. Caller decides what is retryable by catching."""
+        """Run fn with retries. Transient errors get a few quick retries; rate-limit / quota responses get a
+        longer exponential backoff (public endpoints), after which RpcUnavailable is raised."""
         last: Exception | None = None
-        for attempt in range(1, self.max_retries + 1):
+        attempt = rl_attempt = 0
+        while True:
+            self._throttle()
             try:
                 return fn(*args, **kwargs)
             except (Web3Exception, OSError, ValueError) as e:  # ValueError: JSON-RPC error payloads
-                last = e
                 msg = str(e)
-                if "429" in msg or "rate" in msg.lower():
-                    time.sleep(min(2.0 * attempt, 8.0))
-                elif attempt < self.max_retries:
+                body = getattr(getattr(e, "response", None), "text", None)  # HTTP errors: include the provider's message
+                if body:
+                    msg = f"{msg} :: {body[:300]}"
+                last = RuntimeError(msg) if body else e
+                lower = msg.lower()
+                rate_limited = "429" in msg or "too many requests" in lower or "limit reached" in lower or "endpoint limit" in lower or "rate" in lower
+                if rate_limited and rl_attempt < self.rate_limit_retries:
+                    rl_attempt += 1
+                    delay = min(2.0 ** rl_attempt * 2.5, 60.0)  # 5, 10, 20, 40, 60, 60 s
+                    log.warning("rpc_rate_limited", network=self.slug, backoff_s=delay, attempt=rl_attempt, error=msg[:160])
+                    time.sleep(delay)
+                    continue
+                attempt += 1
+                if not rate_limited and attempt < self.max_retries:
+                    log.warning("rpc_call_failed", network=self.slug, attempt=attempt, error=msg[:200])
                     time.sleep(0.5 * attempt)
-                log.warning("rpc_call_failed", network=self.slug, attempt=attempt, error=msg[:200])
-        raise RpcUnavailable(f"{self.slug}: {last}") from last
+                    continue
+                raise RpcUnavailable(f"{self.slug}: {last}") from last
 
     def health(self) -> RpcHealth:
         if not self.configured:
