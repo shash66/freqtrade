@@ -127,6 +127,7 @@ class SimulationRequest(BaseModel):
     min_profit_usd: Decimal = Decimal(0)
     gas_price_wei: str | None = Field(default=None, pattern=r"^[0-9]+$")
     flash_loan_provider: str = "aave_v3"
+    force_direct_path: bool = False   # run the labeled simplified path instead of the real receiver
 
 
 class BacktestRequest(BaseModel):

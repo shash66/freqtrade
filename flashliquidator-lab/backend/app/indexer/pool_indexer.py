@@ -15,6 +15,7 @@ from web3 import Web3
 from web3._utils.events import get_event_data
 
 from app.chains.config import NetworkConfig
+from app.chains.l1fees import verified_fees_from_receipt
 from app.chains.rpc import RpcClient, RpcUnavailable
 from app.chains.validation import load_abi
 from app.core.config import get_settings
@@ -215,11 +216,14 @@ class PoolIndexer:
         try:  # receipt enrichment is best-effort; missing gas data is recorded as NULL, never estimated
             rc = self.client.call(self.w3.eth.get_transaction_receipt, d.tx_hash if d.tx_hash.startswith("0x") else "0x" + d.tx_hash)
             blk = self.client.call(self.w3.eth.get_block, d.block_number)
+            fees = verified_fees_from_receipt(self.net.chain_id, dict(rc))
+            row.update(l1_fee_wei=fees.l1_data_wei, total_fee_wei=fees.total_wei, fee_source=fees.source)
             row.update(gas_used=int(rc["gasUsed"]), effective_gas_price_wei=int(rc["effectiveGasPrice"]) if rc.get("effectiveGasPrice") is not None else None,
                        tx_status=int(rc["status"]), tx_index=int(rc["transactionIndex"]),
                        block_timestamp=datetime.fromtimestamp(int(blk["timestamp"]), tz=UTC))
         except Exception as e:
-            row.update(gas_used=None, effective_gas_price_wei=None, tx_status=None, tx_index=None, block_timestamp=None)
+            row.update(gas_used=None, effective_gas_price_wei=None, tx_status=None, tx_index=None, block_timestamp=None,
+                       l1_fee_wei=None, total_fee_wei=None, fee_source="unknown")
             log.warning("liquidation_receipt_unavailable", tx=d.tx_hash, error=str(e)[:120])
         stmt = insert(m.HistoricalLiquidation).values(row)
         self.db.execute(stmt.on_conflict_do_update(constraint="uq_hist_liq_event",

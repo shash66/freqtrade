@@ -63,6 +63,7 @@ class CostInputs:
     swap_source: str | None = None
     swap_impact_bps: int | None = None
     revert_gas_fraction: Decimal = Decimal("0.35")  # share of gas burnt by a failed attempt (estimate; labeled)
+    l1_fee_required: bool = False    # True on L2s: a missing L1 estimate makes the gas figure incomplete, not partial
 
 
 @dataclass
@@ -223,9 +224,11 @@ def gas_cost_usd(c: CostInputs) -> tuple[Decimal | None, list[str]]:
                               ("native_price", c.native_price_raw)) if v is None]
     if missing:
         return None, [f"gas cost unknown: missing {', '.join(missing)}"]
+    if c.l1_data_fee_wei is None and c.l1_fee_required:
+        return None, ["gas cost unknown: L1 data fee required on this chain but not estimated"]
     wei = c.gas_units * c.gas_price_wei + (c.l1_data_fee_wei or 0)
     usd = raw_to_usd(wei, 18, c.native_price_raw)
-    notes = [] if c.l1_data_fee_wei is not None else ["L1 data fee not included in gas cost (unknown)"]
+    notes = [] if c.l1_data_fee_wei is not None else ["L1 data fee unknown: gas cost covers L2 execution only"]
     return quantize_usd(usd), notes
 
 

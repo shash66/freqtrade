@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.aave.reads import AaveReader
 from app.chains.config import NetworkConfig
+from app.chains.l1fees import estimate_l1_fee
 from app.chains.rpc import RpcClient
 from app.core.config import get_settings
 from app.core.logging import get_logger
@@ -125,10 +126,20 @@ def build_candidates(net: NetworkConfig, limit: int = 50) -> dict:
                              block_number=block, status=q.status, error=q.error)
             db.add(sq)
             db.flush()
-            costs = pf.CostInputs(flash_premium_total_bps=premium_total, gas_units=net.gas.base_gas_units_liquidation + (q.gas_estimate or 0),
-                                  gas_price_wei=gas_price, native_price_raw=native_price, l1_data_fee_wei=None,
+            gas_units = net.gas.base_gas_units_liquidation + (q.gas_estimate or 0)
+            # L1 data fee: priced on the receiver's liquidate(params) calldata (10 words + selector)
+            calldata = reader.pool.functions.liquidationCall(reader.w3.to_checksum_address(ca.address), reader.w3.to_checksum_address(da.address),
+                                                             reader.w3.to_checksum_address(b.address), outcome.debt_to_cover_raw, False)._encode_transaction_data()
+            l1 = estimate_l1_fee(net.chain_id, client, net.market.pool, bytes.fromhex(calldata[2:]) + b"\x00" * 160, gas_units, gas_price, block)
+            costs = pf.CostInputs(flash_premium_total_bps=premium_total, gas_units=gas_units,
+                                  gas_price_wei=gas_price, native_price_raw=native_price, l1_data_fee_wei=l1.l1_data_wei,
+                                  l1_fee_required=l1.source != "not_applicable",
                                   swap_out_raw=q.amount_out_raw, swap_source=q.source, swap_impact_bps=impact)
+            if l1.source == "unknown":
+                reasons.append("L1 data fee could not be estimated: " + "; ".join(l1.notes))
             report = pf.profit_report(pos, rules, outcome, costs, prior_incomplete=reasons)
+            report.breakdown.update(l1_data_fee_wei="" if l1.l1_data_wei is None else str(l1.l1_data_wei), fee_source=l1.source,
+                                    fee_method=l1.method, gas_price_wei=str(gas_price), gas_units=str(gas_units))
             status = m.CandidateStatus.incomplete if not report.complete else m.CandidateStatus.candidate
             cand = _store(db, net, b, block, block_hash, pos, outcome, report, rules, status=status, reasons=report.incomplete_reasons,
                           debt_asset=da, coll_asset=ca, elig=elig, swap_quote_id=sq.id)
@@ -157,6 +168,10 @@ def _store(db: Session, net, b, block, block_hash, pos, outcome, report, rules, 
         flash_premium_raw=(report.flash_premium_raw if report and report.flash_premium_raw is not None else 0), swap_quote_id=swap_quote_id,  # 0 only with an incomplete_reasons entry
         swap_out_raw=None if not report or report.outcome is None else (int(report.breakdown["swap_out"]) if report.breakdown["swap_out"] else None),
         gas_cost_usd=report.gas_cost_usd if report else None, gross_bonus_usd=report.gross_bonus_usd if report else None,
+        gas_units=int(report.breakdown["gas_units"]) if report and report.breakdown.get("gas_units") else None,
+        gas_price_wei=int(report.breakdown["gas_price_wei"]) if report and report.breakdown.get("gas_price_wei") else None,
+        l1_data_fee_wei=int(report.breakdown["l1_data_fee_wei"]) if report and report.breakdown.get("l1_data_fee_wei") else None,
+        fee_source=report.breakdown.get("fee_source") if report else None,
         net_profit_debt_raw=report.net_profit_debt_raw if report else None, net_profit_usd=report.net_profit_usd if report else None,
         return_on_notional=report.return_on_notional if report else None, breakeven_gas_usd=report.breakeven_gas_usd if report else None,
         breakeven_slippage_bps=report.breakeven_slippage_bps if report else None, max_rational_bid_usd=report.max_rational_bid_usd if report else None,
