@@ -1,0 +1,21 @@
+# FlashLiquidator Lab — Foundry configuration.
+# Research tool: fork-simulation only. Nothing in this package deploys to a public network.
+[profile.default]
+src = "src"
+test = "test"
+script = "script"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.24"
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+via_ir = false
+# No filesystem access from Solidity (no reading/writing of files by tests or scripts).
+fs_permissions = []
+ffi = false
+verbosity = 3
+
+# Deliberately empty: fork tests read BASE_ARCHIVE_RPC from the environment and the deploy
+# script is invoked with --rpc-url $ANVIL_RPC. No endpoint is pinned in version control.
+[rpc_endpoints]
