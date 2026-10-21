@@ -119,7 +119,7 @@ class PoolIndexer:
                                                                 m.IndexerCheckpoint.stream == STREAM))
 
     def _start_block(self, head: int) -> int:
-        if self.net.indexer_start_block:
+        if self.net.indexer_start_block is not None:
             return self.net.indexer_start_block
         return max(0, head - DEFAULT_LOOKBACK_BLOCKS)
 
@@ -137,7 +137,8 @@ class PoolIndexer:
         for n in sorted(history, reverse=True):
             if self._block_hash(n) == history[n]:
                 return n
-        return max(0, cp.last_block - HASH_HISTORY)  # beyond our memory: rewind conservatively
+        # nothing we remember matches: the only block known to be no newer than the divergence is before our oldest entry
+        return max(0, min(history) - 1) if history else 0
 
     def rollback(self, cp: m.IndexerCheckpoint, ancestor: int) -> int:
         res = self.db.execute(update(m.PoolEvent).where(m.PoolEvent.chain_id == self.net.chain_id,
@@ -163,7 +164,7 @@ class PoolIndexer:
                                                            "toBlock": to_block})
         except RpcUnavailable as e:
             msg = str(e).lower()
-            if to_block > from_block and any(k in msg for k in ("too many", "limit", "range", "response size", "timeout")):
+            if to_block > from_block and any(k in msg for k in ("too many", "block range", "response size", "query returned more")):
                 mid = (from_block + to_block) // 2
                 return self.fetch_logs(from_block, mid) + self.fetch_logs(mid + 1, to_block)
             raise
@@ -182,8 +183,9 @@ class PoolIndexer:
                      "block_hash": _norm_hash(d.block_hash), "tx_hash": _norm_hash(d.tx_hash), "log_index": d.log_index,
                      "event_name": d.event, "user": _user_of(d), "reserve": d.args.get("reserve") or d.args.get("collateralAsset"),
                      "args": d.args, "orphaned": False} for d in logs]
-        stmt = insert(m.PoolEvent).values(rows).on_conflict_do_update(
-            constraint="uq_pool_event", set_={"orphaned": False, "block_hash": insert(m.PoolEvent).excluded.block_hash})
+        ins = insert(m.PoolEvent).values(rows)
+        stmt = ins.on_conflict_do_update(constraint="uq_pool_event", set_={
+            k: getattr(ins.excluded, k) for k in ("deployment_id", "block_number", "block_hash", "event_name", "user", "reserve", "args", "orphaned")})
         self.db.execute(stmt)
         touched = set()
         liqs = 0
@@ -213,10 +215,11 @@ class PoolIndexer:
         try:  # receipt enrichment is best-effort; missing gas data is recorded as NULL, never estimated
             rc = self.client.call(self.w3.eth.get_transaction_receipt, d.tx_hash if d.tx_hash.startswith("0x") else "0x" + d.tx_hash)
             blk = self.client.call(self.w3.eth.get_block, d.block_number)
-            row.update(gas_used=int(rc["gasUsed"]), effective_gas_price_wei=int(rc.get("effectiveGasPrice", 0)),
+            row.update(gas_used=int(rc["gasUsed"]), effective_gas_price_wei=int(rc["effectiveGasPrice"]) if rc.get("effectiveGasPrice") is not None else None,
                        tx_status=int(rc["status"]), tx_index=int(rc["transactionIndex"]),
                        block_timestamp=datetime.fromtimestamp(int(blk["timestamp"]), tz=UTC))
         except Exception as e:
+            row.update(gas_used=None, effective_gas_price_wei=None, tx_status=None, tx_index=None, block_timestamp=None)
             log.warning("liquidation_receipt_unavailable", tx=d.tx_hash, error=str(e)[:120])
         stmt = insert(m.HistoricalLiquidation).values(row)
         self.db.execute(stmt.on_conflict_do_update(constraint="uq_hist_liq_event",
@@ -243,17 +246,21 @@ class PoolIndexer:
         end_limit = min(safe_head, frm + budget - 1)
         while frm <= end_limit:
             to = min(frm + self.s.indexer_max_block_range - 1, end_limit)
+            to_hash = self._block_hash(to)          # read BEFORE the logs so a reorg in between is caught below
             logs = self.fetch_logs(frm, to)
+            if any(d.block_number == to and _norm_hash(d.block_hash) != to_hash for d in logs):
+                log.warning("range_hash_mismatch_retry", network=self.net.slug, block=to)
+                continue  # chain moved under us; retry the same range on the next loop iteration
             st = self.store(logs)
             for k in ("events", "borrowers_touched", "liquidations"):
                 summary[k] += st[k]
             summary["ranges"] += 1
             cp.last_block = to
-            cp.last_block_hash = self._block_hash(to)
+            cp.last_block_hash = to_hash
             hist = {int(k): v for k, v in (cp.recent_block_hashes or {}).items()}
-            hist[to] = cp.last_block_hash
             for d in logs:
                 hist[d.block_number] = _norm_hash(d.block_hash)
+            hist[to] = to_hash
             cp.recent_block_hashes = {str(k): hist[k] for k in sorted(hist)[-HASH_HISTORY:]}
             self.db.commit()
             frm = to + 1

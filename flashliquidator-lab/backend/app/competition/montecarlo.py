@@ -14,13 +14,14 @@ class McResult:
     win_rate: float
     win_rate_ci95: tuple[float, float]
     expired_rate: float
-    expected_profit_per_attempt_usd: float
+    expected_profit_per_attempt_usd: float      # over trials where we submitted (won or paid a failed attempt)
     expected_profit_ci95: tuple[float, float]
     attempts_rate: float
     failed_attempt_rate: float
     mean_our_ready_ms: float
     mean_competitor_ready_ms: float
     profit_distribution: dict[str, float]
+    expected_profit_per_trial_usd: float = 0.0  # over all trials, including those where the opportunity expired first
     assumptions: list[str] = field(default_factory=list)
     label: str = "modeled estimate, not measured execution performance"
 
@@ -58,7 +59,8 @@ def simulate(strategy_params: dict, competition: dict, seed: int = 42) -> McResu
         comp_times = [_gauss_pos(rng, competition["competitor_delay_mean_ms"], competition["competitor_delay_sd_ms"]) for _ in range(n_comp)]
         best_comp = min(comp_times) if comp_times else math.inf
         ours_ms.append(ours)
-        comps_ms.append(best_comp if best_comp != math.inf else 0.0)
+        if best_comp != math.inf:
+            comps_ms.append(best_comp)
         # opportunity lifetime (exponential), in ms
         life = rng.expovariate(expiry_ps) * 1000 if expiry_ps > 0 else math.inf
         if ours > life and best_comp > life:
@@ -84,16 +86,21 @@ def simulate(strategy_params: dict, competition: dict, seed: int = 42) -> McResu
             failed += 1
             profits.append(-fail_cost)
     n = trials
-    mean_p = sum(profits) / n
-    var = sum((p - mean_p) ** 2 for p in profits) / max(n - 1, 1)
-    se = math.sqrt(var / n)
+    if n <= 0:
+        raise ValueError("trials must be positive")
+    attempted = [p for p in profits if p != 0.0] or [0.0]   # profit per *attempt*: trials where we submitted
+    na = len(attempted)
+    mean_p = sum(attempted) / na
+    var = sum((p - mean_p) ** 2 for p in attempted) / max(na - 1, 1)
+    se = math.sqrt(var / na)
     sp = sorted(profits)
     dist = {"p10": sp[n // 10], "p50": sp[n // 2], "p90": sp[(9 * n) // 10], "min": sp[0], "max": sp[-1]}
     return McResult(
         trials=n, seed=seed, win_rate=wins / n, win_rate_ci95=_wilson(wins, n), expired_rate=expired / n,
         expected_profit_per_attempt_usd=mean_p, expected_profit_ci95=(mean_p - 1.96 * se, mean_p + 1.96 * se),
         attempts_rate=attempts / n, failed_attempt_rate=failed / n,
-        mean_our_ready_ms=sum(ours_ms) / n, mean_competitor_ready_ms=sum(comps_ms) / n, profit_distribution=dist,
+        mean_our_ready_ms=sum(ours_ms) / n, mean_competitor_ready_ms=(sum(comps_ms) / len(comps_ms)) if comps_ms else 0.0,
+        profit_distribution=dist, expected_profit_per_trial_usd=sum(profits) / n,
         assumptions=[
             f"{n_comp} competitors with detection delay ~N({competition['competitor_delay_mean_ms']} ms, {competition['competitor_delay_sd_ms']} ms)",
             f"inclusion model: {model}",

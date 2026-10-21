@@ -30,6 +30,7 @@ from app.simulation.anvil import AnvilFork, AnvilUnavailable
 from app.strategies.quotes import UniswapV3Quoter, price_impact_bps
 
 log = get_logger(__name__)
+FLASH_LOAN_OVERHEAD_GAS = 150_000  # flashLoanSimple entry/exit + receiver callback; modeled, labeled in assumptions
 NATIVE_PROXY = {8453: "0x4200000000000000000000000000000000000006", 42161: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"}
 
 
@@ -82,7 +83,7 @@ def run_replay(req: ReplayRequest) -> ReplayResult:
         "fork at the block boundary; intra-block transaction ordering is not reproduced",
         "simulator funded from the reserve aToken (impersonated) instead of a flash loan; premium added analytically",
         "swap proceeds are quoted with Uniswap v3 QuoterV2 on the fork, not executed",
-        "gas = measured liquidationCall gas + modeled flash-loan/swap overhead from the chain gas model",
+        f"gas = measured liquidationCall gas + quoted swap gas + {FLASH_LOAN_OVERHEAD_GAS} modeled flash-loan overhead",
     ]
     if not fork_src:
         return ReplayResult(False, "no archive RPC configured for historical fork" if req.block_number is not None else "no RPC configured",
@@ -142,13 +143,18 @@ def run_replay(req: ReplayRequest) -> ReplayResult:
     # 4. results from the event and balances
     seized = coll_token.functions.balanceOf(sim).call() - coll_before
     repaid = debt_before - debt_token.functions.balanceOf(sim).call()
-    gas_used = int(rc["gasUsed"]) + net.gas.base_gas_units_liquidation // 2  # modeled flash-loan + swap overhead
     # 5. swap quote on the fork
     quoter = UniswapV3Quoter(net.chain_id, client)
     q = quoter.quote_exact_in(req.collateral_asset, req.debt_asset, seized)
     swap_out = q.amount_out_raw
     if q.status != "ok":
         warnings.append(f"swap quote unavailable on fork: {q.error}")
+    # measured liquidationCall gas + quoted swap gas + flash-loan overhead (modeled constant)
+    gas_used = int(rc["gasUsed"]) + (q.gas_estimate or 0) + FLASH_LOAN_OVERHEAD_GAS
+    if q.gas_estimate is None:
+        warnings.append("swap gas not quoted; gas figure excludes the swap")
+    if req.gas_price_wei is None:
+        warnings.append("gas priced at the fork node's gas price, not the original block's")
     gas_cost_wei = gas_used * gas_price
     gas_usd = quantize_usd(raw_to_usd(gas_cost_wei, 18, native_p))
     net_raw = net_usd = None

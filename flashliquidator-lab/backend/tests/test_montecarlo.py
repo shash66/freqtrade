@@ -33,3 +33,13 @@ def test_delay_sensitivity_is_monotone_nonincreasing():
 def test_priority_auction_model_runs():
     r = simulate(STRATEGIES["C"]["parameters"], dict(COMPETITOR_DEFAULTS, trials=500, inclusion_model="priority_auction"), 9)
     assert 0 <= r.win_rate <= 1
+
+
+def test_per_attempt_profit_excludes_expired_trials():
+    comp = dict(COMPETITOR_DEFAULTS, trials=3000, candidate_expiry_per_second=5.0)  # most opportunities vanish first
+    r = simulate(STRATEGIES["C"]["parameters"], comp, 11)
+    assert r.attempts_rate < 0.5
+    # per-trial mean is diluted by zeros; per-attempt mean is not
+    assert abs(r.expected_profit_per_trial_usd) <= abs(r.expected_profit_per_attempt_usd) + 1e-9
+    r0 = simulate(STRATEGIES["C"]["parameters"], dict(COMPETITOR_DEFAULTS, trials=200, n_competitors=0), 1)
+    assert r0.win_rate > 0.9 and r0.mean_competitor_ready_ms == 0.0
