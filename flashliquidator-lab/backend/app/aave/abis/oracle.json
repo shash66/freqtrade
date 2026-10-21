@@ -1,0 +1,6 @@
+[
+ {"type":"function","name":"getAssetPrice","stateMutability":"view","inputs":[{"name":"asset","type":"address"}],"outputs":[{"name":"","type":"uint256"}]},
+ {"type":"function","name":"getAssetsPrices","stateMutability":"view","inputs":[{"name":"assets","type":"address[]"}],"outputs":[{"name":"","type":"uint256[]"}]},
+ {"type":"function","name":"BASE_CURRENCY_UNIT","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"uint256"}]},
+ {"type":"function","name":"ADDRESSES_PROVIDER","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"address"}]}
+]

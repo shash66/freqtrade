@@ -1,0 +1,16 @@
+# Development overrides: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+services:
+  api:
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    volumes: ["./backend:/app"]
+    read_only: false
+    ports: ["8000:8000"]
+  frontend:
+    build:
+      context: ./frontend
+      target: deps
+    command: ["npm", "run", "dev"]
+    volumes: ["./frontend:/app", "/app/node_modules"]
+    read_only: false
+  postgres:
+    ports: ["5432:5432"]
