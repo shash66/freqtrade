@@ -9,3 +9,4 @@ broadcast/
 !.env.example
 out-solcjs/
 node_modules/
+out-native/
