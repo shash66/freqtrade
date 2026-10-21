@@ -39,12 +39,12 @@ services:
 
   anvil:
     # Isolated fork simulator. Not published on any host port; reachable only as http://anvil:8545 inside the network.
-    image: ghcr.io/foundry-rs/foundry:v1.0.0
-    entrypoint: ["anvil", "--host", "0.0.0.0", "--port", "8545", "--silent", "--no-mining", "--steps-tracing"]
+    image: ${ANVIL_IMAGE:-ghcr.io/foundry-rs/foundry:v1.0.0}
+    entrypoint: ["anvil", "--host", "0.0.0.0", "--port", "8545", "--silent", "--steps-tracing"]
     restart: unless-stopped
     networks: [internal]
     healthcheck:
-      test: ["CMD-SHELL", "cast chain-id --rpc-url http://127.0.0.1:8545 >/dev/null 2>&1 || exit 1"]
+      test: ["CMD-SHELL", "curl -sf -X POST -H 'content-type: application/json' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_chainId\",\"params\":[]}' http://127.0.0.1:8545 >/dev/null || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -57,14 +57,15 @@ services:
 
   api:
     <<: *backend
+    networks: [internal, egress]
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers"]
     depends_on:
       migrate: { condition: service_completed_successfully }
       redis: { condition: service_healthy }
-    networks: [internal, edge]
 
   indexer:
     <<: *backend
+    networks: [internal, egress]
     command: ["celery", "-A", "app.workers.celery_app:celery", "worker", "-Q", "indexer", "-n", "indexer@%h", "--concurrency=2", "--loglevel=INFO"]
     depends_on:
       migrate: { condition: service_completed_successfully }
@@ -72,6 +73,7 @@ services:
 
   worker:
     <<: *backend
+    networks: [internal, egress]
     command: ["celery", "-A", "app.workers.celery_app:celery", "worker", "-Q", "celery,simulation", "-n", "worker@%h", "--concurrency=${SIMULATION_CONCURRENCY:-2}", "--loglevel=INFO"]
     depends_on:
       migrate: { condition: service_completed_successfully }
@@ -80,6 +82,7 @@ services:
 
   scheduler:
     <<: *backend
+    networks: [internal, egress]
     command: ["celery", "-A", "app.workers.celery_app:celery", "beat", "--loglevel=INFO", "-s", "/tmp/celerybeat-schedule"]
     depends_on:
       migrate: { condition: service_completed_successfully }
@@ -90,20 +93,42 @@ services:
     env_file: .env
     environment:
       API_INTERNAL_URL: http://api:8000
-    ports: ["3000:3000"]
+    # Bound to localhost only. Public access goes through the `caddy` service (profile `edge`): TLS + basic auth.
+    ports: ["${FRONTEND_BIND:-127.0.0.1}:${FRONTEND_PORT:-3000}:3000"]
     depends_on: [api]
     restart: unless-stopped
     read_only: true
     tmpfs: [/tmp, /app/.next/cache]
     security_opt: [no-new-privileges:true]
-    networks: [edge]
+    networks: [internal]
     deploy: { resources: { limits: { cpus: "0.5", memory: 512m } } }
+
+  caddy:
+    # Optional public edge: automatic HTTPS for PUBLIC_HOSTNAME, basic auth in front of the whole dashboard.
+    # Enable with: docker compose --profile edge up -d
+    image: caddy:2-alpine
+    profiles: [edge]
+    environment:
+      PUBLIC_HOSTNAME: ${PUBLIC_HOSTNAME:?set PUBLIC_HOSTNAME for the caddy profile}
+      EDGE_BASICAUTH_USER: ${EDGE_BASICAUTH_USER:-admin}
+      EDGE_BASICAUTH_HASH: ${EDGE_BASICAUTH_HASH:?set EDGE_BASICAUTH_HASH (bcrypt) for the caddy profile}
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddydata:/data
+      - caddyconfig:/config
+    ports: ["80:80", "443:443"]
+    depends_on: [frontend]
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    networks: [internal, egress]
 
 volumes:
   pgdata:
   redisdata:
+  caddydata:
+  caddyconfig:
 
 networks:
   internal:
-    internal: true   # postgres, redis, anvil and workers cannot be reached from the host
-  edge:
+    internal: true   # no route to the outside: postgres, redis and anvil live only here
+  egress:            # outbound internet (RPC providers, ACME) for api, workers and caddy; nothing listens publicly on it

@@ -7,3 +7,5 @@ broadcast/
 .env
 .env.*
 !.env.example
+out-solcjs/
+node_modules/

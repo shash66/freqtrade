@@ -29,7 +29,8 @@ def _store_result(db: Session, run: m.SimulationRun, r: ReplayResult) -> None:
                               net_profit_debt_raw=r.net_profit_debt_raw, net_profit_usd=r.net_profit_usd,
                               trace_summary={"calls": r.trace_summary, "health_factor_at_fork": r.health_factor_at_fork,
                                              "eligible_at_fork": r.eligible_at_fork, "funding_path": r.funding_path},
-                              calldata_hex=r.calldata_hex, warnings=r.warnings, assumptions=r.assumptions))
+                              calldata_hex=r.calldata_hex, warnings=r.warnings, assumptions=r.assumptions,
+                              fees=r.fees, execution_path=r.execution_path))
 
 
 def execute_simulation_run(run_id: int, networks: dict[str, NetworkConfig]) -> dict:
@@ -49,7 +50,8 @@ def execute_simulation_run(run_id: int, networks: dict[str, NetworkConfig]) -> d
         req = ReplayRequest(network=net, borrower=p["borrower"], collateral_asset=p["collateral_asset"], debt_asset=p["debt_asset"],
                             debt_to_cover_raw=int(p["debt_to_cover_raw"]), block_number=p.get("block_number"),
                             gas_price_wei=int(p["gas_price_wei"]) if p.get("gas_price_wei") else None,
-                            slippage_bps=int(p.get("slippage_bps", 50)), historical_tx=p.get("historical_tx"))
+                            slippage_bps=int(p.get("slippage_bps", 50)), historical_tx=p.get("historical_tx"),
+                            force_direct_path=bool(p.get("force_direct_path", False)))
         try:
             r = run_replay(req)
         except Exception as e:  # any failure is recorded on the run; never silently dropped

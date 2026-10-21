@@ -1,4 +1,16 @@
-# Optional reverse proxy with TLS. Replace the hostname. Only the frontend is exposed; it proxies /api itself.
-lab.example.com {
+# Public edge for FlashLiquidator Lab. Automatic HTTPS (Let's Encrypt) for {$PUBLIC_HOSTNAME};
+# every path, including /api and /ws, sits behind basic auth. Generate the hash with:
+#   docker run --rm caddy:2-alpine caddy hash-password --plaintext 'your password'
+{$PUBLIC_HOSTNAME} {
+    encode zstd gzip
+    basic_auth {
+        {$EDGE_BASICAUTH_USER} {$EDGE_BASICAUTH_HASH}
+    }
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy no-referrer
+    }
     reverse_proxy frontend:3000
 }

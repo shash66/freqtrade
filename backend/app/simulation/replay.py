@@ -3,17 +3,18 @@
 Methodology (also in docs/simulation-methodology.md):
 - Fork the archive RPC at block N-1 (historical) or at the latest block (candidate). Intra-block ordering is
   NOT reproduced: every historical result is labeled `block_boundary_approximation = True`.
-- The simulator account is funded with the debt asset from the reserve's own aToken contract (impersonated),
-  which holds the pool's liquidity. This stands in for the flash loan; the flash premium is then added
-  analytically from FLASHLOAN_PREMIUM_TOTAL read on the fork. If the compiled FlashLiquidator contract
-  artifact is present (contracts/out/FlashLiquidator.sol/FlashLiquidator.json) a future version executes the
-  real flash-loan path instead; this build records which path was used.
-- The real Pool.liquidationCall is executed on the fork; collateral received is read from the LiquidationCall
-  event; swap proceeds are QUOTED on the fork via Uniswap v3 QuoterV2 (not executed).
+- Execution path `flash_loan_receiver` (default when the compiled FlashLiquidator artifact is available and
+  Uniswap SwapRouter02 exists on the fork): the receiver is deployed on the fork and takes a real Aave
+  flashLoanSimple, repays the borrower, swaps the collateral on-chain and repays principal + premium. Gas,
+  premium, swap output and surplus are measured from the transaction and its SimulatedLiquidation event.
+- Execution path `direct_liquidation_call` (fallback, always labeled as simplified): the simulator account is
+  funded with the debt asset from the reserve's aToken (impersonated), Pool.liquidationCall is executed,
+  swap proceeds are QUOTED (QuoterV2, not executed) and the flash premium is added analytically.
 - Gas: measured gas of liquidationCall plus the modeled overhead of flash loan + swap from the chain gas model.
 """
 from __future__ import annotations
 
+import contextlib
 from dataclasses import dataclass, field
 from decimal import Decimal
 
@@ -21,12 +22,14 @@ from web3 import Web3
 
 from app.aave.reads import AaveReader
 from app.chains.config import NetworkConfig
+from app.chains.l1fees import FeeAccounting, estimate_l1_fee
 from app.chains.rpc import RpcClient
 from app.chains.validation import load_abi
 from app.core.config import get_settings
 from app.core.logging import get_logger
 from app.core.money import WAD, percent_mul, quantize_usd, raw_to_usd
 from app.simulation.anvil import AnvilFork, AnvilUnavailable
+from app.simulation.receiver import ReceiverArtifactMissing, run_receiver_liquidation
 from app.strategies.quotes import UniswapV3Quoter, price_impact_bps
 
 log = get_logger(__name__)
@@ -46,6 +49,7 @@ class ReplayRequest:
     slippage_bps: int = 50
     min_profit_usd: Decimal = Decimal(0)
     historical_tx: str | None = None  # the real liquidation being replayed, if any
+    force_direct_path: bool = False   # True = skip the receiver and run the labeled simplified path
 
 
 @dataclass
@@ -72,6 +76,8 @@ class ReplayResult:
     assumptions: list[str] = field(default_factory=list)
     rpc_capability: dict = field(default_factory=dict)
     funding_path: str = "impersonated_atoken"
+    execution_path: str = "direct_liquidation_call"   # or flash_loan_receiver
+    fees: dict | None = None                          # FeeAccounting.as_dict()
 
 
 def run_replay(req: ReplayRequest) -> ReplayResult:
@@ -108,17 +114,75 @@ def run_replay(req: ReplayRequest) -> ReplayResult:
     eligible = acct.total_debt_base > 0 and acct.health_factor_wad < WAD
     if not eligible:
         warnings.append("borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state")
-    # 2. funding from the aToken of the debt reserve
     sim = anvil.accounts()[0]
     anvil.set_balance(sim, 100 * 10**18)
+    prices = reader.asset_prices([req.debt_asset, req.collateral_asset, NATIVE_PROXY[net.chain_id]])
+    dp = prices[Web3.to_checksum_address(req.debt_asset)]
+    native_p = prices[Web3.to_checksum_address(NATIVE_PROXY[net.chain_id])]
+    gas_price = req.gas_price_wei if req.gas_price_wei is not None else int(w3.eth.gas_price)
+    if req.gas_price_wei is None:
+        warnings.append("gas priced at the fork node's gas price, not the original block's")
+    premium_bps, _ = reader.flashloan_premium_bps()
+    debt_token = anvil.erc20(req.debt_asset)
+    coll_token = anvil.erc20(req.collateral_asset)
+    d_dec = int(debt_token.functions.decimals().call())
+    c_dec = int(coll_token.functions.decimals().call())
+    quoter = UniswapV3Quoter(net.chain_id, client)
+
+    # 2a. preferred path: the real flash-loan receiver on the fork
+    if not req.force_direct_path:
+        try:
+            snap = anvil.snapshot()
+            pre = quoter.quote_exact_in(req.collateral_asset, req.debt_asset, _expected_collateral(reader, req, prices, c_dec, d_dec))
+            fee_tier = pre.fee_tier or 500
+            out_min = (pre.amount_out_raw * (10_000 - req.slippage_bps) // 10_000) if pre.amount_out_raw else 0
+            rr = run_receiver_liquidation(anvil, sim, net.market.addresses_provider, net.chain_id, req.collateral_asset, req.debt_asset,
+                                          req.borrower, req.debt_to_cover_raw, fee_tier, out_min)
+            l1 = estimate_l1_fee(net.chain_id, client, rr.receiver_address, bytes.fromhex(rr.calldata[2:]), int(rr.gas_used or 0) or 1, gas_price)
+            fees = FeeAccounting(int(rr.gas_used or 0) * gas_price, l1.l1_data_wei, l1.source if rr.gas_used else "unknown", l1.method, l1.notes)
+            assumptions = base_assumptions[:1] + [
+                "real flash-loan receiver executed on the fork: premium, swap output, gas and surplus are measured, not modeled",
+                f"swap routed through Uniswap SwapRouter02 fee tier {fee_tier} with amountOutMinimum from a QuoterV2 pre-quote",
+                "L1 data fee is an estimate from the chain's fee oracle at the fork block",
+            ]
+            if rr.status != 1:
+                return ReplayResult(False, rr.revert_reason or "receiver liquidation reverted", fork_block, fork_hash, True, str(hf), eligible,
+                                    None, None, None, None, rr.gas_used, gas_price, None, None, None, rr.calldata,
+                                    trace_summary=[c.__dict__ for c in anvil.trace(rr.tx_hash)] if rr.tx_hash else [], warnings=warnings,
+                                    assumptions=assumptions, rpc_capability=cap, funding_path="aave_flash_loan",
+                                    execution_path="flash_loan_receiver", fees=fees.as_dict())
+            ev = rr.event or {}
+            swap_out = int(ev.get("swapOut", 0))
+            repaid = int(ev.get("debtToCover", req.debt_to_cover_raw))
+            seized = int(ev.get("collateralReceived", 0))
+            premium = int(ev.get("premium", 0))
+            surplus = int(ev.get("surplus", 0))
+            total_fee_wei = fees.total_wei if fees.total_wei is not None else int(rr.gas_used or 0) * gas_price
+            gas_usd = quantize_usd(raw_to_usd(total_fee_wei, 18, native_p))
+            gas_in_debt = int(gas_usd * Decimal(10**d_dec) * Decimal(10**8) / Decimal(dp))
+            net_raw = surplus - gas_in_debt
+            net_usd = quantize_usd(raw_to_usd(abs(net_raw), d_dec, dp)) * (1 if net_raw >= 0 else -1)
+            if fees.source == "unknown":
+                warnings.append("L1 data fee unknown; net profit covers L2 execution cost only")
+            return ReplayResult(True, None, fork_block, fork_hash, True, str(hf), eligible, repaid, seized, swap_out, premium, rr.gas_used, gas_price,
+                                gas_usd, net_raw, net_usd, rr.calldata, trace_summary=[c.__dict__ for c in anvil.trace(rr.tx_hash)], warnings=warnings,
+                                assumptions=assumptions, rpc_capability=cap, funding_path="aave_flash_loan", execution_path="flash_loan_receiver",
+                                fees=fees.as_dict())
+        except ReceiverArtifactMissing as e:
+            warnings.append(f"simplified path: {e}")
+        except Exception as e:
+            warnings.append(f"simplified path: receiver path failed ({type(e).__name__}: {str(e)[:120]})")
+        with contextlib.suppress(Exception):
+            anvil.revert(snap)
+
+    # 2b. simplified path: funding from the aToken of the debt reserve (labeled)
+    warnings.append("SIMPLIFIED SIMULATION: direct liquidationCall with impersonated funding; swap quoted, premium analytical")
     a_token, _, _ = reader.reserve_tokens(req.debt_asset)
     try:
         anvil.fund_erc20_from(req.debt_asset, a_token, sim, req.debt_to_cover_raw)
     except AnvilUnavailable as e:
         return ReplayResult(False, f"funding failed: {e}", fork_block, fork_hash, True, str(hf), eligible, None, None, None, None, None,
                             None, None, None, None, None, warnings=warnings, assumptions=base_assumptions, rpc_capability=cap)
-    debt_token = anvil.erc20(req.debt_asset)
-    coll_token = anvil.erc20(req.collateral_asset)
     debt_token.functions.approve(pool_addr, req.debt_to_cover_raw).transact({"from": sim})
     coll_before = coll_token.functions.balanceOf(sim).call()
     debt_before = debt_token.functions.balanceOf(sim).call()
@@ -127,24 +191,16 @@ def run_replay(req: ReplayRequest) -> ReplayResult:
                                         Web3.to_checksum_address(req.borrower), req.debt_to_cover_raw, False)
     calldata = fn._encode_transaction_data()
     rc = anvil.send(sim, pool_addr, calldata)
-    premium_bps, _ = reader.flashloan_premium_bps()
     premium = percent_mul(req.debt_to_cover_raw, premium_bps)
-    gas_price = req.gas_price_wei if req.gas_price_wei is not None else int(w3.eth.gas_price)
-    prices = reader.asset_prices([req.debt_asset, req.collateral_asset, NATIVE_PROXY[net.chain_id]])
-    dp = prices[Web3.to_checksum_address(req.debt_asset)]
-    native_p = prices[Web3.to_checksum_address(NATIVE_PROXY[net.chain_id])]
-    d_dec = int(debt_token.functions.decimals().call())
-    c_dec = int(coll_token.functions.decimals().call())
     if rc.get("status") != 1:
         return ReplayResult(False, rc.get("revert_reason") or "liquidationCall reverted", fork_block, fork_hash, True, str(hf), eligible,
                             None, None, None, premium, rc.get("gasUsed"), gas_price, None, None, None, calldata,
                             trace_summary=[c.__dict__ for c in anvil.trace(rc["transactionHash"])] if rc.get("transactionHash") else [],
-                            warnings=warnings, assumptions=base_assumptions, rpc_capability=cap)
+                            warnings=warnings, assumptions=base_assumptions, rpc_capability=cap, execution_path="direct_liquidation_call")
     # 4. results from the event and balances
     seized = coll_token.functions.balanceOf(sim).call() - coll_before
     repaid = debt_before - debt_token.functions.balanceOf(sim).call()
     # 5. swap quote on the fork
-    quoter = UniswapV3Quoter(net.chain_id, client)
     q = quoter.quote_exact_in(req.collateral_asset, req.debt_asset, seized)
     swap_out = q.amount_out_raw
     if q.status != "ok":
@@ -153,9 +209,11 @@ def run_replay(req: ReplayRequest) -> ReplayResult:
     gas_used = int(rc["gasUsed"]) + (q.gas_estimate or 0) + FLASH_LOAN_OVERHEAD_GAS
     if q.gas_estimate is None:
         warnings.append("swap gas not quoted; gas figure excludes the swap")
-    if req.gas_price_wei is None:
-        warnings.append("gas priced at the fork node's gas price, not the original block's")
-    gas_cost_wei = gas_used * gas_price
+    l1 = estimate_l1_fee(net.chain_id, client, pool_addr, bytes.fromhex(calldata[2:]) + b"\x00" * 160, gas_used, gas_price)
+    fees = FeeAccounting(gas_used * gas_price, l1.l1_data_wei, l1.source, l1.method, l1.notes)
+    gas_cost_wei = fees.total_wei if fees.total_wei is not None else gas_used * gas_price
+    if fees.source == "unknown":
+        warnings.append("L1 data fee unknown; gas figure covers L2 execution only")
     gas_usd = quantize_usd(raw_to_usd(gas_cost_wei, 18, native_p))
     net_raw = net_usd = None
     if swap_out is not None:
@@ -171,4 +229,13 @@ def run_replay(req: ReplayRequest) -> ReplayResult:
     trace = [c.__dict__ for c in anvil.trace(rc["transactionHash"])]
     return ReplayResult(True, None, fork_block, fork_hash, True, str(hf), eligible, repaid, seized, swap_out, premium, gas_used, gas_price,
                         gas_usd, net_raw, net_usd, calldata, trace_summary=trace, warnings=warnings, assumptions=base_assumptions,
-                        rpc_capability=cap)
+                        rpc_capability=cap, execution_path="direct_liquidation_call", fees=fees.as_dict())
+
+
+def _expected_collateral(reader: AaveReader, req: ReplayRequest, prices: dict, c_dec: int, d_dec: int) -> int:
+    """Rough collateral amount for the pre-quote (bonus from reserve config); the receiver swaps the real amount."""
+    cfg = reader.reserve_config(req.collateral_asset)
+    dp = prices[Web3.to_checksum_address(req.debt_asset)]
+    cp = prices[Web3.to_checksum_address(req.collateral_asset)]
+    base = req.debt_to_cover_raw * dp * 10**c_dec // (cp * 10**d_dec)
+    return percent_mul(base, cfg.liquidation_bonus_bps or 10_000)

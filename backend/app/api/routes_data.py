@@ -109,6 +109,8 @@ def liquidation_history(request: Request, db: Session = Depends(get_db), network
               "liquidator": r.liquidator, "debt": fmt(r.chain_id, r.debt_asset, r.debt_repaid_raw),
               "collateral": fmt(r.chain_id, r.collateral_asset, r.collateral_seized_raw), "receive_a_token": r.receive_a_token,
               "gas_used": r.gas_used, "effective_gas_price_wei": None if r.effective_gas_price_wei is None else str(r.effective_gas_price_wei),
+              "l1_fee_wei": None if r.l1_fee_wei is None else str(r.l1_fee_wei), "total_fee_wei": None if r.total_fee_wei is None else str(r.total_fee_wei),
+              "fee_source": r.fee_source,
               "tx_status": r.tx_status, "pool_impl_address": r.pool_impl_address,
               "explorer_url": f"{request.app.state.networks[_slug(request, r.chain_id)].explorer_url}/tx/{r.tx_hash}"
               if _slug(request, r.chain_id) in request.app.state.networks else None} for r in rows]
@@ -146,6 +148,8 @@ def opportunity_detail(opportunity_id: int, request: Request, db: Session = Depe
                 "close_factor_bps": c.close_factor_bps, "max_debt_to_cover_raw": str(c.max_debt_to_cover_raw),
                 "collateral_seized_raw": str(c.collateral_seized_raw), "protocol_fee_raw": str(c.protocol_fee_raw),
                 "breakeven_gas_usd": None if c.breakeven_gas_usd is None else str(c.breakeven_gas_usd),
+                "fees": {"gas_units": c.gas_units, "gas_price_wei": None if c.gas_price_wei is None else str(c.gas_price_wei),
+                         "l1_data_fee_wei": None if c.l1_data_fee_wei is None else str(c.l1_data_fee_wei), "source": c.fee_source},
                 "breakeven_slippage_bps": c.breakeven_slippage_bps,
                 "max_rational_bid_usd": None if c.max_rational_bid_usd is None else str(c.max_rational_bid_usd),
                 "return_on_notional": None if c.return_on_notional is None else str(c.return_on_notional)})

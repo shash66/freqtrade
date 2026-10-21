@@ -30,7 +30,9 @@ def _run_out(r: m.SimulationRun, res: m.SimulationResult | None) -> dict:
                          **{k: (None if getattr(res, k) is None else str(getattr(res, k))) for k in
                             ("debt_repaid_raw", "collateral_seized_raw", "swap_proceeds_raw", "flash_premium_raw", "gas_price_wei",
                              "net_profit_debt_raw", "net_profit_usd")},
-                         "gas_used": res.gas_used, "trace_summary": res.trace_summary, "warnings": res.warnings,
+                         "gas_used": res.gas_used, "execution_path": res.execution_path, "fees": res.fees,
+                         "simplified": res.execution_path != "flash_loan_receiver",
+                         "trace_summary": res.trace_summary, "warnings": res.warnings,
                          "assumptions": res.assumptions, "calldata_hex": res.calldata_hex,
                          "calldata_note": "for local fork simulation only; this application cannot broadcast transactions"}
     return out

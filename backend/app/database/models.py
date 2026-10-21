@@ -207,7 +207,9 @@ class LiquidationCandidate(TimestampMixin, Base):
     swap_out_raw: Mapped[int | None] = mapped_column(RAW)
     gas_units: Mapped[int | None] = mapped_column(BigInteger)
     gas_price_wei: Mapped[int | None] = mapped_column(RAW)
-    gas_cost_usd: Mapped[Numeric | None] = mapped_column(USD)
+    l1_data_fee_wei: Mapped[int | None] = mapped_column(RAW)     # estimated at candidate time
+    fee_source: Mapped[str | None] = mapped_column(String(16))   # estimated | unknown | not_applicable
+    gas_cost_usd: Mapped[Numeric | None] = mapped_column(USD)    # L2 execution + L1 data (estimated), in USD
     gross_bonus_usd: Mapped[Numeric | None] = mapped_column(USD)
     net_profit_debt_raw: Mapped[int | None] = mapped_column(RAW)
     net_profit_usd: Mapped[Numeric | None] = mapped_column(USD)
@@ -242,6 +244,9 @@ class HistoricalLiquidation(TimestampMixin, Base):
     gas_used: Mapped[int | None] = mapped_column(BigInteger)
     effective_gas_price_wei: Mapped[int | None] = mapped_column(RAW)
     tx_status: Mapped[int | None] = mapped_column(Integer)
+    l1_fee_wei: Mapped[int | None] = mapped_column(RAW)          # verified from the receipt (l1Fee / gasUsedForL1)
+    total_fee_wei: Mapped[int | None] = mapped_column(RAW)       # L2 execution + L1 data, verified
+    fee_source: Mapped[str | None] = mapped_column(String(16))   # verified | unknown | not_applicable
     pool_impl_address: Mapped[str | None] = mapped_column(ADDR)
     debt_repaid_usd: Mapped[Numeric | None] = mapped_column(USD)
     collateral_seized_usd: Mapped[Numeric | None] = mapped_column(USD)
@@ -307,6 +312,8 @@ class SimulationResult(TimestampMixin, Base):
     net_profit_usd: Mapped[Numeric | None] = mapped_column(USD)
     trace_summary: Mapped[dict | None] = mapped_column(JSON)
     calldata_hex: Mapped[str | None] = mapped_column(Text)  # local simulation only; never broadcast
+    fees: Mapped[dict | None] = mapped_column(JSON)          # FeeAccounting.as_dict(): l2/l1/total wei + source
+    execution_path: Mapped[str | None] = mapped_column(String(32))  # flash_loan_receiver | direct_liquidation_call
     warnings: Mapped[list | None] = mapped_column(JSON)
     assumptions: Mapped[list | None] = mapped_column(JSON)
 
