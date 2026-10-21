@@ -37,7 +37,7 @@ test("backtest launch requires the administrator (no credentials -> visible auth
   await page.getByRole("button", { name: /admin sign-in/i }).click();
   const form = page.getByRole("form", { name: /administrator sign-in/i });
   await form.getByLabel(/username/i).fill("admin");
-  await form.getByLabel(/password/i).fill("devpass");
+  await form.getByLabel(/password/i).fill(process.env.E2E_ADMIN_PASSWORD ?? "devpass");
   await form.getByRole("button", { name: /^sign in$/i }).click();
   await expect(page.getByTestId("admin-control").getByText("admin", { exact: true })).toBeVisible({ timeout: 15_000 });
 

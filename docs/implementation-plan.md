@@ -19,9 +19,9 @@ This file is updated as work lands; it records what actually exists, not what is
 
 | Capability | In this build environment | Consequence |
 |---|---|---|
-| Docker daemon | not running (CLI only) | Compose files are validated with `docker compose config`; services were tested natively |
+| Docker daemon | started inside the sandbox (no NAT) | Stack built and run end-to-end (see `test-results.md`); host-port publishing and container egress not testable |
 | Base / Arbitrum RPC | blocked by network policy | Indexer and monitor are implemented and unit-tested against recorded fixtures; live acceptance needs an RPC host allowed |
-| Foundry (forge/anvil) | not installable (download host blocked) | Solidity contract and Forge tests are written; they are **not** compiled or run here |
+| Foundry (forge/anvil) | not installable (release host and `binaries.soliditylang.org` blocked) | Contract compiled with solc-js 0.8.24 (0 errors); Forge fork tests not run |
 | PostgreSQL 16, Redis 7, Node 22, Python 3.13 | available natively | Backend, migrations and frontend are built and tested |
 
 ## Milestones
@@ -56,8 +56,8 @@ Acceptance: `docker compose up -d --build` starts the platform; dashboard report
 - Full profit breakdown and sensitivity figures per spec §6. **done** (hand-checked worked examples in tests)
 
 ### M4: Historical fork simulation
-- Solidity `FlashLiquidator.sol` receiver + Forge fork tests + local-only deploy script. **partial**: written, **not compiled** (no Foundry here); compile risks listed in `contracts/README.md`
-- Anvil orchestration service, replay with block-boundary labeling, job API with CSV/JSON export. **done** (blocked for live acceptance: needs Anvil + archive RPC)
+- Solidity `FlashLiquidator.sol` receiver + Forge fork tests + local-only deploy script. **partial**: compiles cleanly with solc 0.8.24 (solc-js); Forge fork tests **blocked** here (no Foundry, no archive RPC)
+- Anvil orchestration, replay through the real flash-loan receiver (simplified path labeled), L1 fee accounting, job API with CSV/JSON export. **done** (blocked for live acceptance: needs Anvil + archive RPC)
 
 ### M5: Competitive benchmarking
 - Strategies A/B/C, competitor statistics from `historical_liquidations`, seeded Monte Carlo with
@@ -68,9 +68,9 @@ Acceptance: `docker compose up -d --build` starts the platform; dashboard report
 
 ## What was verified here, and what was not
 
-Verified: 51 backend tests against a real PostgreSQL 16 and Redis 7; the API served live on :8000 with the
-dashboard proxying to it; Compose configuration parses with all nine services; `npm run lint` and
-`npm run build` clean; Playwright e2e against the production build.
+Verified: 57 backend tests against a real PostgreSQL 16 and Redis 7; Compose stack built and run end-to-end
+(migrations, health checks, scheduler/worker jobs, persistence across a Postgres restart, Playwright 6/6 against
+the containerised frontend); `npm run lint` and `npm run build` clean. Full table: `docs/test-results.md`.
 
 An independent review of the financial core (liquidation math, indexer, replay, Monte Carlo) was run and its
 findings fixed: stale per-reserve rows, placeholder prices, e-mode bonus, indexer upsert/hash ordering, per-attempt

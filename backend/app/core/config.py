@@ -58,6 +58,12 @@ class Settings(BaseSettings):
     api_rate_limit_per_minute: int = 120
     raw_data_retention_days: int = 30
 
+    @field_validator("indexer_start_block_base", "indexer_start_block_arbitrum", "indexer_start_block_ethereum", mode="before")
+    @classmethod
+    def _blank_int_is_unset(cls, v):
+        """`.env` files commonly leave optional values blank (KEY=); treat blank as unset instead of failing."""
+        return None if isinstance(v, str) and v.strip() == "" else v
+
     @field_validator("live_trading_enabled")
     @classmethod
     def _no_live_trading(cls, v: bool) -> bool:
