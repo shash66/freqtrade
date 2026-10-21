@@ -10,6 +10,13 @@ Formulas mirror `LiquidationLogic.sol` of aave-v3-origin:
   the protocol), capped by the user's collateral balance (then debtToCover is reduced with percentDiv).
 - Protocol fee = (seized − seized/bonus) × liquidationProtocolFee, taken from the liquidator's collateral.
 - v3.3 dust rule: when both sides are partially liquidated, remaining debt and collateral must each be ≥ 1,000 USD.
+- Column semantics: `liquidation_candidates.collateral_seized_raw` is the total taken from the borrower
+  (liquidator share + protocol fee, with `protocol_fee_raw` alongside), while the on-chain `LiquidationCall`
+  event's `liquidatedCollateralAmount` stored in `historical_liquidations` is the liquidator's share after
+  the fee. Compare predicted vs. historical using `collateral_seized_raw − protocol_fee_raw`.
+- E-mode: when the borrower is in an e-mode category, the category's liquidation bonus for that collateral is
+  read from the Pool; if it cannot be read the candidate is marked incomplete rather than priced with the
+  reserve bonus.
 - Net profit = swapProceeds − debtToCover − flashPremium − gas − extra costs. Any missing input makes the
   candidate `incomplete`; it is never filled with an estimate.
 

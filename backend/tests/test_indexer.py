@@ -116,3 +116,21 @@ def test_reorg_detection_and_rollback(indexer):
     indexer.store([ev_new])
     db.expire_all()
     assert db.scalar(select(m.PoolEvent.orphaned).where(m.PoolEvent.tx_hash == ev_new.tx_hash)) is False
+
+
+def test_reindex_after_reorg_updates_block_number_and_hash(indexer):
+    ev = _liq(indexer, 118)
+    indexer.store([ev])
+    moved = pi.DecodedLog(block_number=119, block_hash=_h(119, "b"), tx_hash=ev.tx_hash, log_index=ev.log_index, event=ev.event, args=ev.args)
+    indexer.store([moved])
+    indexer.db.expire_all()
+    row = indexer.db.scalar(select(m.PoolEvent).where(m.PoolEvent.tx_hash == ev.tx_hash))
+    assert row.block_number == 119 and row.block_hash == _h(119, "b") and row.orphaned is False
+
+
+def test_fallback_ancestor_rewinds_before_oldest_remembered_block(indexer):
+    cp = m.IndexerCheckpoint(chain_id=indexer.net.chain_id, deployment_id=indexer.deployment.id, stream=pi.STREAM,
+                             last_block=120, last_block_hash=_h(120), recent_block_hashes={"110": _h(110), "120": _h(120)})
+    for n in range(100, 121):  # whole remembered range diverged
+        indexer.client.w3.eth.hashes[n] = _h(n, fork="c")
+    assert indexer.check_reorg(cp) == 109

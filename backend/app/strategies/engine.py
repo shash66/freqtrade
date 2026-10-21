@@ -19,6 +19,23 @@ from app.database.base import get_sessionmaker
 from app.strategies import profitability as pf
 from app.strategies.quotes import UniswapV3Quoter, price_impact_bps
 
+
+class EModeCache:
+    """Per-run cache of e-mode category collateral parameters. Returns None when unreadable (caller marks incomplete)."""
+
+    def __init__(self, reader: AaveReader, block: int):
+        self.reader, self.block, self._cache = reader, block, {}
+
+    def bonus_for(self, category: int, collateral: str) -> int | None:
+        key = (category, collateral.lower())
+        if key not in self._cache:
+            try:
+                self._cache[key] = self.reader.emode_collateral_bonus(category, collateral, self.block)
+            except Exception as e:  # unreadable -> None, never a guess
+                log.warning("emode_read_failed", category=category, error=str(e)[:120])
+                self._cache[key] = None
+        return self._cache[key]
+
 log = get_logger(__name__)
 NATIVE_PROXY = {8453: "0x4200000000000000000000000000000000000006", 42161: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"}  # WETH
 
@@ -43,6 +60,7 @@ def build_candidates(net: NetworkConfig, limit: int = 50) -> dict:
     gas_price = int(client.call(lambda: reader.w3.eth.gas_price))
     premium_total, _ = reader.flashloan_premium_bps(block)
     quoter = UniswapV3Quoter(net.chain_id, client)
+    emode = EModeCache(reader, block)
     rules = pf.LiquidationRules()
     out = {"block": block, "candidates": 0, "incomplete": 0, "invalid": 0}
     with get_sessionmaker()() as db:
@@ -74,11 +92,20 @@ def build_candidates(net: NetworkConfig, limit: int = 50) -> dict:
             dp, cp = prices.get(da.address.lower()), prices.get(ca.address.lower())
             reasons = []
             if not dp or not cp:
-                reasons.append("oracle price unavailable for debt or collateral asset")
+                # No math on placeholder prices: record the gap and move on (project rule: never invent values).
+                _store(db, net, b, block, block_hash, None, None, None, rules, status=m.CandidateStatus.incomplete,
+                       reasons=["oracle price unavailable for debt or collateral asset"], debt_asset=da, coll_asset=ca)
+                out["incomplete"] += 1
+                continue
+            emode_bonus = None
+            if b.emode_category:
+                emode_bonus = emode.bonus_for(int(b.emode_category), ca.address)
+                if emode_bonus is None:
+                    reasons.append(f"user is in e-mode category {b.emode_category}; category bonus for {ca.symbol} could not be read")
             pos = pf.PositionInputs(health_factor_wad=int(b.health_factor_wad), total_collateral_base=int(b.total_collateral_base or 0),
-                                    total_debt_base=int(b.total_debt_base), debt=_reserve_params(da, dp or 1), collateral=_reserve_params(ca, cp or 1),
+                                    total_debt_base=int(b.total_debt_base), debt=_reserve_params(da, dp), collateral=_reserve_params(ca, cp),
                                     user_debt_raw=int(dr.variable_debt + dr.stable_debt), user_collateral_raw=int(cr.a_token_balance),
-                                    collateral_enabled=cr.usage_as_collateral)
+                                    collateral_enabled=cr.usage_as_collateral, emode_bonus_bps=emode_bonus)
             elig = pf.check_eligibility(pos, rules)
             if not elig.eligible:
                 _store(db, net, b, block, block_hash, pos, None, None, rules, status=m.CandidateStatus.invalid, reasons=elig.reasons,
@@ -127,7 +154,7 @@ def _store(db: Session, net, b, block, block_hash, pos, outcome, report, rules, 
         max_debt_to_cover_raw=elig.max_debt_to_cover_raw if elig else 0, close_factor_bps=elig.close_factor_bps if elig else 0,
         collateral_seized_raw=outcome.collateral_seized_raw if outcome else 0, protocol_fee_raw=outcome.protocol_fee_raw if outcome else 0,
         liquidation_bonus_bps=outcome.effective_bonus_bps if outcome else (coll_asset.liquidation_bonus_bps or 0),
-        flash_premium_raw=(report.flash_premium_raw or 0) if report else 0, swap_quote_id=swap_quote_id,
+        flash_premium_raw=(report.flash_premium_raw if report and report.flash_premium_raw is not None else 0), swap_quote_id=swap_quote_id,  # 0 only with an incomplete_reasons entry
         swap_out_raw=None if not report or report.outcome is None else (int(report.breakdown["swap_out"]) if report.breakdown["swap_out"] else None),
         gas_cost_usd=report.gas_cost_usd if report else None, gross_bonus_usd=report.gross_bonus_usd if report else None,
         net_profit_debt_raw=report.net_profit_debt_raw if report else None, net_profit_usd=report.net_profit_usd if report else None,

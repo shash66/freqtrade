@@ -129,13 +129,20 @@ def check_eligibility(p: PositionInputs, rules: LiquidationRules) -> Eligibility
     # *in the chosen reserves* is below MIN_BASE_MAX_LIQUIDATION_THRESHOLD (per-reserve, not the whole position).
     reserve_debt_base = p.user_debt_raw * p.debt.price_raw // 10**p.debt.decimals
     reserve_coll_base = p.user_collateral_raw * p.collateral.price_raw // 10**p.collateral.decimals
-    if p.health_factor_wad < rules.close_factor_hf_threshold_wad or rules.min_base_max_liquidation_threshold and (
+    # protocol applies the 50% factor only when HF > threshold, so HF == 0.95 exactly is 100%
+    hf_full = p.health_factor_wad <= rules.close_factor_hf_threshold_wad
+    small = bool(rules.min_base_max_liquidation_threshold) and (
         reserve_debt_base < rules.min_base_max_liquidation_threshold
         or reserve_coll_base < rules.min_base_max_liquidation_threshold
-    ):
+    )
+    if hf_full or small:
         cf = rules.max_close_factor_bps
     e.close_factor_bps = cf
-    e.max_debt_to_cover_raw = percent_mul(p.user_debt_raw, cf)
+    if cf == rules.max_close_factor_bps:
+        e.max_debt_to_cover_raw = p.user_debt_raw
+    else:
+        # v3.3 derives the cap in base currency and converts back: percentMul(debtInBase, cf) * unit / price
+        e.max_debt_to_cover_raw = percent_mul(reserve_debt_base, cf) * 10**p.debt.decimals // p.debt.price_raw
     e.eligible = True
     return e
 
@@ -158,7 +165,7 @@ def apply_liquidation(p: PositionInputs, rules: LiquidationRules, debt_to_cover_
     bonus = p.emode_bonus_bps or p.collateral.liquidation_bonus_bps
     assumptions = []
     if p.emode_bonus_bps is None:
-        assumptions.append("liquidation bonus taken from reserve config; e-mode override not applied")
+        assumptions.append("liquidation bonus taken from reserve config (user not in an e-mode category covering this collateral)")
     coll = collateral_for_debt(p, debt_to_cover_raw, bonus)
     capped = False
     if coll > p.user_collateral_raw:

@@ -124,6 +124,23 @@ class AaveReader:
                                                                         Web3.to_checksum_address(user)), block)
         return UserReserveData(int(r[0]), int(r[1]), int(r[2]), bool(r[8]))
 
+    def emode_collateral_bonus(self, category: int, collateral: str, block="latest") -> int | None:
+        """Liquidation bonus that applies to `collateral` for a user in e-mode `category`, or None if the
+        collateral is not in the category. v3.3 exposes per-category collateral config + a collateral bitmap;
+        older pools expose getEModeCategoryData with a single bonus for all reserves in the category."""
+        c = Web3.to_checksum_address(collateral)
+        try:
+            cfg = self._call(self.pool.functions.getEModeCategoryCollateralConfig(category), block)
+            bitmap = int(self._call(self.pool.functions.getEModeCategoryCollateralBitmap(category), block))
+            reserves = self.reserves_list(block)
+            idx = reserves.index(c)
+            return int(cfg[2]) if (bitmap >> idx) & 1 else None
+        except ValueError:
+            return None  # collateral not in reserves list
+        except Exception:
+            data = self._call(self.pool.functions.getEModeCategoryData(category), block)  # legacy (<= v3.2)
+            return int(data[2]) if int(data[2]) > 0 else None
+
     def asset_prices(self, assets: list[str], block="latest") -> dict[str, int]:
         cs = [Web3.to_checksum_address(a) for a in assets]
         prices = self._call(self.oracle.functions.getAssetsPrices(cs), block)

@@ -121,15 +121,14 @@ def reconcile_network(net: NetworkConfig, batch: int = BATCH) -> dict:
             elif acct.total_debt_base > 0 and acct.health_factor_wad < alert_wad:
                 out["near"] += 1
             near = acct.total_debt_base > 0 and acct.health_factor_wad < alert_wad
+            reserves_state = []
             if near and detail_done < DETAIL_BATCH:
                 detail_done += 1
-                reserves_state = []
                 try:
                     b.emode_category = reader.user_emode(b.address, block)
                     for asset in assets.values():
                         urd = reader.user_reserve_data(asset.address, b.address, block)
-                        if urd.a_token_balance == 0 and urd.variable_debt == 0 and urd.stable_debt == 0:
-                            continue
+                        # zero balances are written too, so a repaid or withdrawn reserve never lingers as phantom state
                         stmt = insert(m.BorrowerReserveState).values(
                             borrower_id=b.id, asset_id=asset.id, a_token_balance=urd.a_token_balance,
                             variable_debt=urd.variable_debt, stable_debt=urd.stable_debt,
@@ -138,6 +137,8 @@ def reconcile_network(net: NetworkConfig, batch: int = BATCH) -> dict:
                             "a_token_balance": stmt.excluded.a_token_balance, "variable_debt": stmt.excluded.variable_debt,
                             "stable_debt": stmt.excluded.stable_debt, "usage_as_collateral": stmt.excluded.usage_as_collateral,
                             "observed_block": block}))
+                        if urd.a_token_balance == 0 and urd.variable_debt == 0 and urd.stable_debt == 0:
+                            continue
                         reserves_state.append({"asset": asset.address, "symbol": asset.symbol,
                                                "a_token_balance": str(urd.a_token_balance), "variable_debt": str(urd.variable_debt),
                                                "stable_debt": str(urd.stable_debt), "collateral": urd.usage_as_collateral})
@@ -145,11 +146,11 @@ def reconcile_network(net: NetworkConfig, batch: int = BATCH) -> dict:
                 except Exception as e:
                     out["errors"] += 1
                     log.warning("reserve_detail_failed", network=net.slug, user=b.address, error=str(e)[:120])
-                if changed or near:
-                    db.add(m.PositionSnapshot(borrower_id=b.id, chain_id=net.chain_id, block_number=block,
-                                              health_factor_wad=acct.health_factor_wad,
-                                              total_collateral_base=acct.total_collateral_base,
-                                              total_debt_base=acct.total_debt_base, reserves=reserves_state))
+            if changed or near:
+                db.add(m.PositionSnapshot(borrower_id=b.id, chain_id=net.chain_id, block_number=block,
+                                          health_factor_wad=acct.health_factor_wad,
+                                          total_collateral_base=acct.total_collateral_base,
+                                          total_debt_base=acct.total_debt_base, reserves=reserves_state))
         db.commit()
     log.info("reconcile_done", network=net.slug, **dict(out.items()))
     return out

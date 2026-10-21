@@ -33,8 +33,8 @@ This file is updated as work lands; it records what actually exists, not what is
   basic-auth admin, rate limiting, Prometheus metrics, WebSocket `/ws/updates`. **done**
 - PostgreSQL schema (all 18 tables from spec §12, plus `indexer_checkpoints` and `pool_events`) via SQLAlchemy models + Alembic migration. **done** (applied to a local PostgreSQL 16)
 - Celery worker + beat scheduler with job-run auditing (`worker_job_runs`). **done**
-- Next.js 15 + Tailwind + shadcn-style components + Recharts; six pages; Overview shows real health data. **done** (admin sign-in control: in progress)
-- Tests: 47 pytest tests (money, config/auth, API, reads, indexer, profitability, Monte Carlo, predictive, replay skip path); 6 Playwright e2e tests. **done** (5/6 e2e green; the admin sign-in test lands with the sign-in control)
+- Next.js 15 + Tailwind + shadcn-style components + Recharts; six pages with in-dashboard admin sign-in; Overview shows real health data. **done**
+- Tests: 51 pytest tests (money, config/auth, API, reads, indexer, profitability, Monte Carlo, predictive, replay skip path); 6 Playwright e2e tests. **done** (6/6 e2e green)
 
 Acceptance: `docker compose up -d --build` starts the platform; dashboard reports actual connection health
 (including "RPC unreachable" when that is the truth).
@@ -68,9 +68,13 @@ Acceptance: `docker compose up -d --build` starts the platform; dashboard report
 
 ## What was verified here, and what was not
 
-Verified: 47 backend tests against a real PostgreSQL 16 and Redis 7; the API served live on :8000 with the
+Verified: 51 backend tests against a real PostgreSQL 16 and Redis 7; the API served live on :8000 with the
 dashboard proxying to it; Compose configuration parses with all nine services; `npm run lint` and
 `npm run build` clean; Playwright e2e against the production build.
+
+An independent review of the financial core (liquidation math, indexer, replay, Monte Carlo) was run and its
+findings fixed: stale per-reserve rows, placeholder prices, e-mode bonus, indexer upsert/hash ordering, per-attempt
+Monte Carlo statistics, replay gas model.
 
 Not verified (first things to run after deployment, in this order):
 1. `docker compose up -d --build` on a machine with a Docker daemon.

@@ -101,3 +101,16 @@ def test_trigger_price_prediction():
     # 6 WETH collateral, LT 83%, $10,000 debt -> price* = 10000 / (6 * 0.83) = 2008.03
     p = position()
     assert pf.trigger_price(p) == Decimal("2008.03212851")
+
+
+def test_close_factor_boundary_and_base_currency_cap():
+    # exactly HF 0.95 -> 100% (protocol applies 50% only when HF > threshold)
+    assert pf.check_eligibility(position(hf=Decimal("0.95")), pf.LiquidationRules()).close_factor_bps == 10_000
+    # 50% cap derived in base currency: debt 1 WETH at an awkward price -> matches percentMul(debtInBase)*unit/price
+    weth_debt = pf.ReserveParams("0xweth", "WETH", 18, 333_333_333_333, 10_500, 1000, 8300)
+    p = pf.PositionInputs(health_factor_wad=int(Decimal("0.97") * WAD), total_collateral_base=10_000 * 10**8, total_debt_base=3333 * 10**8,
+                          debt=weth_debt, collateral=USDC, user_debt_raw=10**18, user_collateral_raw=10_000 * 10**6, collateral_enabled=True)
+    e = pf.check_eligibility(p, pf.LiquidationRules())
+    debt_base = 10**18 * 333_333_333_333 // 10**18
+    assert e.close_factor_bps == 5_000
+    assert e.max_debt_to_cover_raw == pf.percent_mul(debt_base, 5_000) * 10**18 // 333_333_333_333
