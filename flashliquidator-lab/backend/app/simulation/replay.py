@@ -15,6 +15,7 @@ Methodology (also in docs/simulation-methodology.md):
 from __future__ import annotations
 
 import contextlib
+import time
 from dataclasses import dataclass, field
 from decimal import Decimal
 
@@ -88,17 +89,44 @@ def run_replay(req: ReplayRequest) -> ReplayResult:
     """Run once; if an *eligible* position reverts with an Aave eligibility/dust error, rerun once on a fresh
     fork. Rate-limited archive providers have produced one-off inconsistent fork state in live validation;
     a result that changes between two forks is reported with `retried` so it can be triaged as infrastructure."""
-    r = _run_replay_once(req)
+    r = _run_with_fork_retries(req)
     if (not r.success and r.eligible_at_fork and r.revert_reason
             and any(sel in r.revert_reason for sel in AAVE_ELIGIBILITY_SELECTORS)):
         first = r.revert_reason
-        r = _run_replay_once(req)
+        r = _run_with_fork_retries(req)
+        if not r.success and r.revert_reason and _decode_sel(r.revert_reason):
+            r.revert_reason = f"{r.revert_reason} [{_decode_sel(r.revert_reason)}]"
         r.warnings.append(f"retried on a fresh fork after an Aave eligibility revert ({_decode_sel(first)}); "
                           + ("second attempt succeeded: first revert attributed to inconsistent fork state" if r.success
                              else "second attempt reverted too: treated as a real protocol-rule revert"))
         r.retried = True
     elif not r.success and r.revert_reason:
         r.revert_reason = f"{r.revert_reason} [{_decode_sel(r.revert_reason)}]" if _decode_sel(r.revert_reason) else r.revert_reason
+    return r
+
+
+FORK_FETCH_MARKERS = ("failed to get storage", "failed to get account", "max retries", "429", "database error")
+
+
+def _run_with_fork_retries(req: ReplayRequest, attempts: int = 3) -> ReplayResult:
+    """A rate-limited archive provider makes Anvil's lazy state fetches fail mid-replay (surfacing as -32603
+    errors from raw calls). Cool down and rerun the replay from a fresh fork a bounded number of times."""
+    last: Exception | None = None
+    for i in range(1, attempts + 1):
+        try:
+            return _run_replay_once(req)
+        except Exception as e:  # noqa: BLE001 - classified below
+            msg = str(e).lower()
+            if not any(k in msg for k in FORK_FETCH_MARKERS):
+                raise
+            last = e
+            log.warning("replay_fork_fetch_failed", attempt=i, error=str(e)[:160])
+            time.sleep(min(30 * i, 90))
+    assert last is not None
+    r = ReplayResult(False, f"fork state fetch failed after {attempts} attempts: {str(last)[:200]}", None, None, True, None, None,
+                     None, None, None, None, None, None, None, None, None, None,
+                     warnings=["infrastructure: archive provider rate limit exhausted during fork state fetch"],
+                     assumptions=[], rpc_capability={}, execution_path="none")
     return r
 
 

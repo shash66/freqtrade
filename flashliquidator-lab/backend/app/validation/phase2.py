@@ -127,10 +127,35 @@ def step_replays(rep: Report, net: NetworkConfig, max_replays: int) -> None:
         it.status, it.reason = "SKIPPED", "no recorded liquidations to replay (index a wider range first)"
         return
     results = []
+    from app.simulation.service import _store_result
     for h in liqs:
-        r = run_replay(ReplayRequest(network=net, borrower=h.borrower, collateral_asset=h.collateral_asset, debt_asset=h.debt_asset,
-                                     debt_to_cover_raw=int(h.debt_repaid_raw), block_number=h.block_number,
-                                     gas_price_wei=int(h.effective_gas_price_wei) if h.effective_gas_price_wei else None, historical_tx=h.tx_hash))
+        with get_sessionmaker()() as db:
+            done = db.execute(select(m.SimulationRun, m.SimulationResult).join(m.SimulationResult, m.SimulationResult.run_id == m.SimulationRun.id)
+                              .where(m.SimulationRun.kind == "historical_replay", m.SimulationRun.historical_liquidation_id == h.id,
+                                     m.SimulationRun.input_params["phase2"].as_boolean().is_(True))).first()
+        if done is not None:  # resume: reuse the persisted result of an earlier run
+            run, res = done
+            r = _replay_from_db(run, res)
+        else:
+            try:
+                r = run_replay(ReplayRequest(network=net, borrower=h.borrower, collateral_asset=h.collateral_asset, debt_asset=h.debt_asset,
+                                             debt_to_cover_raw=int(h.debt_repaid_raw), block_number=h.block_number,
+                                             gas_price_wei=int(h.effective_gas_price_wei) if h.effective_gas_price_wei else None, historical_tx=h.tx_hash))
+            except Exception as e:  # noqa: BLE001 - every replay is isolated; the failure is recorded, never dropped
+                from app.simulation.replay import ReplayResult
+                r = ReplayResult(False, f"replay crashed: {type(e).__name__}: {str(e)[:200]}", None, None, True, None, None, None, None, None,
+                                 None, None, None, None, None, None, None, warnings=["code or infrastructure failure; see revert_reason"],
+                                 assumptions=[], rpc_capability={}, execution_path="none")
+            with get_sessionmaker()() as db:
+                run = m.SimulationRun(chain_id=net.chain_id, kind="historical_replay", status=m.JobStatus.running, fork_block_number=h.block_number - 1,
+                                      historical_liquidation_id=h.id, pool_address=net.market.pool, pool_impl_address=h.pool_impl_address,
+                                      input_params={"borrower": h.borrower, "collateral_asset": h.collateral_asset, "debt_asset": h.debt_asset,
+                                                    "debt_to_cover_raw": str(h.debt_repaid_raw), "block_number": h.block_number, "historical_tx": h.tx_hash,
+                                                    "phase2": True}, code_version=s.app_version)
+                db.add(run)
+                db.flush()
+                _store_result(db, run, r)
+                db.commit()
         results.append({"tx": h.tx_hash, "block": h.block_number, "success": r.success, "execution_path": r.execution_path,
                         "simplified": r.execution_path != "flash_loan_receiver", "revert_reason": r.revert_reason,
                         "eligible_at_fork": r.eligible_at_fork, "net_profit_usd": None if r.net_profit_usd is None else str(r.net_profit_usd),
@@ -149,6 +174,17 @@ def step_replays(rep: Report, net: NetworkConfig, max_replays: int) -> None:
     it.status = "EXECUTED"
 
 
+def _replay_from_db(run: m.SimulationRun, res: m.SimulationResult):
+    from app.simulation.replay import ReplayResult
+    ts = res.trace_summary or {}
+    return ReplayResult(res.success, res.revert_reason, run.fork_block_number, run.fork_block_hash, run.block_boundary_approximation,
+                        ts.get("health_factor_at_fork"), ts.get("eligible_at_fork"), res.debt_repaid_raw, res.collateral_seized_raw,
+                        res.swap_proceeds_raw, res.flash_premium_raw, res.gas_used, res.gas_price_wei, None, res.net_profit_debt_raw,
+                        res.net_profit_usd, res.calldata_hex, trace_summary=ts.get("calls", []), warnings=list(res.warnings or []) + ["result reused from an earlier run"],
+                        assumptions=list(res.assumptions or []), rpc_capability=run.rpc_capability or {}, execution_path=res.execution_path or "none",
+                        fees=res.fees)
+
+
 def step_failure_triage(rep: Report) -> None:
     """Separate code defects from unprofitable or boundary-affected opportunities using the replay details."""
     it = rep.add(Item("triage", "Classify failed simulations: code defect vs. not eligible at block boundary vs. unprofitable"))
@@ -165,11 +201,13 @@ def step_failure_triage(rep: Report) -> None:
             c = "profitable"
         elif r["eligible_at_fork"] is False:
             c = "not_eligible_at_block_boundary"
-        elif r["revert_reason"] and ("MustNotLeaveDust" in r["revert_reason"] or "HealthFactorNotBelowThreshold" in r["revert_reason"]):
+        elif r["revert_reason"] and any(k in r["revert_reason"] for k in ("MustNotLeaveDust", "HealthFactorNotBelowThreshold", "0xb629b0e4", "0x930bb771")):
             c = "aave_rule_revert_while_eligible_at_boundary"
         elif r["revert_reason"] and any(k in r["revert_reason"] for k in ("InsufficientProfit", "Too little received", "SwapFailed")):
             c = "unprofitable_revert_by_receiver_guard"
-        elif r["revert_reason"] and any(k in r["revert_reason"] for k in ("funding failed", "anvil", "artifact", "RouterNotAllowed", "TokenNotAllowed", "NotPool", "BadInitiator")):
+        elif r["revert_reason"] and any(k in r["revert_reason"] for k in ("fork state fetch failed", "replay crashed", "anvil")):
+            c = "infrastructure_failure"
+        elif r["revert_reason"] and any(k in r["revert_reason"] for k in ("funding failed", "artifact", "RouterNotAllowed", "TokenNotAllowed", "NotPool", "BadInitiator")):
             c = "possible_code_or_setup_defect"
         else:
             c = "unclassified_revert"
