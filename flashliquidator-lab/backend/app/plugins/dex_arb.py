@@ -355,9 +355,12 @@ class DexArbStrategy:
             above += int(hit)
             samples.append({"block": blk, "key": best.key, "gross_usd": str(best.gross_profit_usd), "net_pre_gas_usd": str(quantize_usd(npg)), "above_gas_floor": hit, "size_raw": best.state["size_raw"]})
         vals = [Decimal(s["net_pre_gas_usd"]) for s in samples if "net_pre_gas_usd" in s]
-        return ReplayReport(self.name, ctx.network.slug, from_block, to_block, len(vals), 0, 0, above, None,
-                            quantize_usd(sum(vals, Decimal(0)) / len(vals)) if vals else None, min(vals) if vals else None,
-                            f"{len(vals)} sampled blocks every {step} blocks; {above} with a quoted spread above the {gas_floor} USD gas floor (before competition)",
+        # opportunities = sampled blocks with a spread above the gas floor (a sampled block is an observation, not an opportunity);
+        # worst-case loss is not a quoted shortfall (never realised on-chain): it is the cost of a failed attempt, measured by `simulate`.
+        return ReplayReport(self.name, ctx.network.slug, from_block, to_block, above, 0, 0, above, None,
+                            quantize_usd(sum(vals, Decimal(0)) / len(vals)) if vals else None, None,
+                            f"{len(vals)} sampled blocks every {step} blocks; {above} with a quoted spread above the {gas_floor} USD gas floor (before competition); "
+                            f"expected figure = mean best net-before-gas spread per sampled block; worst case = cost of a failed attempt (see simulate), not the quoted shortfall",
                             samples, ["spreads quoted at historical blocks via archive eth_call; no execution; gas floor from fork measurements"])
 
     def shadow_tick(self, ctx: Context) -> ShadowObservation:

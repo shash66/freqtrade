@@ -30,6 +30,7 @@ from app.core.money import quantize_usd
 
 BLOCKS_PER_DAY = {"base": 43_200, "arbitrum": 345_600}
 RISK_ORDER = {"low": 0, "medium": 1, "high": 2, "unknown": 3}
+DUST_FLOOR_USD = Decimal("0.05")   # the plugins' default min_net_profit_usd: below it nothing is attempted
 # Monthly infrastructure estimate for one always-on research node; an explicit assumption, overridable by env.
 INFRA_COST_USD_MONTH_DEFAULT = Decimal("69")   # Alchemy Growth $49 + a small VPS $20 (estimate, see docs/phase5-results.md)
 
@@ -252,9 +253,12 @@ def rank_one(strategy: str, network: str, arts: dict[str, dict], infra_cost: Dec
         verdict = "negative" if net <= 0 else "not_estimable"
         reason = (f"{net_class} net profit {net} USD ≤ 0 at the best opportunity" if net <= 0
                   else f"{net_class} net profit {net} USD > 0 but capture probability not estimated")
+    elif opps and gross is not None and gross <= 0:
+        verdict, reason = "negative", "every discovered spread or position is unprofitable before costs"
+    elif opps and executable == 0 and gross is not None and gross < DUST_FLOOR_USD:
+        verdict, reason = "negative", f"nothing executable: the best opportunity is dust ({gross} USD gross, below the {DUST_FLOOR_USD} USD floor)"
     else:
-        verdict, reason = ("negative", "every discovered spread or position is unprofitable before costs") if opps and gross is not None and gross <= 0 \
-            else ("not_estimable", "no complete net profit figure")
+        verdict, reason = "not_estimable", "no complete net profit figure"
 
     return StrategyRow(strategy, network, kind, (latest or rep or {}).get("description") or "", capital, capital_note, flash, flash_note, gross, gross_class,
                        net, net_class, p, model, list(assumptions or []), attainable, freq_txt, freq_day, risk, evidence,

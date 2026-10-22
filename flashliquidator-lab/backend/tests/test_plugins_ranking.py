@@ -84,3 +84,13 @@ def test_rank_orders_positive_first_and_ignores_unrelated_files(tmp_path):
     out = rank(tmp_path)
     assert [r["strategy"] for r in out["rows"]] == ["yield_opt", "dex_arb"]
     assert out["conclusion"]["strategies_with_positive_passive_yield"] == ["yield_opt/base"]
+
+
+def test_dust_only_compound_rows_are_negative_not_estimable():
+    arts = {"simulate": {"summary": {"executable": 0}, "rows": [
+        {"opportunity": _opp(kind="liquidation", gross_profit_usd="0.0009", state={"kind": "reserve_purchase", "executable": False}),
+         "simulation": {"success": False, "outcome_class": "simulated", "revert_reason": "dust: ...", "gross_profit_usd": "0.0009", "costs": {"total_usd": None, "missing": ["not attempted"]},
+                        "net_profit_usd": None, "net_profit_complete": False},
+         "competition": {"p_capture": None, "attainable_net_profit_usd": None, "model": "m", "assumptions": ["no bids"]}}]}}
+    r = rank_one("compound_v3", "base", arts)
+    assert r.verdict == "negative" and "dust" in r.verdict_reason and r.net_profit_complete_usd is None
