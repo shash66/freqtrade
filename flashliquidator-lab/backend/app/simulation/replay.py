@@ -153,7 +153,9 @@ def _decode_sel(reason: str) -> str:
 def _run_replay_once(req: ReplayRequest) -> ReplayResult:
     s = get_settings()
     net = req.network
-    fork_src = net.archive_rpc if req.block_number is not None else (net.rpc_http or net.archive_rpc)
+    # Forks always prefer the archive-capable endpoint: Anvil pins the fork block and reads state at that block,
+    # which public endpoints refuse as "archive" within seconds (observed: PublicNode HTTP 403 at the live head).
+    fork_src = net.archive_rpc or (net.rpc_http if req.block_number is None else None)
     cap = {"archive_rpc": bool(net.archive_rpc), "http_rpc": bool(net.rpc_http), "anvil": s.anvil_rpc_url}
     base_assumptions = [
         "fork at the block boundary; intra-block transaction ordering is not reproduced",
