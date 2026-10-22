@@ -14,6 +14,7 @@ import argparse
 import json
 import time
 from datetime import UTC, datetime
+from decimal import Decimal
 
 from app.chains.config import build_networks
 from app.chains.rpc import RpcClient
@@ -31,6 +32,17 @@ def build_context(slug: str, anvil: str | None, block, extra: dict) -> Context:
     return Context(net, live if block == "latest" else (arch or live), arch, anvil, block, None)
 
 
+def _net_pre_gas(row: dict) -> str | None:
+    """Best quoted spread net of the flash premium: the plugin's own figure, else gross minus the premium it recorded."""
+    v = (row.get("state", {}) or {}).get("net_pre_gas_usd")
+    if v is not None:
+        return str(v)
+    prem = (row.get("costs") or {}).get("flash_premium_usd")
+    if row.get("gross_profit_usd") is None or prem is None:
+        return None
+    return str(Decimal(str(row["gross_profit_usd"])) - Decimal(str(prem)))
+
+
 def summarise_shadow(obs: list[dict], minutes: float) -> dict:
     """Frequency and persistence from shadow ticks. Only *executable* opportunities count (a quoted-but-negative
     spread is an observation, not an opportunity); the per-tick best gross/net series is kept for every tick."""
@@ -46,7 +58,7 @@ def summarise_shadow(obs: list[dict], minutes: float) -> dict:
         best = max((x for x in rows if x.get("gross_profit_usd") is not None), key=lambda x: float(x["gross_profit_usd"]), default=None)
         series.append({"block": ob["block"], "t": ob["observed_at"], "latency_ms": ob["latency_ms"], "rows": len(rows), "executable": len(ex),
                        "best_gross_usd": best["gross_profit_usd"] if best else None,
-                       "best_net_pre_gas_usd": (best.get("state", {}) or {}).get("net_pre_gas_usd") if best else None, "best_key": best["key"] if best else None})
+                       "best_net_pre_gas_usd": _net_pre_gas(best) if best else None, "best_key": best["key"] if best else None})
     pers = {k: (max(v) - min(v) + 1) for k, v in keys.items()}
     return {"minutes": minutes, "ticks": len(obs), "ticks_with_executable": ticks_with, "distinct_opportunities": len(keys),
             "persistence_blocks": pers, "series": series, "observations": obs[-200:]}
