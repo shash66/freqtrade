@@ -34,7 +34,8 @@ open http://localhost:3000
 Docs: [implementation plan](docs/implementation-plan.md), [architecture](docs/architecture.md),
 [data sources](docs/data-sources.md), [simulation methodology](docs/simulation-methodology.md),
 [deployment](docs/deployment.md), [limitations](docs/limitations.md), [Phase 2 results](docs/phase2-results.md),
-[Phase 3 results](docs/phase3-results.md). Contracts: [contracts/README.md](contracts/README.md).
+[Phase 3 results](docs/phase3-results.md), [replication runbook](docs/runbook.md) (fresh server, providers, exact
+commands, pitfalls). Contracts: [contracts/README.md](contracts/README.md). Notes for AI-assisted sessions: `CLAUDE.md`.
 
 ## Status
 
