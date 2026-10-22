@@ -1,0 +1,1650 @@
+{
+ "strategy": "dex_arb",
+ "network": "base",
+ "mode": "replay",
+ "generated_at": "2026-10-22T14:02:21.904870+00:00",
+ "block": "latest",
+ "replay": {
+  "strategy": "dex_arb",
+  "network": "base",
+  "from_block": 52560000,
+  "to_block": 52640886,
+  "opportunities": 203,
+  "simulated": 0,
+  "simulated_success": 0,
+  "net_profitable_complete": 0,
+  "lost_to_competition": null,
+  "expected_profit_per_attempt_usd": "-0.053137",
+  "worst_case_loss_usd": "-0.086987",
+  "sample_note": "203 sampled blocks every 400 blocks; 0 with a quoted spread above the 0.05 USD gas floor (before competition)",
+  "details": [
+   {
+    "block": 52560000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028246",
+    "net_pre_gas_usd": "-0.053246",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52560400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028244",
+    "net_pre_gas_usd": "-0.053244",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52560800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028239",
+    "net_pre_gas_usd": "-0.053239",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52561200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028266",
+    "net_pre_gas_usd": "-0.053266",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52561600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028277",
+    "net_pre_gas_usd": "-0.053277",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52562000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028062",
+    "net_pre_gas_usd": "-0.053062",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52562400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028062",
+    "net_pre_gas_usd": "-0.053062",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52562800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028147",
+    "net_pre_gas_usd": "-0.053147",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52563200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028147",
+    "net_pre_gas_usd": "-0.053147",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52563600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028148",
+    "net_pre_gas_usd": "-0.053148",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52564000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028148",
+    "net_pre_gas_usd": "-0.053148",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52564400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028149",
+    "net_pre_gas_usd": "-0.053149",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52564800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028001",
+    "net_pre_gas_usd": "-0.053001",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52565200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028001",
+    "net_pre_gas_usd": "-0.053001",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52565600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028040",
+    "net_pre_gas_usd": "-0.053040",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52566000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028034",
+    "net_pre_gas_usd": "-0.053034",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52566400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.027958",
+    "net_pre_gas_usd": "-0.052958",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52566800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028135",
+    "net_pre_gas_usd": "-0.053135",
+    "above_gas_floor": false,
+    "size_raw": 50006374
+   },
+   {
+    "block": 52567200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028136",
+    "net_pre_gas_usd": "-0.053135",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52567600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028068",
+    "net_pre_gas_usd": "-0.053067",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52568000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028068",
+    "net_pre_gas_usd": "-0.053067",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52568400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028068",
+    "net_pre_gas_usd": "-0.053067",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52568800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028068",
+    "net_pre_gas_usd": "-0.053067",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52569200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028068",
+    "net_pre_gas_usd": "-0.053067",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52569600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028059",
+    "net_pre_gas_usd": "-0.053058",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52570000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028059",
+    "net_pre_gas_usd": "-0.053058",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52570400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028056",
+    "net_pre_gas_usd": "-0.053055",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52570800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028056",
+    "net_pre_gas_usd": "-0.053055",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52571200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028056",
+    "net_pre_gas_usd": "-0.053055",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52571600,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028046",
+    "net_pre_gas_usd": "-0.053045",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52572000,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028080",
+    "net_pre_gas_usd": "-0.053079",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52572400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028100",
+    "net_pre_gas_usd": "-0.053099",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52572800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028100",
+    "net_pre_gas_usd": "-0.053099",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52573200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028100",
+    "net_pre_gas_usd": "-0.053099",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52573600,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028100",
+    "net_pre_gas_usd": "-0.053099",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52574000,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028168",
+    "net_pre_gas_usd": "-0.053167",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52574400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028168",
+    "net_pre_gas_usd": "-0.053167",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52574800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028185",
+    "net_pre_gas_usd": "-0.053184",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52575200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028176",
+    "net_pre_gas_usd": "-0.053175",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52575600,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028102",
+    "net_pre_gas_usd": "-0.053101",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52576000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028103",
+    "net_pre_gas_usd": "-0.053102",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52576400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028102",
+    "net_pre_gas_usd": "-0.053101",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52576800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028103",
+    "net_pre_gas_usd": "-0.053102",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52577200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028102",
+    "net_pre_gas_usd": "-0.053101",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52577600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028108",
+    "net_pre_gas_usd": "-0.053107",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52578000,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028102",
+    "net_pre_gas_usd": "-0.053101",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52578400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028102",
+    "net_pre_gas_usd": "-0.053101",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52578800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028099",
+    "net_pre_gas_usd": "-0.053098",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52579200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028128",
+    "net_pre_gas_usd": "-0.053127",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52579600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028247",
+    "net_pre_gas_usd": "-0.053246",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52580000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028286",
+    "net_pre_gas_usd": "-0.053285",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52580400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028327",
+    "net_pre_gas_usd": "-0.053326",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52580800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028320",
+    "net_pre_gas_usd": "-0.053319",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52581200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028320",
+    "net_pre_gas_usd": "-0.053319",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52581600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028339",
+    "net_pre_gas_usd": "-0.053338",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52582000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028395",
+    "net_pre_gas_usd": "-0.053394",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52582400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028497",
+    "net_pre_gas_usd": "-0.053496",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52582800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028493",
+    "net_pre_gas_usd": "-0.053492",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52583200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028536",
+    "net_pre_gas_usd": "-0.053535",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52583600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028578",
+    "net_pre_gas_usd": "-0.053577",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52584000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028597",
+    "net_pre_gas_usd": "-0.053596",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52584400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028597",
+    "net_pre_gas_usd": "-0.053596",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52584800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028597",
+    "net_pre_gas_usd": "-0.053596",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52585200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028597",
+    "net_pre_gas_usd": "-0.053596",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52585600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028885",
+    "net_pre_gas_usd": "-0.053884",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52586000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028885",
+    "net_pre_gas_usd": "-0.053884",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52586400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028886",
+    "net_pre_gas_usd": "-0.053885",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52586800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028886",
+    "net_pre_gas_usd": "-0.053885",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52587200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.028823",
+    "net_pre_gas_usd": "-0.053822",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52587600,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029021",
+    "net_pre_gas_usd": "-0.054020",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52588000,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029028",
+    "net_pre_gas_usd": "-0.054027",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52588400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029170",
+    "net_pre_gas_usd": "-0.054169",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52588800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029102",
+    "net_pre_gas_usd": "-0.054101",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52589200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029076",
+    "net_pre_gas_usd": "-0.054075",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52589600,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029073",
+    "net_pre_gas_usd": "-0.054072",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52590000,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029073",
+    "net_pre_gas_usd": "-0.054072",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52590400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029137",
+    "net_pre_gas_usd": "-0.054136",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52590800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029068",
+    "net_pre_gas_usd": "-0.054067",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52591200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029090",
+    "net_pre_gas_usd": "-0.054089",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52591600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029078",
+    "net_pre_gas_usd": "-0.054077",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52592000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029130",
+    "net_pre_gas_usd": "-0.054129",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52592400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029130",
+    "net_pre_gas_usd": "-0.054129",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52592800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029130",
+    "net_pre_gas_usd": "-0.054129",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52593200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029099",
+    "net_pre_gas_usd": "-0.054098",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52593600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029099",
+    "net_pre_gas_usd": "-0.054098",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52594000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029099",
+    "net_pre_gas_usd": "-0.054098",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52594400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029116",
+    "net_pre_gas_usd": "-0.054115",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52594800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029116",
+    "net_pre_gas_usd": "-0.054115",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52595200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029118",
+    "net_pre_gas_usd": "-0.054117",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52595600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029250",
+    "net_pre_gas_usd": "-0.054249",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52596000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028944",
+    "net_pre_gas_usd": "-0.053943",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52596400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028939",
+    "net_pre_gas_usd": "-0.053938",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52596800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028901",
+    "net_pre_gas_usd": "-0.053900",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52597200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028577",
+    "net_pre_gas_usd": "-0.053576",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52597600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028595",
+    "net_pre_gas_usd": "-0.053594",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52598000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028798",
+    "net_pre_gas_usd": "-0.053797",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52598400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028864",
+    "net_pre_gas_usd": "-0.053863",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52598800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.028696",
+    "net_pre_gas_usd": "-0.053695",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52599200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.028299",
+    "net_pre_gas_usd": "-0.053298",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52599600,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.028320",
+    "net_pre_gas_usd": "-0.053319",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52600000,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.028387",
+    "net_pre_gas_usd": "-0.053386",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52600400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.028702",
+    "net_pre_gas_usd": "-0.053701",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52600800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028600",
+    "net_pre_gas_usd": "-0.053599",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52601200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028597",
+    "net_pre_gas_usd": "-0.053596",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52601600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028551",
+    "net_pre_gas_usd": "-0.053550",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52602000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.030050",
+    "net_pre_gas_usd": "-0.055049",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52602400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029279",
+    "net_pre_gas_usd": "-0.054278",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52602800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029241",
+    "net_pre_gas_usd": "-0.054240",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52603200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029282",
+    "net_pre_gas_usd": "-0.054281",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52603600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029357",
+    "net_pre_gas_usd": "-0.054356",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52604000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029358",
+    "net_pre_gas_usd": "-0.054357",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52604400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029446",
+    "net_pre_gas_usd": "-0.054445",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52604800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029446",
+    "net_pre_gas_usd": "-0.054445",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52605200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029446",
+    "net_pre_gas_usd": "-0.054445",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52605600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029398",
+    "net_pre_gas_usd": "-0.054397",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52606000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029265",
+    "net_pre_gas_usd": "-0.054264",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52606400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029246",
+    "net_pre_gas_usd": "-0.054245",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52606800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029243",
+    "net_pre_gas_usd": "-0.054242",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52607200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029238",
+    "net_pre_gas_usd": "-0.054237",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52607600,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029282",
+    "net_pre_gas_usd": "-0.054281",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52608000,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029280",
+    "net_pre_gas_usd": "-0.054279",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52608400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029280",
+    "net_pre_gas_usd": "-0.054279",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52608800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029338",
+    "net_pre_gas_usd": "-0.054337",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52609200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029338",
+    "net_pre_gas_usd": "-0.054337",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52609600,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029346",
+    "net_pre_gas_usd": "-0.054345",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52610000,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.029556",
+    "net_pre_gas_usd": "-0.054555",
+    "above_gas_floor": false,
+    "size_raw": 50005858
+   },
+   {
+    "block": 52610400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029502",
+    "net_pre_gas_usd": "-0.054502",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52610800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029502",
+    "net_pre_gas_usd": "-0.054502",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52611200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029821",
+    "net_pre_gas_usd": "-0.054821",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52611600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029717",
+    "net_pre_gas_usd": "-0.054717",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52612000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029448",
+    "net_pre_gas_usd": "-0.054448",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52612400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029392",
+    "net_pre_gas_usd": "-0.054392",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52612800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029392",
+    "net_pre_gas_usd": "-0.054392",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52613200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029390",
+    "net_pre_gas_usd": "-0.054390",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52613600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029319",
+    "net_pre_gas_usd": "-0.054319",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52614000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029255",
+    "net_pre_gas_usd": "-0.054255",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52614400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.029251",
+    "net_pre_gas_usd": "-0.054251",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52614800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.027592",
+    "net_pre_gas_usd": "-0.052592",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52615200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.027592",
+    "net_pre_gas_usd": "-0.052592",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52615600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.027592",
+    "net_pre_gas_usd": "-0.052592",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52616000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.027592",
+    "net_pre_gas_usd": "-0.052592",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52616400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ab",
+    "gross_usd": "-0.023816",
+    "net_pre_gas_usd": "-0.048816",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52616800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ba",
+    "gross_usd": "-0.061987",
+    "net_pre_gas_usd": "-0.086987",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52617200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.014945",
+    "net_pre_gas_usd": "-0.039945",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52617600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.023688",
+    "net_pre_gas_usd": "-0.048688",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52618000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.020305",
+    "net_pre_gas_usd": "-0.045305",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52618400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.014451",
+    "net_pre_gas_usd": "-0.039451",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52618800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.005841",
+    "net_pre_gas_usd": "-0.030841",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52619200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.009588",
+    "net_pre_gas_usd": "-0.034588",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52619600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.009569",
+    "net_pre_gas_usd": "-0.034569",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52620000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.009625",
+    "net_pre_gas_usd": "-0.034625",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52620400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.009625",
+    "net_pre_gas_usd": "-0.034625",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52620800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.009936",
+    "net_pre_gas_usd": "-0.034936",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52621200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.029293",
+    "net_pre_gas_usd": "-0.054293",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52621600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028949",
+    "net_pre_gas_usd": "-0.053949",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52622000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028701",
+    "net_pre_gas_usd": "-0.053701",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52622400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028690",
+    "net_pre_gas_usd": "-0.053690",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52622800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028690",
+    "net_pre_gas_usd": "-0.053690",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52623200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028914",
+    "net_pre_gas_usd": "-0.053914",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52623600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028929",
+    "net_pre_gas_usd": "-0.053929",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52624000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028934",
+    "net_pre_gas_usd": "-0.053934",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52624400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028846",
+    "net_pre_gas_usd": "-0.053846",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52624800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.028329",
+    "net_pre_gas_usd": "-0.053329",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52625200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.028336",
+    "net_pre_gas_usd": "-0.053336",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52625600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028429",
+    "net_pre_gas_usd": "-0.053429",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52626000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028442",
+    "net_pre_gas_usd": "-0.053442",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52626400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028461",
+    "net_pre_gas_usd": "-0.053461",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52626800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028478",
+    "net_pre_gas_usd": "-0.053478",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52627200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028375",
+    "net_pre_gas_usd": "-0.053375",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52627600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028380",
+    "net_pre_gas_usd": "-0.053380",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52628000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.029156",
+    "net_pre_gas_usd": "-0.054156",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52628400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028757",
+    "net_pre_gas_usd": "-0.053757",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52628800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028761",
+    "net_pre_gas_usd": "-0.053761",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52629200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028779",
+    "net_pre_gas_usd": "-0.053779",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52629600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028779",
+    "net_pre_gas_usd": "-0.053779",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52630000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.029525",
+    "net_pre_gas_usd": "-0.054525",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52630400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029500",
+    "net_pre_gas_usd": "-0.054500",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52630800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.029511",
+    "net_pre_gas_usd": "-0.054511",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52631200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.029411",
+    "net_pre_gas_usd": "-0.054411",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52631600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.029289",
+    "net_pre_gas_usd": "-0.054289",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52632000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028830",
+    "net_pre_gas_usd": "-0.053830",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52632400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028830",
+    "net_pre_gas_usd": "-0.053830",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52632800,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028830",
+    "net_pre_gas_usd": "-0.053830",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52633200,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028830",
+    "net_pre_gas_usd": "-0.053830",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52633600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028850",
+    "net_pre_gas_usd": "-0.053850",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52634000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028855",
+    "net_pre_gas_usd": "-0.053855",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52634400,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.028855",
+    "net_pre_gas_usd": "-0.053855",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52634800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029976",
+    "net_pre_gas_usd": "-0.054976",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52635200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029986",
+    "net_pre_gas_usd": "-0.054986",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52635600,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.030122",
+    "net_pre_gas_usd": "-0.055122",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52636000,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.030129",
+    "net_pre_gas_usd": "-0.055129",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52636400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.030235",
+    "net_pre_gas_usd": "-0.055235",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52636800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029964",
+    "net_pre_gas_usd": "-0.054964",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52637200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029960",
+    "net_pre_gas_usd": "-0.054960",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52637600,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029758",
+    "net_pre_gas_usd": "-0.054758",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52638000,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.029508",
+    "net_pre_gas_usd": "-0.054508",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52638400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029511",
+    "net_pre_gas_usd": "-0.054511",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52638800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029511",
+    "net_pre_gas_usd": "-0.054511",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52639200,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029827",
+    "net_pre_gas_usd": "-0.054827",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52639600,
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "gross_usd": "-0.029752",
+    "net_pre_gas_usd": "-0.054752",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52640000,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029763",
+    "net_pre_gas_usd": "-0.054763",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52640400,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029774",
+    "net_pre_gas_usd": "-0.054774",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   },
+   {
+    "block": 52640800,
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "gross_usd": "-0.029697",
+    "net_pre_gas_usd": "-0.054697",
+    "above_gas_floor": false,
+    "size_raw": 50004583
+   }
+  ],
+  "assumptions": [
+   "spreads quoted at historical blocks via archive eth_call; no execution; gas floor from fork measurements"
+  ]
+ }
+}
