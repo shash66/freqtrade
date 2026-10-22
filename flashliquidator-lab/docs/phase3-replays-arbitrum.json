@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-22T08:45:32.424945+00:00",
+ "generated_at": "2026-10-22T09:14:16.589752+00:00",
  "network": "arbitrum",
  "items": [
   {
@@ -20,12 +20,12 @@
    "status": "EXECUTED",
    "reason": null,
    "detail": {
-    "rpc_block": 517175328,
-    "latency_ms": 485,
+    "rpc_block": 517181771,
+    "latency_ms": 540,
     "address_book_version": "4.44.22",
     "verified": true,
     "error": null,
-    "checked_at": "2026-10-22T08:45:34.965731+00:00",
+    "checked_at": "2026-10-22T09:14:19.458209+00:00",
     "flashloan_premium_total_bps": 5,
     "flashloan_premium_to_protocol_bps": 10000
    }
@@ -61,11 +61,12 @@
      "flash_loan_receiver": 4
     },
     "profitable": 0,
-    "unprofitable_after_costs": 0,
-    "succeeded_with_incomplete_costs": 1,
-    "net_profit_usd_total_complete": null,
+    "unprofitable_after_costs": 1,
+    "succeeded_with_incomplete_costs": 0,
+    "net_profit_usd_total_complete": "-0.016862000000000000",
     "fee_sources": {
-     "unknown": 4
+     "unknown": 3,
+     "estimated": 1
     },
     "not_eligible_at_block_boundary": 2,
     "eligible_at_execution_only": 1,
@@ -177,18 +178,19 @@
       "simplified": false,
       "revert_reason": null,
       "eligible_at_fork": true,
-      "net_profit_usd": null,
+      "net_profit_usd": "-0.016862000000000000",
       "premium_raw": "38",
       "swap_out_raw": "79342",
       "gas_used": 418808,
       "fees": {
        "l2_execution_wei": "8397100400000",
-       "l1_data_wei": null,
-       "total_wei": null,
-       "source": "unknown",
-       "method": "estimate failed",
+       "l1_data_wei": "69715450000",
+       "total_wei": "8466815850000",
+       "source": "estimated",
+       "method": "arbitrum_node_interface.gasEstimateL1Component * baseFee",
        "notes": [
-        "RpcUnavailable: arbitrum-anvil: {'code': -32003, 'message': 'EVM error InvalidFEOpcode'}"
+        "L1 component = 3475 L2 gas units at base fee 20062000 wei",
+        "estimated on the real RPC at block 516312371 (Anvil does not emulate the node's fee interface)"
        ]
       },
       "collateral_seized_raw": "79342",
@@ -202,27 +204,25 @@
       "health_factor_at_fork": "0.996321872094633355",
       "health_factor_at_execution": "0.996321872094633355",
       "surplus_raw": 3378,
-      "profit_complete": false,
+      "profit_complete": true,
       "reconciliation": {
-       "complete": "False",
+       "complete": "True",
        "surplus_raw": "3378",
        "surplus_matches_event": "True",
        "l2_execution_wei": "8397100400000",
-       "l1_data_wei": null,
-       "l1_source": "unknown",
-       "total_fee_wei": null,
-       "fee_usd": null,
-       "fee_in_debt_raw": null,
-       "net_profit_debt_raw": null,
-       "net_profit_usd": null,
+       "l1_data_wei": "69715450000",
+       "l1_source": "estimated",
+       "total_fee_wei": "8466815850000",
+       "fee_usd": "0.020236",
+       "fee_in_debt_raw": "20261",
+       "net_profit_debt_raw": "-16883",
+       "net_profit_usd": "-0.016862",
        "gross_surplus_usd": "0.003374",
-       "missing": [
-        "L1 data fee unknown (unknown)"
-       ]
+       "missing": []
       },
       "warnings": [
        "same-asset liquidation: no swap executed; swapOut = collateral received",
-       "profit INCOMPLETE: L1 data fee unknown (unknown)",
+       "L1 data fee estimated on the real RPC at block 516312371, not on the fork",
        "result reused from an earlier run"
       ],
       "historical_liquidator": "0xa6192030621e3135f08EEf17F5C92Db91Fd69D14",
@@ -293,12 +293,12 @@
     "classes": {
      "not_eligible_at_block_boundary": 2,
      "aave_rule_revert_while_eligible_at_boundary": 1,
-     "succeeded_but_cost_unknown": 1
+     "unprofitable_after_costs": 1
     },
     "examples": {
      "not_eligible_at_block_boundary": "0xf365aef0152ab2fedfec691c1b271e65d9bc972c94fbaabcff4bf3bf47a8cc03",
      "aave_rule_revert_while_eligible_at_boundary": "0xef1db8a92c6e119358074d740bfcd515e4d887866ed53fa7e61c19da7134bc7a",
-     "succeeded_but_cost_unknown": "0xaac673ad29ec3738810432400d9572d4c6be7cd19162fb958b7c2a30e60c533d"
+     "unprofitable_after_costs": "0xaac673ad29ec3738810432400d9572d4c6be7cd19162fb958b7c2a30e60c533d"
     }
    }
   },
