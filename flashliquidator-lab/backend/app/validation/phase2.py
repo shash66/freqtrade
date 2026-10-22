@@ -109,8 +109,12 @@ def step_reconcile(rep: Report, net: NetworkConfig) -> None:
         it.status, it.reason = "FAILED", f"{type(e).__name__}: {str(e)[:300]}"
 
 
-def step_replays(rep: Report, net: NetworkConfig, max_replays: int) -> None:
-    it = rep.add(Item("replay", f"Replay up to {max_replays} recorded liquidations through the flash-loan receiver on Anvil forks"))
+def step_replays(rep: Report, net: NetworkConfig, max_replays: int, batch: str = "phase2") -> None:
+    """Replay recorded liquidation *events* (one row per LiquidationCall log). Reporting is normalised:
+    unique historical transactions, liquidation events, and simulation attempts are counted separately, and
+    every outcome is taken from the final attempt of the event's run in this batch, so retries never inflate
+    success or profit counts."""
+    it = rep.add(Item("replay", f"Replay up to {max_replays} recorded liquidations through the flash-loan receiver on Anvil forks (batch {batch})"))
     s = get_settings()
     if not net.archive_rpc:
         it.reason = f"no archive RPC configured ({net.slug.upper()}_ARCHIVE_RPC empty); forks at historical blocks need archive state"
@@ -132,7 +136,7 @@ def step_replays(rep: Report, net: NetworkConfig, max_replays: int) -> None:
         with get_sessionmaker()() as db:
             done = db.execute(select(m.SimulationRun, m.SimulationResult).join(m.SimulationResult, m.SimulationResult.run_id == m.SimulationRun.id)
                               .where(m.SimulationRun.kind == "historical_replay", m.SimulationRun.historical_liquidation_id == h.id,
-                                     m.SimulationRun.input_params["phase2"].as_boolean().is_(True))).first()
+                                     m.SimulationRun.batch == batch).order_by(m.SimulationRun.id.desc())).first()
         if done is not None:  # resume: reuse the persisted result of an earlier run
             run, res = done
             r = _replay_from_db(run, res)
@@ -145,13 +149,13 @@ def step_replays(rep: Report, net: NetworkConfig, max_replays: int) -> None:
                 from app.simulation.replay import ReplayResult
                 r = ReplayResult(False, f"replay crashed: {type(e).__name__}: {str(e)[:200]}", None, None, True, None, None, None, None, None,
                                  None, None, None, None, None, None, None, warnings=["code or infrastructure failure; see revert_reason"],
-                                 assumptions=[], rpc_capability={}, execution_path="none")
+                                 assumptions=[], rpc_capability={}, execution_path="none", profit_complete=False)
             with get_sessionmaker()() as db:
                 run = m.SimulationRun(chain_id=net.chain_id, kind="historical_replay", status=m.JobStatus.running, fork_block_number=h.block_number - 1,
                                       historical_liquidation_id=h.id, pool_address=net.market.pool, pool_impl_address=h.pool_impl_address,
                                       input_params={"borrower": h.borrower, "collateral_asset": h.collateral_asset, "debt_asset": h.debt_asset,
                                                     "debt_to_cover_raw": str(h.debt_repaid_raw), "block_number": h.block_number, "historical_tx": h.tx_hash,
-                                                    "phase2": True}, code_version=s.app_version)
+                                                    "batch": batch}, code_version=s.app_version, batch=batch)
                 db.add(run)
                 db.flush()
                 _store_result(db, run, r)
@@ -161,17 +165,38 @@ def step_replays(rep: Report, net: NetworkConfig, max_replays: int) -> None:
                         "eligible_at_fork": r.eligible_at_fork, "net_profit_usd": None if r.net_profit_usd is None else str(r.net_profit_usd),
                         "premium_raw": r.flash_premium_raw, "swap_out_raw": r.swap_proceeds_raw, "gas_used": r.gas_used, "fees": r.fees,
                         "collateral_seized_raw": r.collateral_seized_raw, "debt_repaid_raw": r.debt_repaid_raw, "gas_cost_usd": None if r.gas_cost_usd is None else str(r.gas_cost_usd),
-                        "retried": r.retried, "historical_collateral_seized_raw": h.collateral_seized_raw, "historical_gas_used": h.gas_used,
+                        "retried": r.retried, "attempts": r.attempts, "historical_collateral_seized_raw": h.collateral_seized_raw,
+                        "historical_gas_used": h.gas_used, "eligible_at_execution": r.eligible_at_execution,
+                        "health_factor_at_fork": r.health_factor_at_fork, "health_factor_at_execution": r.health_factor_at_execution,
+                        "surplus_raw": r.surplus_raw, "profit_complete": r.profit_complete, "reconciliation": r.reconciliation,
                         "warnings": r.warnings, "historical_liquidator": h.liquidator, "historical_l1_fee_wei": h.l1_fee_wei,
-                        "historical_fee_source": h.fee_source})
+                        "historical_fee_source": h.fee_source, "event_id": h.id, "log_index": h.log_index})
+    it.detail = summarize_replays(results, batch)
+    it.status = "EXECUTED"
+
+
+def summarize_replays(results: list[dict], batch: str) -> dict:
+    """Normalised counts. `profitable` requires a complete cost picture (profit_complete True) and net > 0;
+    successes whose costs are not all known are reported separately and never as net profitable."""
     paths = Counter(x["execution_path"] for x in results)
     ok = [x for x in results if x["success"]]
-    profits = [Decimal(x["net_profit_usd"]) for x in ok if x["net_profit_usd"] is not None]
-    it.detail = {"replayed": len(results), "succeeded": len(ok), "reverted": len(results) - len(ok), "execution_paths": dict(paths),
-                 "profitable": sum(1 for p in profits if p > 0), "net_profit_usd_total": str(sum(profits, Decimal(0))) if profits else None,
-                 "fee_sources": dict(Counter((x["fees"] or {}).get("source") for x in results)),
-                 "not_eligible_at_block_boundary": sum(1 for x in results if x["eligible_at_fork"] is False), "results": results}
-    it.status = "EXECUTED"
+    complete_ok = [x for x in ok if x.get("profit_complete") is True and x["net_profit_usd"] is not None]
+    profits = [Decimal(x["net_profit_usd"]) for x in complete_ok]
+    eligibility = Counter(f"fork={x['eligible_at_fork']},execution={x.get('eligible_at_execution')}" for x in results)
+    return {"batch": batch,
+            "unique_historical_txs": len({x["tx"] for x in results}),
+            "liquidation_events": len(results),
+            "simulation_attempts": sum(int(x.get("attempts") or 1) for x in results),
+            "events_with_retry": sum(1 for x in results if (x.get("attempts") or 1) > 1),
+            "succeeded": len(ok), "reverted": len(results) - len(ok), "execution_paths": dict(paths),
+            "profitable": sum(1 for p in profits if p > 0),
+            "unprofitable_after_costs": sum(1 for p in profits if p <= 0),
+            "succeeded_with_incomplete_costs": len(ok) - len(complete_ok),
+            "net_profit_usd_total_complete": str(sum(profits, Decimal(0))) if profits else None,
+            "fee_sources": dict(Counter((x["fees"] or {}).get("source") for x in results)),
+            "not_eligible_at_block_boundary": sum(1 for x in results if x["eligible_at_fork"] is False),
+            "eligible_at_execution_only": sum(1 for x in results if x["eligible_at_fork"] is False and x.get("eligible_at_execution") is True),
+            "eligibility": dict(eligibility), "results": results}
 
 
 def _replay_from_db(run: m.SimulationRun, res: m.SimulationResult):
@@ -182,7 +207,9 @@ def _replay_from_db(run: m.SimulationRun, res: m.SimulationResult):
                         res.swap_proceeds_raw, res.flash_premium_raw, res.gas_used, res.gas_price_wei, None, res.net_profit_debt_raw,
                         res.net_profit_usd, res.calldata_hex, trace_summary=ts.get("calls", []), warnings=list(res.warnings or []) + ["result reused from an earlier run"],
                         assumptions=list(res.assumptions or []), rpc_capability=run.rpc_capability or {}, execution_path=res.execution_path or "none",
-                        fees=res.fees)
+                        fees=res.fees, attempts=run.attempts or 1, eligible_at_execution=res.eligible_at_execution,
+                        health_factor_at_execution=ts.get("health_factor_at_execution"), surplus_raw=int(res.surplus_raw) if res.surplus_raw is not None else None,
+                        profit_complete=res.profit_complete, reconciliation=res.reconciliation)
 
 
 def step_failure_triage(rep: Report) -> None:
@@ -195,7 +222,9 @@ def step_failure_triage(rep: Report) -> None:
     classes = Counter()
     examples = {}
     for r in replay.detail["results"]:
-        if r["success"] and r["net_profit_usd"] is not None and Decimal(r["net_profit_usd"]) <= 0:
+        if r["success"] and r.get("profit_complete") is not True:
+            c = "succeeded_but_cost_unknown"
+        elif r["success"] and Decimal(r["net_profit_usd"]) <= 0:
             c = "unprofitable_after_costs"
         elif r["success"]:
             c = "profitable"
@@ -232,7 +261,7 @@ def step_competitors(rep: Report, net: NetworkConfig) -> None:
     it.status = "EXECUTED"
 
 
-def run(slug: str, blocks: int, replays: int) -> Report:
+def run(slug: str, blocks: int, replays: int, batch: str = "phase2") -> Report:
     s = get_settings()
     configure_logging(s.log_level, json_output=False)
     net = _net(slug)
@@ -247,7 +276,7 @@ def run(slug: str, blocks: int, replays: int) -> Report:
         return rep
     step_index(rep, net, client, blocks)
     step_reconcile(rep, net)
-    step_replays(rep, net, replays)
+    step_replays(rep, net, replays, batch)
     step_failure_triage(rep)
     step_competitors(rep, net)
     return rep
@@ -260,8 +289,9 @@ def main() -> int:
     ap.add_argument("--replays", type=int, default=25)
     ap.add_argument("--out", default=None)
     ap.add_argument("--json", default=None)
+    ap.add_argument("--batch", default="phase2", help="label grouping persisted replay runs; a new label replays every event afresh")
     a = ap.parse_args()
-    rep = run(a.network, a.blocks, a.replays)
+    rep = run(a.network, a.blocks, a.replays, a.batch)
     md = rep.to_markdown()
     print(md)
     if a.out:

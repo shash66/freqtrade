@@ -291,6 +291,8 @@ class SimulationRun(TimestampMixin, Base):
     code_version: Mapped[str] = mapped_column(String(64), nullable=False)
     rpc_capability: Mapped[dict | None] = mapped_column(JSON)
     strategy_key: Mapped[str | None] = mapped_column(String(32))
+    attempts: Mapped[int | None] = mapped_column(Integer)     # fork attempts made for this run (retries included)
+    batch: Mapped[str | None] = mapped_column(String(32))     # e.g. phase3-base; groups runs for reporting
     started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     error: Mapped[str | None] = mapped_column(Text)
@@ -314,6 +316,12 @@ class SimulationResult(TimestampMixin, Base):
     calldata_hex: Mapped[str | None] = mapped_column(Text)  # local simulation only; never broadcast
     fees: Mapped[dict | None] = mapped_column(JSON)          # FeeAccounting.as_dict(): l2/l1/total wei + source
     execution_path: Mapped[str | None] = mapped_column(String(32))  # flash_loan_receiver | direct_liquidation_call
+    surplus_raw: Mapped[int | None] = mapped_column(RAW)      # receiver event surplus (swapOut − repaid − premium)
+    gas_cost_usd: Mapped[Numeric | None] = mapped_column(USD) # L2 execution + L1 data, USD
+    profit_complete: Mapped[bool | None] = mapped_column(Boolean)  # every material cost known
+    eligible_at_fork: Mapped[bool | None] = mapped_column(Boolean)       # HF < 1 at the fork block (N-1 state)
+    eligible_at_execution: Mapped[bool | None] = mapped_column(Boolean)  # HF < 1 at the execution block's timestamp, before block N's txs
+    reconciliation: Mapped[dict | None] = mapped_column(JSON) # ProfitReconciliation.as_dict()
     warnings: Mapped[list | None] = mapped_column(JSON)
     assumptions: Mapped[list | None] = mapped_column(JSON)
 

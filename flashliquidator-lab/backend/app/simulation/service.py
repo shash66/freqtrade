@@ -28,9 +28,13 @@ def _store_result(db: Session, run: m.SimulationRun, r: ReplayResult) -> None:
                               flash_premium_raw=r.flash_premium_raw, gas_used=r.gas_used, gas_price_wei=r.gas_price_wei,
                               net_profit_debt_raw=r.net_profit_debt_raw, net_profit_usd=r.net_profit_usd,
                               trace_summary={"calls": r.trace_summary, "health_factor_at_fork": r.health_factor_at_fork,
-                                             "eligible_at_fork": r.eligible_at_fork, "funding_path": r.funding_path},
+                                             "eligible_at_fork": r.eligible_at_fork, "funding_path": r.funding_path,
+                                             "health_factor_at_execution": r.health_factor_at_execution},
                               calldata_hex=r.calldata_hex, warnings=r.warnings, assumptions=r.assumptions,
-                              fees=r.fees, execution_path=r.execution_path))
+                              fees=r.fees, execution_path=r.execution_path, surplus_raw=r.surplus_raw, gas_cost_usd=r.gas_cost_usd,
+                              profit_complete=r.profit_complete, eligible_at_fork=r.eligible_at_fork,
+                              eligible_at_execution=r.eligible_at_execution, reconciliation=r.reconciliation))
+    run.attempts = r.attempts
 
 
 def execute_simulation_run(run_id: int, networks: dict[str, NetworkConfig]) -> dict:

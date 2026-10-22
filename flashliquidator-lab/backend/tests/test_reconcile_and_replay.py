@@ -16,7 +16,9 @@ def test_priority_prefers_lower_hf_then_larger_debt():
     assert priority_score(2**256 - 1, 0, 10**8) == 0  # no debt
 
 
-def test_replay_without_rpc_is_skipped_not_faked():
+def test_replay_without_rpc_is_skipped_not_faked(monkeypatch):
+    for var in ("BASE_RPC_HTTP", "BASE_ARCHIVE_RPC", "BASE_RPC_WS"):
+        monkeypatch.delenv(var, raising=False)
     get_settings.cache_clear()
     net = build_networks(get_settings())["base"]
     assert not net.archive_rpc and not net.rpc_http
