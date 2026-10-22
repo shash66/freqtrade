@@ -11,5 +11,6 @@ export const NAV: NavItem[] = [
   { href: "/backtests", label: "Historical Backtesting", short: "BT", description: "Replay strategies over past blocks" },
   { href: "/competition", label: "Competition Lab", short: "CL", description: "Model competing liquidators" },
   { href: "/simulator", label: "Flash-Loan Simulator", short: "FS", description: "Simulate a single liquidation" },
+  { href: "/research", label: "Research", short: "RS", description: "Networks, protocols, observability and latency" },
   { href: "/settings", label: "Settings", short: "ST", description: "Read-only runtime configuration" },
 ];

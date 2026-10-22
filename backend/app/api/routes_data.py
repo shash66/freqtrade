@@ -121,7 +121,7 @@ def liquidation_history(request: Request, db: Session = Depends(get_db), network
 @router.get("/opportunities", response_model=Page[OpportunityOut])
 def opportunities(request: Request, db: Session = Depends(get_db), network: str | None = None,
                   status: str | None = Query(None, pattern="^(candidate|simulated|invalid|expired|incomplete)$"),
-                  min_profit_usd: Decimal | None = None, sort: str = Query("net_profit", pattern="^(net_profit|created|health_factor)$"),
+                  min_profit_usd: Decimal | None = None, sort: str = Query("attainable", pattern="^(attainable|net_profit|created|health_factor)$"),
                   limit: int = Query(50, ge=1, le=500), offset: int = Query(0, ge=0)):
     chains = list(_chain(request, network).values())
     q = select(m.LiquidationCandidate).where(m.LiquidationCandidate.chain_id.in_(chains))
@@ -129,7 +129,8 @@ def opportunities(request: Request, db: Session = Depends(get_db), network: str 
         q = q.where(m.LiquidationCandidate.status == m.CandidateStatus(status))
     if min_profit_usd is not None:
         q = q.where(m.LiquidationCandidate.net_profit_usd >= min_profit_usd)
-    order = {"net_profit": m.LiquidationCandidate.net_profit_usd.desc().nulls_last(),
+    order = {"attainable": m.LiquidationCandidate.attainable_net_profit_usd.desc().nulls_last(),
+             "net_profit": m.LiquidationCandidate.net_profit_usd.desc().nulls_last(),
              "created": m.LiquidationCandidate.created_at.desc(),
              "health_factor": m.LiquidationCandidate.health_factor_wad.asc()}[sort]
     total = db.scalar(select(func.count()).select_from(q.subquery())) or 0
@@ -167,6 +168,7 @@ def _opportunity_out(request: Request, db: Session, c: m.LiquidationCandidate) -
         bonus_bps=c.liquidation_bonus_bps, flash_loan_fee=str(to_units(int(c.flash_premium_raw), da.decimals)) if da else str(c.flash_premium_raw),
         swap_impact_bps=None if not c.breakdown else c.breakdown.get("swap_impact_bps"),
         gas_usd=None if c.gas_cost_usd is None else str(c.gas_cost_usd), net_profit_usd=None if c.net_profit_usd is None else str(c.net_profit_usd),
+        attainable_net_profit_usd=None if c.attainable_net_profit_usd is None else str(c.attainable_net_profit_usd), observability=c.observability,
         status=c.status.value, outcome_class=c.outcome_class.value, block_number=c.block_number,
         incomplete_reasons=c.incomplete_reasons, created_at=c.created_at)
 

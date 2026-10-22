@@ -28,7 +28,7 @@ const STATUS_TONE: Record<string, BadgeTone> = {
 type SortDir = "asc" | "desc";
 const PAGE_SIZE = 50;
 /** Columns the backend can order by; everything else is sorted client-side within the page. */
-const SERVER_SORT: Record<string, string> = { net_profit_usd: "net_profit", created_at: "created", health_factor: "health_factor" };
+const SERVER_SORT: Record<string, string> = { attainable_net_profit_usd: "attainable", net_profit_usd: "net_profit", created_at: "created", health_factor: "health_factor" };
 
 function numeric(v: string | number | null | undefined): number {
   if (v === null || v === undefined) return Number.NEGATIVE_INFINITY;
@@ -41,7 +41,7 @@ export default function OpportunitiesPage() {
   const [network, setNetwork] = useState("");
   const [status, setStatus] = useState("");
   const [minProfit, setMinProfit] = useState("");
-  const [sort, setSort] = useState<{ field: string; dir: SortDir } | null>({ field: "net_profit_usd", dir: "desc" });
+  const [sort, setSort] = useState<{ field: string; dir: SortDir } | null>({ field: "attainable_net_profit_usd", dir: "desc" });
   const [offset, setOffset] = useState(0);
   const [selected, setSelected] = useState<Opportunity | null>(null);
 
@@ -191,6 +191,7 @@ export default function OpportunitiesPage() {
                   <SortableTh label="Swap impact" field="swap_impact_bps" sort={sort} onSort={onSort} align="right" />
                   <SortableTh label="Gas" field="gas_usd" sort={sort} onSort={onSort} align="right" />
                   <SortableTh label="Net profit" field="net_profit_usd" sort={sort} onSort={onSort} align="right" />
+                  <SortableTh label="Attainable (modeled)" field="attainable_net_profit_usd" sort={sort} onSort={onSort} align="right" />
                   <SortableTh label="Status" field="status" sort={sort} onSort={onSort} />
                 </tr>
               </THead>
@@ -236,6 +237,9 @@ export default function OpportunitiesPage() {
                       <Td align="right">{fmtUsd(o.gas_usd)}</Td>
                       <Td align="right" className={net > 0 ? "font-semibold text-good" : net < 0 && Number.isFinite(net) ? "text-bad" : ""}>
                         {fmtUsd(o.net_profit_usd)}
+                      </Td>
+                      <Td align="right" title={o.observability ? `observability: ${o.observability}` : undefined}>
+                        {fmtUsd(o.attainable_net_profit_usd)}
                       </Td>
                       <Td>
                         <Badge tone={STATUS_TONE[o.status] ?? "neutral"}>{o.status}</Badge>

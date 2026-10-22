@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 from prometheus_client import Gauge
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api import routes_competition, routes_core, routes_data, routes_sim, routes_ws
+from app.api import routes_competition, routes_core, routes_data, routes_research, routes_sim, routes_ws
 from app.chains.config import build_networks
 from app.chains.rpc import RpcClient
 from app.chains.validation import verify_deployment
@@ -85,6 +85,7 @@ def create_app() -> FastAPI:
     app.include_router(routes_data.router)
     app.include_router(routes_sim.router)
     app.include_router(routes_competition.router)
+    app.include_router(routes_research.router)
     app.include_router(routes_ws.router)
 
     @app.exception_handler(StarletteHTTPException)

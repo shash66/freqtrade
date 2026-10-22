@@ -179,5 +179,30 @@ def _store(db: Session, net, b, block, block_hash, pos, outcome, report, rules, 
         breakdown=(dict(report.breakdown, sensitivity=report.sensitivity, failed_attempt_cost_usd=str(report.failed_attempt_cost_usd)) if report else None),
         data_sources={"oracle": net.market.oracle, "pool": net.market.pool, "block": block, "block_hash": block_hash,
                       "rules_version": rules.version, "address_book": "bgd-labs/aave-address-book"})
+    if report is not None and report.complete and report.net_profit_usd is not None:
+        _rank(db, net, c, report)
     db.add(c)
     return c
+
+
+def _rank(db: Session, net, c: m.LiquidationCandidate, report) -> None:
+    """Modeled attainable net profit (Phase 4): the candidate is liquidatable under the Pool's own prices now, so its
+    observability class is publicly_observable; the win probability comes from this Pool's observed winning bids."""
+    from app.competition.attainable import AttainableInputs, attainable
+    rows = db.execute(select(m.HistoricalLiquidation.tx_hash, m.HistoricalLiquidation.effective_gas_price_wei, m.HistoricalLiquidation.liquidator)
+                      .where(m.HistoricalLiquidation.chain_id == net.chain_id, m.HistoricalLiquidation.effective_gas_price_wei.is_not(None))
+                      .order_by(m.HistoricalLiquidation.block_number.desc()).limit(500)).all()
+    by_tx: dict[str, tuple[int, str]] = {}
+    for tx, gp, liq in rows:
+        by_tx.setdefault(tx, (int(gp), liq))
+    bids = [gp for gp, _ in by_tx.values()]
+    shares: dict[str, int] = {}
+    for _, liq in by_tx.values():
+        shares[liq] = shares.get(liq, 0) + 1
+    competitors = sum(1 for n in shares.values() if n / max(len(by_tx), 1) >= 0.05)
+    bid = sorted(bids)[len(bids) // 2] if bids else None
+    a = attainable(AttainableInputs(report.net_profit_usd, report.failed_attempt_cost_usd, "publicly_observable", bid, bids, competitors))
+    c.attainable_net_profit_usd = a.attainable_net_profit_usd
+    c.observability = "publicly_observable"
+    c.attainable_inputs = a.as_dict()
+

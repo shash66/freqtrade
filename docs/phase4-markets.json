@@ -1,0 +1,462 @@
+{
+ "generated_at": "2026-10-22T12:58:35.152024+00:00",
+ "markets": [
+  {
+   "market": "aave_v3_base",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_base",
+   "network": "base",
+   "chain_id": 8453,
+   "name": "AaveV3Base",
+   "primary_address": "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5",
+   "oracle_address": "0x2Cc0Fc26eD4563A5ce5e8bdcfe1A2878676Ae156",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0xe20fCBdBfFC4Dd138cE8b2E6FBb6CB49777ad64D",
+    "data_provider": "0x0F43731EB8d45A581f4a36DD74F5f358bc90C73A"
+   },
+   "status": "verified",
+   "verification": {
+    "market": "aave_v3_base",
+    "status": "verified",
+    "chain_id_ok": true,
+    "bytecode_ok": true,
+    "round_trip_ok": true,
+    "head_block": 52942284,
+    "detail": {
+     "addresses_provider": "0xe20fCBdBfFC4Dd138cE8b2E6FBb6CB49777ad64D",
+     "flashloan_premium_total_bps": 5,
+     "reserves": 15
+    },
+    "reason": null
+   },
+   "recent_liquidation_events_last_blocks": {
+    "blocks": 100,
+    "events": 0
+   }
+  },
+  {
+   "market": "aave_v3_arbitrum",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_arbitrum",
+   "network": "arbitrum",
+   "chain_id": 42161,
+   "name": "AaveV3Arbitrum",
+   "primary_address": "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+   "oracle_address": "0xb56c2F0B653B2e0b10C9b928C8580Ac5Df02C7C7",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
+    "data_provider": "0x243Aa95cAC2a25651eda86e80bEe66114413c43b"
+   },
+   "status": "verified",
+   "verification": {
+    "market": "aave_v3_arbitrum",
+    "status": "verified",
+    "chain_id_ok": true,
+    "bytecode_ok": true,
+    "round_trip_ok": true,
+    "head_block": 517230477,
+    "detail": {
+     "addresses_provider": "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
+     "flashloan_premium_total_bps": 5,
+     "reserves": 20
+    },
+    "reason": null
+   },
+   "recent_liquidation_events_last_blocks": {
+    "blocks": 100,
+    "events": 0
+   }
+  },
+  {
+   "market": "aave_v3_ethereum",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_ethereum",
+   "network": "ethereum",
+   "chain_id": 1,
+   "name": "AaveV3Ethereum",
+   "primary_address": "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2",
+   "oracle_address": "0x54586bE62E3c3580375aE3723C145253060Ca0C2",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e",
+    "data_provider": "0x0a16f2FCC0D44FaE41cc54e079281D84A363bECD"
+   },
+   "status": "not_configured",
+   "reason": "set ETHEREUM_RPC_HTTP / ETHEREUM_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_ethereum_lido",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_ethereum_lido",
+   "network": "ethereum",
+   "chain_id": 1,
+   "name": "AaveV3EthereumLido",
+   "primary_address": "0x4e033931ad43597d96D6bcc25c280717730B58B1",
+   "oracle_address": "0xE3C061981870C0C7b1f3C4F4bB36B95f1F260BE6",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0xcfBf336fe147D643B9Cb705648500e101504B16d",
+    "data_provider": "0xB85B2bFEbeC4F5f401dbf92ac147A3076391fCD5"
+   },
+   "status": "not_configured",
+   "reason": "set ETHEREUM_RPC_HTTP / ETHEREUM_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_ethereum_etherfi",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_ethereum_etherfi",
+   "network": "ethereum",
+   "chain_id": 1,
+   "name": "AaveV3EthereumEtherFi",
+   "primary_address": "0x0AA97c284e98396202b6A04024F5E2c65026F3c0",
+   "oracle_address": "0x43b64f28A678944E0655404B0B98E443851cC34F",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0xeBa440B438Ad808101d1c451C1C5322c90BEFCdA",
+    "data_provider": "0x7c8509591f9693D21280d96e149a08A3bf69Cd0c"
+   },
+   "status": "not_configured",
+   "reason": "set ETHEREUM_RPC_HTTP / ETHEREUM_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_optimism",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_optimism",
+   "network": "optimism",
+   "chain_id": 10,
+   "name": "AaveV3Optimism",
+   "primary_address": "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+   "oracle_address": "0xD81eb3728a631871a7eBBaD631b5f424909f0c77",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
+    "data_provider": "0x243Aa95cAC2a25651eda86e80bEe66114413c43b"
+   },
+   "status": "not_configured",
+   "reason": "set OPTIMISM_RPC_HTTP / OPTIMISM_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_polygon",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_polygon",
+   "network": "polygon",
+   "chain_id": 137,
+   "name": "AaveV3Polygon",
+   "primary_address": "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+   "oracle_address": "0xb023e699F5a33916Ea823A16485e259257cA8Bd1",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
+    "data_provider": "0x243Aa95cAC2a25651eda86e80bEe66114413c43b"
+   },
+   "status": "not_configured",
+   "reason": "set POLYGON_RPC_HTTP / POLYGON_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_avalanche",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_avalanche",
+   "network": "avalanche",
+   "chain_id": 43114,
+   "name": "AaveV3Avalanche",
+   "primary_address": "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+   "oracle_address": "0xEBd36016B3eD09D4693Ed4251c67Bd858c3c7C9C",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
+    "data_provider": "0x243Aa95cAC2a25651eda86e80bEe66114413c43b"
+   },
+   "status": "not_configured",
+   "reason": "set AVALANCHE_RPC_HTTP / AVALANCHE_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_scroll",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_scroll",
+   "network": "scroll",
+   "chain_id": 534352,
+   "name": "AaveV3Scroll",
+   "primary_address": "0x11fCfe756c05AD438e312a7fd934381537D3cFfe",
+   "oracle_address": "0x04421D8C506E2fA2371a08EfAaBf791F624054F3",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0x69850D0B276776781C063771b161bd8894BCdD04",
+    "data_provider": "0xBEa2B648f05887eCbF1d115da8b7E4A317975A51"
+   },
+   "status": "not_configured",
+   "reason": "set SCROLL_RPC_HTTP / SCROLL_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_bnb",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_bnb",
+   "network": "bnb",
+   "chain_id": 56,
+   "name": "AaveV3BNB",
+   "primary_address": "0x6807dc923806fE8Fd134338EABCA509979a7e0cB",
+   "oracle_address": "0x39bc1bfDa2130d6Bb6DBEfd366939b4c7aa7C697",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0xff75B6da14FfbbfD355Daf7a2731456b3562Ba6D",
+    "data_provider": "0xc90Df74A7c16245c5F5C5870327Ceb38Fe5d5328"
+   },
+   "status": "not_configured",
+   "reason": "set BNB_RPC_HTTP / BNB_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_gnosis",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_gnosis",
+   "network": "gnosis",
+   "chain_id": 100,
+   "name": "AaveV3Gnosis",
+   "primary_address": "0xb50201558B00496A145fE76f7424749556E326D8",
+   "oracle_address": "0xeb0a051be10228213BAEb449db63719d6742F7c4",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0x36616cf17557639614c1cdDb356b1B83fc0B2132",
+    "data_provider": "0xF1F5acB596568895393cB5E4D0452D6592A2fA70"
+   },
+   "status": "not_configured",
+   "reason": "set GNOSIS_RPC_HTTP / GNOSIS_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_linea",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_linea",
+   "network": "linea",
+   "chain_id": 59144,
+   "name": "AaveV3Linea",
+   "primary_address": "0xc47b8C00b0f69a36fa203Ffeac0334874574a8Ac",
+   "oracle_address": "0xCFDAdA7DCd2e785cF706BaDBC2B8Af5084d595e9",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0x89502c3731F69DDC95B65753708A07F8Cd0373F4",
+    "data_provider": "0x47cd4b507B81cB831669c71c7077f4daF6762FF4"
+   },
+   "status": "not_configured",
+   "reason": "set LINEA_RPC_HTTP / LINEA_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_sonic",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_sonic",
+   "network": "sonic",
+   "chain_id": 146,
+   "name": "AaveV3Sonic",
+   "primary_address": "0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3",
+   "oracle_address": "0xD63f7658C66B2934Bd234D79D06aEF5290734B30",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0x5C2e738F6E27bCE0F7558051Bf90605dD6176900",
+    "data_provider": "0xc0a344397cfa89dF1e1d3e4fb330834D789cF2CD"
+   },
+   "status": "not_configured",
+   "reason": "set SONIC_RPC_HTTP / SONIC_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_celo",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_celo",
+   "network": "celo",
+   "chain_id": 42220,
+   "name": "AaveV3Celo",
+   "primary_address": "0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402",
+   "oracle_address": "0x1e693D088ceFD1E95ba4c4a5F7EeA41a1Ec37e8b",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0x9F7Cf9417D5251C59fE94fB9147feEe1aAd9Cea5",
+    "data_provider": "0x2e0f8D3B1631296cC7c56538D6Eb6032601E15ED"
+   },
+   "status": "not_configured",
+   "reason": "set CELO_RPC_HTTP / CELO_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_soneium",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_soneium",
+   "network": "soneium",
+   "chain_id": 1868,
+   "name": "AaveV3Soneium",
+   "primary_address": "0xDd3d7A7d03D9fD9ef45f3E587287922eF65CA38B",
+   "oracle_address": "0x20040a64612555042335926d72B4E5F667a67fA1",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0x82405D1a189bd6cE4667809C35B37fBE136A4c5B",
+    "data_provider": "0x4a24b44b252db149B5B9BCec4dc3c2752807d626"
+   },
+   "status": "not_configured",
+   "reason": "set SONEIUM_RPC_HTTP / SONEIUM_ARCHIVE_RPC"
+  },
+  {
+   "market": "aave_v3_plasma",
+   "protocol": "aave_v3",
+   "slug": "aave_v3_plasma",
+   "network": "plasma",
+   "chain_id": 9745,
+   "name": "AaveV3Plasma",
+   "primary_address": "0x925a2A7214Ed92428B5b1B090F80b25700095e12",
+   "oracle_address": "0x33E0b3fc976DC9C516926BA48CfC0A9E10a2aAA5",
+   "source": "@bgd-labs/aave-address-book 4.44.22",
+   "extra": {
+    "addresses_provider": "0x061D8e131F26512348ee5FA42e2DF1bA9d6505E9",
+    "data_provider": "0xf2D6E38B407e31E7E7e4a16E6769728b76c7419F"
+   },
+   "status": "not_configured",
+   "reason": "set PLASMA_RPC_HTTP / PLASMA_ARCHIVE_RPC"
+  },
+  {
+   "market": "compound_v3_base_usdc",
+   "protocol": "compound_v3",
+   "slug": "compound_v3_base_usdc",
+   "network": "base",
+   "chain_id": 8453,
+   "name": "Compound V3 Base USDC",
+   "primary_address": "0xb125E6687d4313864e53df431d5425969c15Eb2F",
+   "oracle_address": null,
+   "source": "docs.compound.finance Comet addresses",
+   "extra": {},
+   "status": "verified",
+   "verification": {
+    "market": "compound_v3_base_usdc",
+    "status": "verified",
+    "chain_id_ok": true,
+    "bytecode_ok": true,
+    "round_trip_ok": true,
+    "head_block": 52942287,
+    "detail": {
+     "base_token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+     "num_assets": 5,
+     "store_front_price_factor": 600000000000000000
+    },
+    "reason": null
+   },
+   "recent_liquidation_events_last_blocks": {
+    "blocks": 100,
+    "events": 0
+   }
+  },
+  {
+   "market": "compound_v3_base_weth",
+   "protocol": "compound_v3",
+   "slug": "compound_v3_base_weth",
+   "network": "base",
+   "chain_id": 8453,
+   "name": "Compound V3 Base WETH",
+   "primary_address": "0x46e6b214b524310239732D51387075E0e70970bf",
+   "oracle_address": null,
+   "source": "docs.compound.finance Comet addresses",
+   "extra": {},
+   "status": "verified",
+   "verification": {
+    "market": "compound_v3_base_weth",
+    "status": "verified",
+    "chain_id_ok": true,
+    "bytecode_ok": true,
+    "round_trip_ok": true,
+    "head_block": 52942288,
+    "detail": {
+     "base_token": "0x4200000000000000000000000000000000000006",
+     "num_assets": 8,
+     "store_front_price_factor": 700000000000000000
+    },
+    "reason": null
+   },
+   "recent_liquidation_events_last_blocks": {
+    "blocks": 100,
+    "events": 0
+   }
+  },
+  {
+   "market": "compound_v3_base_usdbc",
+   "protocol": "compound_v3",
+   "slug": "compound_v3_base_usdbc",
+   "network": "base",
+   "chain_id": 8453,
+   "name": "Compound V3 Base USDbC",
+   "primary_address": "0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf",
+   "oracle_address": null,
+   "source": "docs.compound.finance Comet addresses",
+   "extra": {},
+   "status": "verified",
+   "verification": {
+    "market": "compound_v3_base_usdbc",
+    "status": "verified",
+    "chain_id_ok": true,
+    "bytecode_ok": true,
+    "round_trip_ok": true,
+    "head_block": 52942289,
+    "detail": {
+     "base_token": "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+     "num_assets": 2,
+     "store_front_price_factor": 600000000000000000
+    },
+    "reason": null
+   },
+   "recent_liquidation_events_last_blocks": {
+    "blocks": 100,
+    "events": 0
+   }
+  },
+  {
+   "market": "compound_v3_arbitrum_usdc",
+   "protocol": "compound_v3",
+   "slug": "compound_v3_arbitrum_usdc",
+   "network": "arbitrum",
+   "chain_id": 42161,
+   "name": "Compound V3 Arbitrum USDC",
+   "primary_address": "0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf",
+   "oracle_address": null,
+   "source": "docs.compound.finance Comet addresses",
+   "extra": {},
+   "status": "verified",
+   "verification": {
+    "market": "compound_v3_arbitrum_usdc",
+    "status": "verified",
+    "chain_id_ok": true,
+    "bytecode_ok": true,
+    "round_trip_ok": true,
+    "head_block": 517230513,
+    "detail": {
+     "base_token": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+     "num_assets": 9,
+     "store_front_price_factor": 600000000000000000
+    },
+    "reason": null
+   },
+   "recent_liquidation_events_last_blocks": {
+    "blocks": 100,
+    "events": 0
+   }
+  }
+ ],
+ "summary": {
+  "markets": 20,
+  "verified": 6,
+  "failed": 0,
+  "blocked": 0,
+  "not_configured": 14,
+  "protocols": [
+   "aave_v3",
+   "compound_v3"
+  ],
+  "chains": [
+   1,
+   10,
+   56,
+   100,
+   137,
+   146,
+   1868,
+   8453,
+   9745,
+   42161,
+   42220,
+   43114,
+   59144,
+   534352
+  ]
+ }
+}
