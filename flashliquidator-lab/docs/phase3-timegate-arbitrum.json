@@ -1,0 +1,110 @@
+{
+ "network": "arbitrum",
+ "events": [
+  {
+   "tx": "0xf365aef0152ab2fedfec691c1b271e65d9bc972c94fbaabcff4bf3bf47a8cc03",
+   "log_index": 15,
+   "block": 517085787,
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "collateral": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+   "debt": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+   "probe": {
+    "base_timestamp": 1792633266,
+    "max_seconds": 120,
+    "step": 5,
+    "assets": {
+     "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f": {
+      "price_at_boundary": 8366988428562,
+      "revealed_price": 8361558397217,
+      "reveal_after_seconds": 30
+     },
+     "0xaf88d065e77c8cC2239327C5EDb3A432268e5831": {
+      "price_at_boundary": 99990000,
+      "revealed_price": null,
+      "reveal_after_seconds": null
+     }
+    },
+    "note": "price change with no transaction applied = pending oracle round hidden behind a time gate at N-1",
+    "network": "arbitrum",
+    "block_number": 517085787
+   }
+  },
+  {
+   "tx": "0xef1db8a92c6e119358074d740bfcd515e4d887866ed53fa7e61c19da7134bc7a",
+   "log_index": 14,
+   "block": 516716800,
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "collateral": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+   "debt": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+   "probe": {
+    "base_timestamp": 1792531145,
+    "max_seconds": 120,
+    "step": 5,
+    "assets": {
+     "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8": {
+      "price_at_boundary": 99983761,
+      "revealed_price": null,
+      "reveal_after_seconds": null
+     }
+    },
+    "note": "price change with no transaction applied = pending oracle round hidden behind a time gate at N-1",
+    "network": "arbitrum",
+    "block_number": 516716800
+   }
+  },
+  {
+   "tx": "0xaac673ad29ec3738810432400d9572d4c6be7cd19162fb958b7c2a30e60c533d",
+   "log_index": 23,
+   "block": 516312371,
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "collateral": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+   "debt": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+   "probe": {
+    "base_timestamp": 1792420161,
+    "max_seconds": 120,
+    "step": 5,
+    "assets": {
+     "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9": {
+      "price_at_boundary": 99872897,
+      "revealed_price": null,
+      "reveal_after_seconds": null
+     }
+    },
+    "note": "price change with no transaction applied = pending oracle round hidden behind a time gate at N-1",
+    "network": "arbitrum",
+    "block_number": 516312371
+   }
+  },
+  {
+   "tx": "0x4ec4b9b020a915fcc79f039060b8f5bbc32d9d55b9b3197c6a9d48a998707340",
+   "log_index": 59,
+   "block": 516296225,
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "collateral": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+   "debt": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+   "probe": {
+    "base_timestamp": 1792415948,
+    "max_seconds": 120,
+    "step": 5,
+    "assets": {
+     "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1": {
+      "price_at_boundary": 242019425848,
+      "revealed_price": null,
+      "reveal_after_seconds": null
+     }
+    },
+    "note": "price change with no transaction applied = pending oracle round hidden behind a time gate at N-1",
+    "network": "arbitrum",
+    "block_number": 516296225
+   }
+  }
+ ],
+ "summary": {
+  "events": 4,
+  "unique_blocks_probed": 4,
+  "events_with_time_gated_round_at_n_minus_1": 1,
+  "reveal_seconds": [
+   30
+  ]
+ }
+}

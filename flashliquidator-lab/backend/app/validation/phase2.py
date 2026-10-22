@@ -116,7 +116,8 @@ def step_reconcile(rep: Report, net: NetworkConfig) -> None:
         it.status, it.reason = "FAILED", f"{type(e).__name__}: {str(e)[:300]}"
 
 
-def step_replays(rep: Report, net: NetworkConfig, max_replays: int, batch: str = "phase2") -> None:
+def step_replays(rep: Report, net: NetworkConfig, max_replays: int, batch: str = "phase2", only_tx: set[str] | None = None,
+                 fresh: bool = False) -> None:
     """Replay recorded liquidation *events* (one row per LiquidationCall log). Reporting is normalised:
     unique historical transactions, liquidation events, and simulation attempts are counted separately, and
     every outcome is taken from the final attempt of the event's run in this batch, so retries never inflate
@@ -135,6 +136,8 @@ def step_replays(rep: Report, net: NetworkConfig, max_replays: int, batch: str =
                           .where(m.HistoricalLiquidation.chain_id == net.chain_id, _verified_pool(net),
                                  (m.HistoricalLiquidation.tx_status.is_(None)) | (m.HistoricalLiquidation.tx_status >= 0))
                           .order_by(m.HistoricalLiquidation.block_number.desc()).limit(max_replays)).all()
+    if only_tx:
+        liqs = [h for h in liqs if h.tx_hash.lower() in only_tx]
     if not liqs:
         it.status, it.reason = "SKIPPED", "no recorded liquidations to replay (index a wider range first)"
         return
@@ -145,7 +148,7 @@ def step_replays(rep: Report, net: NetworkConfig, max_replays: int, batch: str =
             done = db.execute(select(m.SimulationRun, m.SimulationResult).join(m.SimulationResult, m.SimulationResult.run_id == m.SimulationRun.id)
                               .where(m.SimulationRun.kind == "historical_replay", m.SimulationRun.historical_liquidation_id == h.id,
                                      m.SimulationRun.batch == batch).order_by(m.SimulationRun.id.desc())).first()
-        if done is not None:  # resume: reuse the persisted result of an earlier run
+        if done is not None and not fresh:  # resume: reuse the persisted result of the latest earlier run
             run, res = done
             r = _replay_from_db(run, res)
         else:
@@ -272,7 +275,7 @@ def step_competitors(rep: Report, net: NetworkConfig) -> None:
     it.status = "EXECUTED"
 
 
-def run(slug: str, blocks: int, replays: int, batch: str = "phase2") -> Report:
+def run(slug: str, blocks: int, replays: int, batch: str = "phase2", only_tx: set[str] | None = None, fresh: bool = False) -> Report:
     s = get_settings()
     configure_logging(s.log_level, json_output=False)
     net = _net(slug)
@@ -291,7 +294,7 @@ def run(slug: str, blocks: int, replays: int, batch: str = "phase2") -> Report:
     else:  # replay-only batch: reuse what is already indexed
         rep.add(Item("index", "Index Pool events", "SKIPPED", reason="--blocks 0: replay-only batch over already indexed liquidations"))
         rep.add(Item("reconcile", "Reconcile borrowers", "SKIPPED", reason="--blocks 0: replay-only batch"))
-    step_replays(rep, net, replays, batch)
+    step_replays(rep, net, replays, batch, only_tx, fresh)
     step_failure_triage(rep)
     step_competitors(rep, net)
     return rep
@@ -305,8 +308,11 @@ def main() -> int:
     ap.add_argument("--out", default=None)
     ap.add_argument("--json", default=None)
     ap.add_argument("--batch", default="phase2", help="label grouping persisted replay runs; a new label replays every event afresh")
+    ap.add_argument("--only-tx", default=None, help="comma-separated historical tx hashes to restrict the replay step to")
+    ap.add_argument("--fresh", action="store_true", help="re-run the selected events even if a persisted result exists (the new run becomes the latest)")
     a = ap.parse_args()
-    rep = run(a.network, a.blocks, a.replays, a.batch)
+    only = {x.strip().lower() for x in a.only_tx.split(",") if x.strip()} if a.only_tx else None
+    rep = run(a.network, a.blocks, a.replays, a.batch, only, a.fresh)
     md = rep.to_markdown()
     print(md)
     if a.out:

@@ -269,8 +269,9 @@ contract FlashLiquidatorForkTest is Test {
         assertGt(evt.swapOut, evt.premium, "swap output exceeds the premium");
         assertEq(IERC20(WETH).balanceOf(address(liq)), 0, "no collateral left on the contract");
         assertGt(IERC20(USDC).balanceOf(recipient), recipientBefore, "debt asset increased for the recipient");
-        // swapOut == premium + surplus because startBalance was 0 and the loan was exactly debtToCover.
-        assertEq(evt.swapOut, evt.premium + evt.surplus, "swapOut = premium + surplus");
+        // The flash-loan principal (debtToCover) was spent in liquidationCall and the swap brought the
+        // debt asset back, so swapOut = principal + premium + surplus (startBalance was 0).
+        assertEq(evt.swapOut, debtToCover + evt.premium + evt.surplus, "swapOut = debtToCover + premium + surplus");
     }
 
     /// @notice Collateral received equals seized-with-bonus minus Aave's liquidation protocol fee (within 1 wei).
@@ -310,7 +311,8 @@ contract FlashLiquidatorForkTest is Test {
         p.minProfit = type(uint256).max / 2;
 
         vm.prank(owner);
-        vm.expectRevert(FlashLiquidator.InsufficientProfit.selector);
+        // InsufficientProfit carries (actual, required); match on the selector only.
+        vm.expectPartialRevert(FlashLiquidator.InsufficientProfit.selector);
         liq.liquidate(p);
     }
 

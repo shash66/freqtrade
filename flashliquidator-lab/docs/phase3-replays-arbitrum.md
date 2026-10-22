@@ -1,0 +1,13 @@
+# Phase 2 live validation: arbitrum
+
+Generated 2026-10-22T08:45:32.424945+00:00. Read-only; all executions on a private Anvil fork.
+
+| # | Item | Status | Detail |
+|---|---|---|---|
+| 1 | Application read-only, no broadcast path | **EXECUTED** | {"live_trading_enabled": false, "app_mode": "simulation", "signer": "none", "broadcast_code_path": "none"} |
+| 2 | Connect to RPC and verify the Aave deployment (chain id, bytecode, ADDRESSES_PROVIDER, premium) | **EXECUTED** | {"rpc_block": 517175328, "latency_ms": 485, "address_book_version": "4.44.22", "verified": true, "error": null, "checked_at": "2026-10-22T08:45:34.965731+00:00", "flashloan_premium_total_bps": 5, "flashloan_premium_to_protocol_bps": 10000} |
+| 3 | Index Pool events | **SKIPPED** | --blocks 0: replay-only batch over already indexed liquidations |
+| 4 | Reconcile borrowers | **SKIPPED** | --blocks 0: replay-only batch |
+| 5 | Replay up to 40 recorded liquidations through the flash-loan receiver on Anvil forks (batch phase3-arbitrum) | **EXECUTED** | {"batch": "phase3-arbitrum", "unique_historical_txs": 4, "liquidation_events": 4, "simulation_attempts": 5, "events_with_retry": 1, "succeeded": 1, "reverted": 3, "execution_paths": {"flash_loan_receiver": 4}, "profitable": 0, "unprofitable_after_costs": 0, "succeeded_with_incomplete_costs": 1, "net_profit_usd_total_complete": null, "fee_sources": {"unknown": 4}, "not_eligible_at_block_boundary": 2, "eligible_at_execution_only": 1, "eligibility": {"fork=False,execution=False": 1, "fork=True,execution=True": 2, "fork=False,execution=True": 1}, "results": [{"tx": "0xf365aef0152ab2fedfec691c1b271 |
+| 6 | Classify failed simulations: code defect vs. not eligible at block boundary vs. unprofitable | **EXECUTED** | {"classes": {"not_eligible_at_block_boundary": 2, "aave_rule_revert_while_eligible_at_boundary": 1, "succeeded_but_cost_unknown": 1}, "examples": {"not_eligible_at_block_boundary": "0xf365aef0152ab2fedfec691c1b271e65d9bc972c94fbaabcff4bf3bf47a8cc03", "aave_rule_revert_while_eligible_at_boundary": "0xef1db8a92c6e119358074d740bfcd515e4d887866ed53fa7e61c19da7134bc7a", "succeeded_but_cost_unknown": "0xaac673ad29ec3738810432400d9572d4c6be7cd19162fb958b7c2a30e60c533d"}} |
+| 7 | Observed competing liquidators from recorded LiquidationCall events | **EXECUTED** | {"liquidations": 4, "unique_liquidators": 4, "top": [{"address": "0x9355ec6d797b6c8B73dE9b52fFfDB3bfA6d05fdb", "count": 1, "share": 0.25}, {"address": "0xa6192030621e3135f08EEf17F5C92Db91Fd69D14", "count": 1, "share": 0.25}, {"address": "0x8888888881F14C72D1Aee10BE0011A261fec8886", "count": 1, "share": 0.25}, {"address": "0x5AC9bC14376BF2727C6211960Cf3cEC1e2f295bd", "count": 1, "share": 0.25}], "gas_used_median": 447225, "verified_fee_rows": 4} |

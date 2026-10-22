@@ -291,7 +291,7 @@ contract FlashLiquidator is IFlashLoanSimpleReceiver, Ownable2Step, ReentrancyGu
     }
 
     /// @dev Repays the borrower's debt via `liquidationCall` and swaps the seized collateral back to
-    ///      the debt asset on the allowlisted router.
+    ///      the debt asset on the allowlisted router (no swap when collateral and debt are the same asset).
     /// @return collateralReceived Collateral delta observed on this contract (net of Aave's protocol fee).
     /// @return swapOut Debt-asset amount returned by the router.
     function _liquidateAndSwap(LiquidationParams memory p)
@@ -301,10 +301,21 @@ contract FlashLiquidator is IFlashLoanSimpleReceiver, Ownable2Step, ReentrancyGu
         IERC20 collateral = IERC20(p.collateralAsset);
 
         IERC20(p.debtAsset).forceApprove(address(POOL), p.debtToCover);
+        bool sameAsset = p.collateralAsset == p.debtAsset;
         uint256 collateralBefore = collateral.balanceOf(address(this));
         POOL.liquidationCall(p.collateralAsset, p.debtAsset, p.user, p.debtToCover, false);
-        collateralReceived = collateral.balanceOf(address(this)) - collateralBefore;
+        // When collateral and debt are the same token the Pool pulled `debtToCover` from this balance
+        // during liquidationCall; add it back so the delta is the seized amount, not seized - repaid.
+        collateralReceived = collateral.balanceOf(address(this)) + (sameAsset ? p.debtToCover : 0) - collateralBefore;
         if (collateralReceived == 0) revert NoCollateralSeized();
+
+        if (sameAsset) {
+            // Same-asset liquidation (e.g. USDT debt against USDT collateral): nothing to swap, the
+            // seized collateral already is the debt asset. Seen on Base and Arbitrum in live data.
+            swapOut = collateralReceived;
+            if (swapOut < p.amountOutMinimum) revert SwapFailed(swapOut, p.amountOutMinimum);
+            return (collateralReceived, swapOut);
+        }
 
         collateral.forceApprove(p.router, collateralReceived);
         swapOut = ISwapRouter02(p.router).exactInputSingle(

@@ -31,6 +31,11 @@ Formulas mirror `LiquidationLogic.sol` of aave-v3-origin:
    when the artifact or SwapRouter02 is unavailable on the fork or `force_direct_path` is requested. The
    simulator account is funded from the reserve's aToken, `liquidationCall` runs for real, the swap is quoted
    (QuoterV2, not executed) and the premium is added analytically.
+3b. **Same-asset liquidations** (collateral token == debt token, seen for USDbC, cbBTC, USDT and WETH
+   positions in live data): the receiver skips the swap, reports `swapOut = collateralReceived`, and
+   measures the collateral delta net of the principal the Pool pulled during `liquidationCall`; the
+   replay skips the pre-quote. Both were found by Phase 3 replays (router revert, then a reconciliation
+   mismatch) and fixed in the contract.
 4. Fees: L2 execution = measured gas × gas price (historical effective gas price when replaying, otherwise
    the fork's, flagged). L1 data fee = chain fee-oracle estimate on the actual calldata (`source: estimated`);
    verified L1 fees come only from mined receipts (`source: verified`, stored on historical liquidations).
