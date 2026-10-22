@@ -58,6 +58,13 @@ class Report:
         return "\n".join(lines) + "\n"
 
 
+def _verified_pool(net: NetworkConfig):
+    """Only rows recorded under the address-book Pool of this network are validation data; rows under any other
+    deployment (e.g. test fixtures sharing the database) are excluded from every count."""
+    from sqlalchemy import func
+    return func.lower(m.ProtocolDeployment.pool_address) == net.market.pool.lower()
+
+
 def _net(slug: str) -> NetworkConfig:
     return build_networks(get_settings())[slug]
 
@@ -124,8 +131,9 @@ def step_replays(rep: Report, net: NetworkConfig, max_replays: int, batch: str =
         it.reason = f"Anvil not reachable at {s.anvil_rpc_url}: {anvil_ok.get('error')}"
         return
     with get_sessionmaker()() as db:
-        liqs = db.scalars(select(m.HistoricalLiquidation).where(m.HistoricalLiquidation.chain_id == net.chain_id,
-                                                                (m.HistoricalLiquidation.tx_status.is_(None)) | (m.HistoricalLiquidation.tx_status >= 0))
+        liqs = db.scalars(select(m.HistoricalLiquidation).join(m.ProtocolDeployment, m.ProtocolDeployment.id == m.HistoricalLiquidation.deployment_id)
+                          .where(m.HistoricalLiquidation.chain_id == net.chain_id, _verified_pool(net),
+                                 (m.HistoricalLiquidation.tx_status.is_(None)) | (m.HistoricalLiquidation.tx_status >= 0))
                           .order_by(m.HistoricalLiquidation.block_number.desc()).limit(max_replays)).all()
     if not liqs:
         it.status, it.reason = "SKIPPED", "no recorded liquidations to replay (index a wider range first)"
@@ -170,7 +178,9 @@ def step_replays(rep: Report, net: NetworkConfig, max_replays: int, batch: str =
                         "health_factor_at_fork": r.health_factor_at_fork, "health_factor_at_execution": r.health_factor_at_execution,
                         "surplus_raw": r.surplus_raw, "profit_complete": r.profit_complete, "reconciliation": r.reconciliation,
                         "warnings": r.warnings, "historical_liquidator": h.liquidator, "historical_l1_fee_wei": h.l1_fee_wei,
-                        "historical_fee_source": h.fee_source, "event_id": h.id, "log_index": h.log_index})
+                        "historical_fee_source": h.fee_source, "event_id": h.id, "log_index": h.log_index,
+                        "historical_effective_gas_price_wei": int(h.effective_gas_price_wei) if h.effective_gas_price_wei else None,
+                        "historical_tx_index": h.tx_index})
     it.detail = summarize_replays(results, batch)
     it.status = "EXECUTED"
 
@@ -249,7 +259,8 @@ def step_failure_triage(rep: Report) -> None:
 def step_competitors(rep: Report, net: NetworkConfig) -> None:
     it = rep.add(Item("competitors", "Observed competing liquidators from recorded LiquidationCall events"))
     with get_sessionmaker()() as db:
-        liqs = db.scalars(select(m.HistoricalLiquidation).where(m.HistoricalLiquidation.chain_id == net.chain_id)).all()
+        liqs = db.scalars(select(m.HistoricalLiquidation).join(m.ProtocolDeployment, m.ProtocolDeployment.id == m.HistoricalLiquidation.deployment_id)
+                          .where(m.HistoricalLiquidation.chain_id == net.chain_id, _verified_pool(net))).all()
     if not liqs:
         it.status, it.reason = "SKIPPED", "no recorded liquidations"
         return
@@ -274,8 +285,12 @@ def run(slug: str, blocks: int, replays: int, batch: str = "phase2") -> Report:
                            ("triage", "Classify failures"), ("competitors", "Observed competitors")):
             rep.add(Item(key, title, "BLOCKED", reason="blocked by the RPC/deployment step above"))
         return rep
-    step_index(rep, net, client, blocks)
-    step_reconcile(rep, net)
+    if blocks > 0:
+        step_index(rep, net, client, blocks)
+        step_reconcile(rep, net)
+    else:  # replay-only batch: reuse what is already indexed
+        rep.add(Item("index", "Index Pool events", "SKIPPED", reason="--blocks 0: replay-only batch over already indexed liquidations"))
+        rep.add(Item("reconcile", "Reconcile borrowers", "SKIPPED", reason="--blocks 0: replay-only batch"))
     step_replays(rep, net, replays, batch)
     step_failure_triage(rep)
     step_competitors(rep, net)
