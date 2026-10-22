@@ -8,4 +8,6 @@ if [ ! -d contracts/node_modules/@openzeppelin/contracts ]; then
 fi
 NODE_PATH=contracts/node_modules node scripts/compile-contracts.js
 cp contracts/out-solcjs/FlashLiquidator.json backend/app/simulation/artifacts/FlashLiquidator.json
-echo "artifact installed: backend/app/simulation/artifacts/FlashLiquidator.json"
+cp contracts/out-solcjs/CometLiquidator.json backend/app/simulation/artifacts/CometLiquidator.json
+cp contracts/out-solcjs/FlashArb.json backend/app/simulation/artifacts/FlashArb.json
+echo "artifacts installed: backend/app/simulation/artifacts/{FlashLiquidator,CometLiquidator,FlashArb}.json"

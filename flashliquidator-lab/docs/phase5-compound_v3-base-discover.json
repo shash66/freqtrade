@@ -1,0 +1,704 @@
+{
+ "strategy": "compound_v3",
+ "network": "base",
+ "mode": "discover",
+ "generated_at": "2026-10-22T13:41:45.678740+00:00",
+ "block": "latest",
+ "discovery_ms": 14746.415607000017,
+ "rows": [
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_usdc:reserve:0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+    "block": "latest",
+    "description": "Compound V3 Base USDC: 0.00 USD of seized 0x2Ae3F1\u2026 in reserves, buyable at a 638 bps discount",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(base) -> buyCollateral -> swap -> repay",
+    "gross_profit_usd": "0.000000",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "estimated",
+    "confidence": "medium",
+    "risk": "low",
+    "risk_notes": [
+     "collateral must be swapped to base at the discount or better; price impact not yet quoted here"
+    ],
+    "state": {
+     "comet": "0xb125E6687d4313864e53df431d5425969c15Eb2F",
+     "base": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+     "collateral": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+     "reserves_raw": 549912570,
+     "bonus_bps": 638,
+     "base_needed_raw": 1,
+     "collateral_price": 274324611282,
+     "base_price": 99987446,
+     "kind": "reserve_purchase"
+    },
+    "assumptions": [
+     "gross = oracle value of the reserve minus its discounted price; net requires a swap quote and gas (simulate)"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_usdc:reserve:0x4200000000000000000000000000000000000006",
+    "block": "latest",
+    "description": "Compound V3 Base USDC: 0.00 USD of seized 0x420000\u2026 in reserves, buyable at a 309 bps discount",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(base) -> buyCollateral -> swap -> repay",
+    "gross_profit_usd": "0.000002",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "estimated",
+    "confidence": "medium",
+    "risk": "low",
+    "risk_notes": [
+     "collateral must be swapped to base at the discount or better; price impact not yet quoted here"
+    ],
+    "state": {
+     "comet": "0xb125E6687d4313864e53df431d5425969c15Eb2F",
+     "base": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+     "collateral": "0x4200000000000000000000000000000000000006",
+     "reserves_raw": 27129317286,
+     "bonus_bps": 309,
+     "base_needed_raw": 63,
+     "collateral_price": 240200426183,
+     "base_price": 99987446,
+     "kind": "reserve_purchase"
+    },
+    "assumptions": [
+     "gross = oracle value of the reserve minus its discounted price; net requires a swap quote and gas (simulate)"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_usdc:reserve:0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+    "block": "latest",
+    "description": "Compound V3 Base USDC: 0.00 USD of seized 0xc1CBa3\u2026 in reserves, buyable at a 638 bps discount",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(base) -> buyCollateral -> swap -> repay",
+    "gross_profit_usd": "0.000000",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "estimated",
+    "confidence": "medium",
+    "risk": "low",
+    "risk_notes": [
+     "collateral must be swapped to base at the discount or better; price impact not yet quoted here"
+    ],
+    "state": {
+     "comet": "0xb125E6687d4313864e53df431d5425969c15Eb2F",
+     "base": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+     "collateral": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+     "reserves_raw": 890779472,
+     "bonus_bps": 638,
+     "base_needed_raw": 2,
+     "collateral_price": 299511968187,
+     "base_price": 99987446,
+     "kind": "reserve_purchase"
+    },
+    "assumptions": [
+     "gross = oracle value of the reserve minus its discounted price; net requires a swap quote and gas (simulate)"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_usdc:reserve:0x236aa50979D5f3De3Bd1Eeb40E81137F22ab794b",
+    "block": "latest",
+    "description": "Compound V3 Base USDC: 0.00 USD of seized 0x236aa5\u2026 in reserves, buyable at a 638 bps discount",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(base) -> buyCollateral -> swap -> repay",
+    "gross_profit_usd": "0.000000",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "estimated",
+    "confidence": "medium",
+    "risk": "low",
+    "risk_notes": [
+     "collateral must be swapped to base at the discount or better; price impact not yet quoted here"
+    ],
+    "state": {
+     "comet": "0xb125E6687d4313864e53df431d5425969c15Eb2F",
+     "base": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+     "collateral": "0x236aa50979D5f3De3Bd1Eeb40E81137F22ab794b",
+     "reserves_raw": 8819821,
+     "bonus_bps": 638,
+     "base_needed_raw": 0,
+     "collateral_price": 8160180104353,
+     "base_price": 99987446,
+     "kind": "reserve_purchase"
+    },
+    "assumptions": [
+     "gross = oracle value of the reserve minus its discounted price; net requires a swap quote and gas (simulate)"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_usdc:scan",
+    "block": "latest",
+    "description": "Compound V3 Base USDC: 8 borrowers among 34 accounts active in the last 9,000 blocks; none liquidatable",
+    "required_capital_usd": null,
+    "flash_loan_eligible": true,
+    "flash_loan_note": "",
+    "gross_profit_usd": null,
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "low",
+    "risk_notes": [],
+    "state": {
+     "comet": "0xb125E6687d4313864e53df431d5425969c15Eb2F",
+     "kind": "scan",
+     "borrowers_scanned": 8,
+     "accounts_scanned": 34
+    },
+    "assumptions": [],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_weth:reserve:0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+    "block": "latest",
+    "description": "Compound V3 Base WETH: 0.00 USD of seized 0x2Ae3F1\u2026 in reserves, buyable at a 178 bps discount",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(base) -> buyCollateral -> swap -> repay",
+    "gross_profit_usd": "0.000000",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "estimated",
+    "confidence": "medium",
+    "risk": "low",
+    "risk_notes": [
+     "collateral must be swapped to base at the discount or better; price impact not yet quoted here"
+    ],
+    "state": {
+     "comet": "0x46e6b214b524310239732D51387075E0e70970bf",
+     "base": "0x4200000000000000000000000000000000000006",
+     "collateral": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+     "reserves_raw": 107,
+     "bonus_bps": 178,
+     "base_needed_raw": 120,
+     "collateral_price": 114209502,
+     "base_price": 100000000,
+     "kind": "reserve_purchase"
+    },
+    "assumptions": [
+     "gross = oracle value of the reserve minus its discounted price; net requires a swap quote and gas (simulate)"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_weth:reserve:0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+    "block": "latest",
+    "description": "Compound V3 Base WETH: 0.00 USD of seized 0xc1CBa3\u2026 in reserves, buyable at a 178 bps discount",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(base) -> buyCollateral -> swap -> repay",
+    "gross_profit_usd": "0.000000",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "estimated",
+    "confidence": "medium",
+    "risk": "low",
+    "risk_notes": [
+     "collateral must be swapped to base at the discount or better; price impact not yet quoted here"
+    ],
+    "state": {
+     "comet": "0x46e6b214b524310239732D51387075E0e70970bf",
+     "base": "0x4200000000000000000000000000000000000006",
+     "collateral": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+     "reserves_raw": 6,
+     "bonus_bps": 178,
+     "base_needed_raw": 7,
+     "collateral_price": 124692521,
+     "base_price": 100000000,
+     "kind": "reserve_purchase"
+    },
+    "assumptions": [
+     "gross = oracle value of the reserve minus its discounted price; net requires a swap quote and gas (simulate)"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_weth:scan",
+    "block": "latest",
+    "description": "Compound V3 Base WETH: 6 borrowers among 33 accounts active in the last 9,000 blocks; none liquidatable",
+    "required_capital_usd": null,
+    "flash_loan_eligible": true,
+    "flash_loan_note": "",
+    "gross_profit_usd": null,
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "low",
+    "risk_notes": [],
+    "state": {
+     "comet": "0x46e6b214b524310239732D51387075E0e70970bf",
+     "kind": "scan",
+     "borrowers_scanned": 6,
+     "accounts_scanned": 33
+    },
+    "assumptions": [],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_usdbc:reserve:0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+    "block": "latest",
+    "description": "Compound V3 Base USDbC: 0.00 USD of seized 0x2Ae3F1\u2026 in reserves, buyable at a 1363 bps discount",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(base) -> buyCollateral -> swap -> repay",
+    "gross_profit_usd": "0.000422",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "estimated",
+    "confidence": "medium",
+    "risk": "low",
+    "risk_notes": [
+     "collateral must be swapped to base at the discount or better; price impact not yet quoted here"
+    ],
+    "state": {
+     "comet": "0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf",
+     "base": "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+     "collateral": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+     "reserves_raw": 1280889442574,
+     "bonus_bps": 1363,
+     "base_needed_raw": 3096,
+     "collateral_price": 274630174210,
+     "base_price": 99983572,
+     "kind": "reserve_purchase"
+    },
+    "assumptions": [
+     "gross = oracle value of the reserve minus its discounted price; net requires a swap quote and gas (simulate)"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_usdbc:reserve:0x4200000000000000000000000000000000000006",
+    "block": "latest",
+    "description": "Compound V3 Base USDbC: 0.01 USD of seized 0x420000\u2026 in reserves, buyable at a 989 bps discount",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(base) -> buyCollateral -> swap -> repay",
+    "gross_profit_usd": "0.000926",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "estimated",
+    "confidence": "medium",
+    "risk": "low",
+    "risk_notes": [
+     "collateral must be swapped to base at the discount or better; price impact not yet quoted here"
+    ],
+    "state": {
+     "comet": "0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf",
+     "base": "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+     "collateral": "0x4200000000000000000000000000000000000006",
+     "reserves_raw": 4280254006326,
+     "bonus_bps": 989,
+     "base_needed_raw": 9367,
+     "collateral_price": 240461754096,
+     "base_price": 99983572,
+     "kind": "reserve_purchase"
+    },
+    "assumptions": [
+     "gross = oracle value of the reserve minus its discounted price; net requires a swap quote and gas (simulate)"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "compound_v3",
+    "network": "base",
+    "kind": "liquidation",
+    "key": "compound_v3_base_usdbc:scan",
+    "block": "latest",
+    "description": "Compound V3 Base USDbC: 0 borrowers among 1 accounts active in the last 9,000 blocks; none liquidatable",
+    "required_capital_usd": null,
+    "flash_loan_eligible": true,
+    "flash_loan_note": "",
+    "gross_profit_usd": null,
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "unknown",
+     "missing": [],
+     "total_usd": "0"
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "low",
+    "risk_notes": [],
+    "state": {
+     "comet": "0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf",
+     "kind": "scan",
+     "borrowers_scanned": 0,
+     "accounts_scanned": 1
+    },
+    "assumptions": [],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "priority_auction_over_observed_absorb_bids",
+    "assumptions": [
+     "no observed absorb bids or no complete net profit: capture probability not estimated"
+    ],
+    "observed": {
+     "absorb_txs": 0,
+     "absorbers": 0
+    }
+   }
+  }
+ ],
+ "summary": {
+  "opportunities": 11,
+  "executable": 8,
+  "simulated_success": 0,
+  "net_profitable_complete": 0
+ }
+}

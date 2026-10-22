@@ -137,6 +137,35 @@ Celo, Soneium, Plasma) are registered from the address book and activate when `<
 `<SLUG>_ARCHIVE_RPC` are set (Alchemy hosts: `eth-mainnet`, `opt-mainnet`, `polygon-mainnet`, `avax-mainnet`, …
 `.g.alchemy.com`). In the environment used here those hosts were not allowed, so they report `not_configured`.
 
+### 4.5 Phase 5 (or run `scripts/phase5-research.sh <network>`)
+
+One driver for every strategy plugin: `python -m app.plugins.run --strategy <compound_v3|dex_arb|yield_opt> --network <base|arbitrum>
+--mode <discover|simulate|replay|shadow> [--anvil URL] [--history JSON] [--from N --to M] [--minutes M] [--force-sim N] --out ../docs/phase5-<strategy>-<network>-<mode>.json`.
+The file name is the contract: `app.plugins.ranking` and the dashboard read `docs/phase5-<strategy>-<network>-<mode>.json`.
+
+```bash
+# Compound V3: competitor history (Alchemy free = 10-block spans, ≈ 1 h per 80k Base blocks; resumable), then discover/simulate/replay
+python -m app.research.comet_history --network base --rpc "$BASE_ARCHIVE_RPC" --from 52560000 --to 52640886 --span 10 --out ../docs/phase5-comet-history-base.json
+python -m app.plugins.run --strategy compound_v3 --network base --mode simulate --anvil http://127.0.0.1:8546 --history ../docs/phase5-comet-history-base.json --force-sim 1 --out ../docs/phase5-compound_v3-base-simulate.json
+python -m app.plugins.run --strategy compound_v3 --network base --mode replay   --anvil http://127.0.0.1:8546 --history ../docs/phase5-comet-history-base.json --from 52560000 --to 52640886 --out ../docs/phase5-compound_v3-base-replay.json
+python -m app.plugins.run --strategy compound_v3 --network arbitrum --mode simulate --anvil http://127.0.0.1:8548 --force-sim 1 --out ../docs/phase5-compound_v3-arbitrum-simulate.json
+# DEX arbitrage: live quotes, validation simulations (both legs on the fork), historical sampling, 30 min shadow
+python -m app.plugins.run --strategy dex_arb --network base --mode simulate --anvil http://127.0.0.1:8545 --force-sim 2 --out ../docs/phase5-dex_arb-base-simulate.json
+STRATEGY_DEX_ARB_STEP=400 python -m app.plugins.run --strategy dex_arb --network base --mode replay --from 52560000 --to 52640886 --out ../docs/phase5-dex_arb-base-replay.json
+python -m app.plugins.run --strategy dex_arb --network base --mode shadow --minutes 30 --poll 2 --out ../docs/phase5-dex_arb-base-shadow.json
+# Yield: live rates and 7 daily historical samples
+python -m app.plugins.run --strategy yield_opt --network base --mode discover --out ../docs/phase5-yield_opt-base-discover.json
+python -m app.plugins.run --strategy yield_opt --network base --mode replay --from 52641467 --to 52943867 --out ../docs/phase5-yield_opt-base-replay.json
+# Ranking (also served at GET /api/research/strategies) and report
+python -m app.plugins.ranking --docs ../docs --out ../docs/phase5-ranking.json
+python -m app.validation.phase5_report --docs ../docs --networks base,arbitrum --out ../docs/phase5-results.md
+```
+
+Arbitrum uses the same commands with `--network arbitrum`, `--anvil http://127.0.0.1:8548`, the Arbitrum window
+(`--from 516700000 --to 517350000`, `STRATEGY_DEX_ARB_STEP=3250`) and the yield window `--from 514956180 --to 517375380`.
+Strategy knobs are environment variables `STRATEGY_<NAME>_<FIELD>` (e.g. `STRATEGY_COMPOUND_V3_DISCOVERY_HOURS=12`,
+`STRATEGY_DEX_ARB_MAX_SIZE_USD=20000`, `STRATEGY_YIELD_OPT_CAPITAL_USD=25000`); see each plugin's config dataclass.
+
 ## 5. Operational pitfalls (all hit during the runs)
 
 - **Fixture rows in the validation database.** `pytest` once ran in a shell whose `DATABASE_URL` pointed at
@@ -157,6 +186,17 @@ Celo, Soneium, Plasma) are registered from the address book and activate when `<
 - **Compose interpolation.** Every `$` in a bcrypt hash inside `.env` must be `$$` (bootstrap does this);
   `${VAR:?}` in inactive profiles still errors, use `${VAR:-}`.
 - **Next.js standalone** binds to the container hostname; the image sets `HOSTNAME=0.0.0.0`.
+
+- **A contract object is bound to the provider that built it.** `ctx.archive_client.call(contract.functions.f().call)`
+  runs on whichever `w3` created `contract`; build historical contracts from the archive client (Phase 5 Compound
+  replay hit PublicNode 403s this way).
+- **Anvil's `eth_gasPrice` on a live fork is Anvil's default (≈ 1 gwei), not the chain's (Base ≈ 0.001–0.01 gwei).**
+  Plugins price gas from the real node (`app/plugins/util.py: chain_gas_price_wei`); otherwise L2 costs are 100× too high.
+- **Discovery windows are chain time, not block counts.** 9,000 blocks is 5 h on Base and 37 min on Arbitrum; the
+  Compound plugin takes `discovery_hours`. dRPC public refuses `eth_getLogs` over 100 blocks (the plugin retries in 100-block pieces).
+- **A reverting fork transaction has no `gasUsed` unless it is mined.** `estimate_gas` fails first; the plugins send with
+  an explicit gas limit so a failed attempt's gas is measured. `FlashArb`'s `InsufficientProfit(actual, required)` revert
+  carries the round-trip result and is decoded into a measured loss.
 
 ## 6. Where things are
 

@@ -1,0 +1,204 @@
+{
+ "strategy": "dex_arb",
+ "network": "arbitrum",
+ "mode": "discover",
+ "generated_at": "2026-10-22T13:51:56.707412+00:00",
+ "block": "latest",
+ "discovery_ms": 7191.56748599994,
+ "rows": [
+  {
+   "opportunity": {
+    "strategy": "dex_arb",
+    "network": "arbitrum",
+    "kind": "arbitrage",
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "block": "latest",
+    "description": "WETH/USDC: buy on Uniswap v3 0.3%, sell on Uniswap v3 0.05%, size 0.0209 A; quoted gross -0.048679 USD, premium 0.025000 USD",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(tokenIn) -> leg 1 -> leg 2 -> repay (FlashArb.sol)",
+    "gross_profit_usd": "-0.048679",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": "0.025000",
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "estimated",
+     "missing": [
+      "gas (simulate)"
+     ],
+     "total_usd": null
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "medium",
+    "risk_notes": [
+     "atomic: a failed leg reverts the whole transaction; the cost of a failed attempt is gas only"
+    ],
+    "state": {
+     "kind": "arbitrage",
+     "pair": "WETH/USDC",
+     "token_in": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+     "token_out": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+     "dec_in": 18,
+     "size_raw": 20865686108676920,
+     "mid_raw": 49981388,
+     "back_raw": 20845371823237140,
+     "premium_raw": 10432843054338,
+     "net_pre_gas_raw": -30747128494118,
+     "leg1": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.3%",
+      "router": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+      "pool": "0xC473e2aEE3441BF9240Be85eb122aBB059A3B57c",
+      "fee": 3000,
+      "stable": false,
+      "factory": ""
+     },
+     "leg2": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.05%",
+      "router": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+      "pool": "0xC6962004f452bE9203591991D15f6b388e09E8D0",
+      "fee": 500,
+      "stable": false,
+      "factory": ""
+     },
+     "price_in": 239627873915,
+     "executable": false,
+     "grid": [
+      20865686108676920,
+      65983093045554704,
+      208656861086769152,
+      659830930455547008,
+      2086568610867691520,
+      6598309304555472896,
+      20865686108676919296
+     ]
+    },
+    "assumptions": [
+     "quotes are eth_call at this block (QuoterV2 / Aerodrome getAmountsOut); size chosen on the quoted profit curve; gas not yet included"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "spread_persistence_proxy",
+    "assumptions": [
+     "capture probability not estimated: no shadow persistence measurement or no complete net profit"
+    ],
+    "observed": {}
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "dex_arb",
+    "network": "arbitrum",
+    "kind": "arbitrage",
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "block": "latest",
+    "description": "WETH/USDC: buy on Uniswap v3 0.05%, sell on Uniswap v3 0.3%, size 50.0050 B; quoted gross -0.048679 USD, premium 0.024999 USD",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(tokenIn) -> leg 1 -> leg 2 -> repay (FlashArb.sol)",
+    "gross_profit_usd": "-0.048679",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": "0.024999",
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "estimated",
+     "missing": [
+      "gas (simulate)"
+     ],
+     "total_usd": null
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "medium",
+    "risk_notes": [
+     "atomic: a failed leg reverts the whole transaction; the cost of a failed attempt is gas only"
+    ],
+    "state": {
+     "kind": "arbitrage",
+     "pair": "WETH/USDC",
+     "token_in": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+     "token_out": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+     "dec_in": 6,
+     "size_raw": 50005000,
+     "mid_raw": 20855219423943893,
+     "back_raw": 49956316,
+     "premium_raw": 25002,
+     "net_pre_gas_raw": -73686,
+     "leg1": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.05%",
+      "router": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+      "pool": "0xC6962004f452bE9203591991D15f6b388e09E8D0",
+      "fee": 500,
+      "stable": false,
+      "factory": ""
+     },
+     "leg2": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.3%",
+      "router": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+      "pool": "0xC473e2aEE3441BF9240Be85eb122aBB059A3B57c",
+      "fee": 3000,
+      "stable": false,
+      "factory": ""
+     },
+     "price_in": 99990000,
+     "executable": false,
+     "grid": [
+      50005000,
+      158129695,
+      500050005,
+      1581296959,
+      5000500050,
+      15812969597,
+      50005000500
+     ]
+    },
+    "assumptions": [
+     "quotes are eth_call at this block (QuoterV2 / Aerodrome getAmountsOut); size chosen on the quoted profit curve; gas not yet included"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "spread_persistence_proxy",
+    "assumptions": [
+     "capture probability not estimated: no shadow persistence measurement or no complete net profit"
+    ],
+    "observed": {}
+   }
+  }
+ ],
+ "summary": {
+  "opportunities": 2,
+  "executable": 0,
+  "simulated_success": 0,
+  "net_profitable_complete": 0
+ }
+}

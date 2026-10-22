@@ -65,3 +65,24 @@ def research_artefact(kind: str, net: str = "base") -> dict:
     if doc is None:
         raise HTTPException(404, "artefact not produced yet")
     return doc
+
+
+# ---------------------------------------------------------------------------- Phase 5: strategy plugins
+@router.get("/strategies")
+def research_strategies() -> dict:
+    """Unified strategy ranking (Phase 5 §6): one row per strategy × network built from docs/phase5-*.json by
+    `app.plugins.ranking`. Simulated, theoretical, modeled and passive-yield figures are labeled per cell and
+    never combined; nothing here is realized revenue (the lab has no execution path)."""
+    from app.plugins.ranking import rank
+    return rank(_docs_dir())
+
+
+@router.get("/strategies/{strategy}/{net}")
+def research_strategy_detail(strategy: str, net: str, mode: str = "discover") -> dict:
+    """The raw plugin artefact for one strategy, network and mode (discover | simulate | replay | shadow)."""
+    if mode not in ("discover", "simulate", "replay", "shadow") or not strategy.replace("_", "").isalnum() or not net.isalpha():
+        raise HTTPException(404, "unknown artefact")
+    doc = _load(f"phase5-{strategy}-{net}-{mode}.json")
+    if doc is None:
+        raise HTTPException(404, "artefact not produced yet")
+    return doc

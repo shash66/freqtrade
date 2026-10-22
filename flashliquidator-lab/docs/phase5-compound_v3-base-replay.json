@@ -1,0 +1,60 @@
+{
+ "strategy": "compound_v3",
+ "network": "base",
+ "mode": "replay",
+ "generated_at": "2026-10-22T14:06:16.594612+00:00",
+ "block": "latest",
+ "replay": {
+  "strategy": "compound_v3",
+  "network": "base",
+  "from_block": 52560000,
+  "to_block": 52640886,
+  "opportunities": 2,
+  "simulated": 2,
+  "simulated_success": 0,
+  "net_profitable_complete": 0,
+  "lost_to_competition": null,
+  "expected_profit_per_attempt_usd": null,
+  "worst_case_loss_usd": null,
+  "sample_note": "2 recorded absorb transactions in the window; first 2 replayed",
+  "details": [
+   {
+    "tx": "0x593a18f9e20a64746106b02c0db74c19340546c4caad3d0ed4539330fd18a736",
+    "block": 52611468,
+    "absorber": "0x6c7C74FD97AD97929447adE7857b56a6ea23148e",
+    "liquidatable_at_n_minus_1": true,
+    "success": false,
+    "revert_reason": "dust: collateral for sale worth 0.000053 USD at a 309 bps discount, below the 0.05 USD floor; no transaction attempted",
+    "net_profit_usd": null,
+    "complete": false,
+    "measured": {
+     "reserves_for_sale": 21909381403,
+     "for_sale_usd": "0.00005267997093378915873523"
+    },
+    "gas_used": null,
+    "historical_gas_used": 144496,
+    "historical_gas_price_wei": 6000000
+   },
+   {
+    "tx": "0xf557116bec1b32e82aa128d477a9906be63c94e3097d57bd15227fc894f50c6a",
+    "block": 52620875,
+    "absorber": "0x6c7C74FD97AD97929447adE7857b56a6ea23148e",
+    "liquidatable_at_n_minus_1": true,
+    "success": false,
+    "revert_reason": "dust: collateral for sale worth 0.004303 USD at a 309 bps discount, below the 0.05 USD floor; no transaction attempted",
+    "net_profit_usd": null,
+    "complete": false,
+    "measured": {
+     "reserves_for_sale": 1824696210377,
+     "for_sale_usd": "0.00430317859176491311566671"
+    },
+    "gas_used": null,
+    "historical_gas_used": 147153,
+    "historical_gas_price_wei": 24725104
+   }
+  ],
+  "assumptions": [
+   "fork at N\u22121 of each absorb; our receiver absorbs the same account and buys its collateral; competition not applied here"
+  ]
+ }
+}

@@ -114,3 +114,20 @@ def test_401_omits_browser_prompt_for_dashboard_fetches(client):
     r = client.get("/api/metrics", headers={"X-Requested-With": "fetch"})
     assert r.status_code == 401 and "www-authenticate" not in r.headers
     assert r.json()["error"] == "administrator credentials required"
+
+
+def test_research_strategies_ranking_reads_only_artefacts(client, tmp_path, monkeypatch):
+    import json
+    monkeypatch.setenv("RESEARCH_DOCS_DIR", str(tmp_path))
+    assert client.get("/api/research/strategies").json()["rows"] == []
+    (tmp_path / "phase5-dex_arb-base-discover.json").write_text(json.dumps({"summary": {"executable": 0}, "rows": [{
+        "opportunity": {"strategy": "dex_arb", "network": "base", "kind": "arbitrage", "key": "k", "block": 1, "description": "d", "required_capital_usd": "0",
+                        "flash_loan_eligible": True, "flash_loan_note": "", "gross_profit_usd": "-0.04", "costs": {"total_usd": None}, "net_profit_usd": None,
+                        "net_profit_complete": False, "outcome_class": "theoretical", "risk": "medium", "state": {"kind": "arbitrage", "executable": False}},
+        "competition": {"p_capture": None, "attainable_net_profit_usd": None, "model": "spread_persistence_proxy", "assumptions": ["none"]}}]}))
+    r = client.get("/api/research/strategies").json()
+    assert r["rows"][0]["verdict"] == "negative" and r["rows"][0]["gross_class"] == "theoretical" and r["rows"][0]["net_profit_complete_usd"] is None
+    assert "no transaction strategy qualifies" in r["conclusion"]["statement"]
+    assert client.get("/api/research/strategies/dex_arb/base?mode=discover").status_code == 200
+    assert client.get("/api/research/strategies/dex_arb/base?mode=replay").status_code == 404
+    assert client.get("/api/research/strategies/../x/base").status_code in (404, 422)

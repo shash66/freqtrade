@@ -41,10 +41,12 @@ backend/app/
   simulation/     anvil (fork lifecycle), receiver (deploy + liquidate()), replay (historical replay), accounting (profit reconciliation),
                   reconstruct (intra-block replay + oracle time-gate probe), artifacts/FlashLiquidator.json
   competition/    strategies A/B/C, montecarlo, analysis, benchmark (live read-only), bidmodel (observed vs modeled)
-  validation/     phase2 runner (--batch/--only-tx/--fresh/--blocks 0), theoretical valuation, phase3_report
+  validation/     phase2 runner (--batch/--only-tx/--fresh/--blocks 0), theoretical valuation, phase3/4/5 reports
+  plugins/        Phase 5 strategy plugins (base, registry, run, ranking, util; compound_v3, dex_arb, yield_opt)
+  research/       observability (Phase 4), comet_history (Phase 5 Compound event scan)
   api/ workers/ database/ core/
-contracts/        FlashLiquidator.sol (Foundry 1.8.5, solc 0.8.24), 16 fork tests (need BASE_ARCHIVE_RPC)
-frontend/         Next.js 15 dashboard (6 pages, admin basic auth), Playwright tests
+contracts/        FlashLiquidator.sol, CometLiquidator.sol, FlashArb.sol (Foundry 1.8.5, solc 0.8.24); fork tests need BASE_ARCHIVE_RPC
+frontend/         Next.js 15 dashboard (8 pages incl. /research and /strategies, admin basic auth), Playwright tests
 docs/             methodology, limitations, deployment, data sources, test results, phase2/phase3 results + raw JSON, runbook
 scripts/          bootstrap, backfill, compile-contracts (solc-js artifact), phase2-validate, phase3-research
 ```
@@ -52,10 +54,12 @@ scripts/          bootstrap, backfill, compile-contracts (solc-js artifact), pha
 ## Commands
 
 ```bash
-cd backend && ruff check app tests && python -m pytest -q          # 75 tests; needs Postgres + Redis
+cd backend && ruff check app tests && python -m pytest -q          # needs Postgres + Redis; run with `env -u DATABASE_URL`
 cd contracts && forge test --fork-url "$BASE_ARCHIVE_RPC"            # 16 fork tests at Base block 30,000,000
 ./scripts/compile-contracts.sh                                       # refresh the simulator artifact after any .sol change
 scripts/phase3-research.sh base                                      # whole Phase 3 pipeline through docker compose
+scripts/phase5-research.sh base                                      # Phase 5: three strategy plugins, ranking, report
+cd backend && python -m app.plugins.run --strategy dex_arb --network base --mode discover   # one plugin, one mode
 ```
 
 Alembic migrations: `19ea7575a02f` initial, `9de9d0ca965e` fee accounting, `c55ca9144780` reconciliation/eligibility.
@@ -94,6 +98,23 @@ CBOR metadata hash), rerun fork tests, rerun affected replays with `--fresh`.
   `protocols/{base,aave_v3,compound_v3,registry}.py`, `validation/phase4_report.py`, `api/routes_research.py`,
   frontend `/research`. Migration `ecdc7637b17c` (attainable columns).
 
+## Phase 5 state (22 Oct 2026)
+
+- Strategy plugin framework `backend/app/plugins/` (`base.py` dataclasses + `Strategy` protocol, `registry.py`,
+  `run.py` driver, `ranking.py` unified table, `util.py`); plugins `compound_v3.py`, `dex_arb.py`, `yield_opt.py`;
+  receivers `contracts/src/CometLiquidator.sol` and `contracts/src/FlashArb.sol` (artifacts in
+  `backend/app/simulation/artifacts/`); Comet event scan `research/comet_history.py`; report
+  `validation/phase5_report.py`; API `GET /api/research/strategies`; dashboard `/strategies`; `scripts/phase5-research.sh`.
+- Artefact contract: `docs/phase5-<strategy>-<network>-<mode>.json` (mode ∈ discover/simulate/replay/shadow);
+  the ranking and the dashboard read nothing else. Compound history: `docs/phase5-comet-history-base*.json`.
+- Findings (see `docs/phase5-results.md`): Compound V3 on Base/Arbitrum had no liquidatable account and only dust
+  reserves; the two recorded Base absorbs in the Phase 3 window were dust ($0.00005 and $0.0043 of collateral) by
+  one absorber. DEX spreads between the registered venues were negative before gas at every block, size and
+  direction (Base and Arbitrum); validation runs on the fork executed both legs and measured the full attempt
+  cost. Yield is the only positive net figure (stablecoin lending ≈ 5.5 % APY on Compound Base USDC, LST loops
+  ≈ 3 % net) and it is passive, not transaction revenue. No transaction strategy qualifies.
+- Compound V3 is not Aave: the absorber is unpaid; profit only from `buyCollateral` at the storefront discount.
+
 ## Operational facts (learned the hard way)
 
 - Forks must use the archive endpoint (PublicNode returns 403 for pinned-block reads within seconds).
@@ -108,6 +129,12 @@ CBOR metadata hash), rerun fork tests, rerun affected replays with `--fresh`.
 - Foundry 1.8.5 from source works; `vm.expectRevert(bytes4)` needs `expectPartialRevert` for errors with args.
 - Compose: `$` in bcrypt hashes must be `$$`; use `${VAR:-}` not `${VAR:?}` for inactive profiles;
   Next standalone needs `HOSTNAME=0.0.0.0`.
+- A web3 contract object is bound to the provider that built it: build historical contracts from the archive client.
+- Anvil's `eth_gasPrice` on a live fork is ≈ 1 gwei (its default), 100× Base's real price: price gas from the real
+  node (`plugins/util.py`). Send fork attempts with an explicit gas limit so a reverting attempt is mined and measured.
+- Discovery windows are chain time (`discovery_hours`), not block counts: 9,000 blocks is 5 h on Base, 37 min on Arbitrum.
+- dRPC public refuses `eth_getLogs` spans above 100 blocks; the Alchemy free 10-block scan does ≈ 80k Base blocks/hour.
+- Parallel shell calls share the working directory: use absolute paths; `pgrep -f` patterns go in script files.
 
 ## Conventions when extending
 

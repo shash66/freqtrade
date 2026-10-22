@@ -1,0 +1,421 @@
+{
+ "strategy": "yield_opt",
+ "network": "base",
+ "mode": "discover",
+ "generated_at": "2026-10-22T13:50:48.502995+00:00",
+ "block": "latest",
+ "discovery_ms": 14290.680994000013,
+ "rows": [
+  {
+   "opportunity": {
+    "strategy": "yield_opt",
+    "network": "base",
+    "kind": "yield",
+    "key": "stable_lending:0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913:compound_v3_base_usdc",
+    "block": "latest",
+    "description": "Lend 10,000 USD of 0x833589\u2026 on compound_v3_base_usdc at 5.48% APY (next best aave_v3 3.80%)",
+    "required_capital_usd": "10000",
+    "flash_loan_eligible": false,
+    "flash_loan_note": "no flash loan: capital must be held; a flash loan cannot earn a lending rate",
+    "gross_profit_usd": "45.027248",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": "0.60",
+     "source": "estimated",
+     "missing": [],
+     "total_usd": "0.60"
+    },
+    "net_profit_usd": "44.427248",
+    "net_profit_complete": true,
+    "outcome_class": "passive_yield",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "low",
+    "risk_notes": [
+     "smart-contract risk of the lending protocol (audited, battle-tested, not zero)",
+     "rates float with utilisation; the quoted APY is the current one",
+     "stablecoin depeg risk",
+     "exit liquidity now 897,720 USD available"
+    ],
+    "state": {
+     "kind": "stable_lending",
+     "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+     "venues": [
+      {
+       "venue": "aave_v3",
+       "supply_apy": "0.03795875252625451897938146914331620699988243303633459712248",
+       "borrow_apy": "0.04785111216605089308344584419865117613941218374221930822161",
+       "available_raw": 22431051116924,
+       "decimals": 6,
+       "ltv_bps": 7500,
+       "liquidation_threshold_bps": 7800,
+       "supply_cap": 230000000,
+       "borrow_cap": 207000000,
+       "active": true,
+       "frozen": false,
+       "paused": false
+      },
+      {
+       "venue": "compound_v3_base_usdc",
+       "supply_apy": "0.05478315197975080156833367846465936830479057782452618185956",
+       "borrow_apy": "0.06564663072576740539210075139309107265980053111305933474850",
+       "utilization": "0.906550438904876867",
+       "available_raw": 897719928910
+      }
+     ],
+     "spread_to_next_bps": 168,
+     "holding_days": 30,
+     "capital_usd": "10000"
+    },
+    "assumptions": [
+     "30-day hold at today's APY; enter+exit gas 0.60 USD (estimate); passive yield, not transaction revenue"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": "1",
+    "attainable_net_profit_usd": "44.427248",
+    "failed_attempt_cost_usd": "0",
+    "model": "none_passive",
+    "assumptions": [
+     "passive yield has no execution race; the risk is rate drift and protocol/peg events, not competition"
+    ],
+    "observed": {}
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "yield_opt",
+    "network": "base",
+    "kind": "yield",
+    "key": "stable_lending:0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA:aave_v3",
+    "block": "latest",
+    "description": "Lend 10,000 USD of 0xd9aAEc\u2026 on aave_v3 at 1.47% APY (next best compound_v3_base_usdbc 0.60%)",
+    "required_capital_usd": "10000",
+    "flash_loan_eligible": false,
+    "flash_loan_note": "no flash loan: capital must be held; a flash loan cannot earn a lending rate",
+    "gross_profit_usd": "12.111833",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": "0.60",
+     "source": "estimated",
+     "missing": [],
+     "total_usd": "0.60"
+    },
+    "net_profit_usd": "11.511833",
+    "net_profit_complete": true,
+    "outcome_class": "passive_yield",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "medium",
+    "risk_notes": [
+     "smart-contract risk of the lending protocol (audited, battle-tested, not zero)",
+     "rates float with utilisation; the quoted APY is the current one",
+     "stablecoin depeg risk",
+     "exit liquidity now 41,571 USD available (thin relative to the position)"
+    ],
+    "state": {
+     "kind": "stable_lending",
+     "asset": "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+     "venues": [
+      {
+       "venue": "aave_v3",
+       "supply_apy": "0.01473606345256061896482706484193844662943864020253099515094",
+       "borrow_apy": "0.08397591652998791110922259984378606654961725554859927990114",
+       "available_raw": 41570853190,
+       "decimals": 6,
+       "ltv_bps": 0,
+       "liquidation_threshold_bps": 7800,
+       "supply_cap": 1,
+       "borrow_cap": 1,
+       "active": true,
+       "frozen": true,
+       "paused": false
+      },
+      {
+       "venue": "compound_v3_base_usdbc",
+       "supply_apy": "0.00598377326837783045833013089524906629021733808861779763311",
+       "borrow_apy": "0.06239744743641903054841110442170330182872044142996941402030",
+       "utilization": "0.298297080671785169",
+       "available_raw": 45674633662
+      }
+     ],
+     "spread_to_next_bps": 87,
+     "holding_days": 30,
+     "capital_usd": "10000"
+    },
+    "assumptions": [
+     "30-day hold at today's APY; enter+exit gas 0.60 USD (estimate); passive yield, not transaction revenue"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": "1",
+    "attainable_net_profit_usd": "11.511833",
+    "failed_attempt_cost_usd": "0",
+    "model": "none_passive",
+    "assumptions": [
+     "passive yield has no execution race; the risk is rate drift and protocol/peg events, not competition"
+    ],
+    "observed": {}
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "yield_opt",
+    "network": "base",
+    "kind": "yield",
+    "key": "lst_loop:wstETH",
+    "block": "latest",
+    "description": "wstETH loop on Aave: 4.17x at LTV 76.0% (LT 79.0%): staking 2.25% + supply 0.00% vs WETH borrow 2.04% -> net 2.92% APY (unlevered 2.25%)",
+    "required_capital_usd": "10000",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flash loan only to enter/exit the loop atomically; it adds no return",
+    "gross_profit_usd": "77.028716",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": "53.038206",
+     "other_usd": "2.500000",
+     "source": "estimated",
+     "missing": [],
+     "total_usd": "55.538206"
+    },
+    "net_profit_usd": "21.490510",
+    "net_profit_complete": true,
+    "outcome_class": "passive_yield",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "medium",
+    "risk": "high",
+    "risk_notes": [
+     "smart-contract risk of the lending protocol (audited, battle-tested, not zero)",
+     "rates float with utilisation; the quoted APY is the current one",
+     "liquidation if the wstETH/WETH ratio falls 3.8% (ratio moves are small but the loop is 4.2x)",
+     "borrow rate can exceed the staking yield (negative carry)",
+     "LST depeg / withdrawal queue risk"
+    ],
+    "state": {
+     "kind": "lst_loop",
+     "asset": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+     "lst_apy": "0.02248298641521972879842568808817855273769233563844673938183",
+     "supply_apy": "0.00000939869225788124334618667667855593809297229169220224646",
+     "borrow_apy": "0.02037783715037290350842801838056434291590152365106814941335",
+     "leverage": "4.16666666666666666666666666666666666666666666666666666666667",
+     "ltv_used": "0.76",
+     "liquidation_threshold": "0.79",
+     "net_apy": "0.0291884536383091807306940866484508669154172914805297836422667",
+     "lst_measurement": {
+      "ratio_now": "1.24684806619640422517719321101788015450853399396277505861626",
+      "ratio_then": "1.24631651741157094657913246125008165679544934832636429615646",
+      "blocks": [
+       52641455,
+       52943855
+      ],
+      "lookback_days": 7
+     },
+     "weth_available_raw": 18264782460669062757682,
+     "capital_usd": "10000"
+    },
+    "assumptions": [
+     "staking yield = annualised oracle ratio growth over 7 days",
+     "loop held at a constant LTV; rebalancing gas not included beyond entry/exit",
+     "passive yield, not transaction revenue"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": "1",
+    "attainable_net_profit_usd": "21.490510",
+    "failed_attempt_cost_usd": "0",
+    "model": "none_passive",
+    "assumptions": [
+     "passive yield has no execution race; the risk is rate drift and protocol/peg events, not competition"
+    ],
+    "observed": {}
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "yield_opt",
+    "network": "base",
+    "kind": "yield",
+    "key": "lst_loop:weETH",
+    "block": "latest",
+    "description": "weETH loop on Aave: 3.85x at LTV 74.0% (LT 77.0%): staking 2.30% + supply 0.00% vs WETH borrow 2.04% -> net 3.04% APY (unlevered 2.30%)",
+    "required_capital_usd": "10000",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flash loan only to enter/exit the loop atomically; it adds no return",
+    "gross_profit_usd": "72.666016",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": "47.669967",
+     "other_usd": "2.307692",
+     "source": "estimated",
+     "missing": [],
+     "total_usd": "49.977659"
+    },
+    "net_profit_usd": "22.688357",
+    "net_profit_complete": true,
+    "outcome_class": "passive_yield",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "medium",
+    "risk": "high",
+    "risk_notes": [
+     "smart-contract risk of the lending protocol (audited, battle-tested, not zero)",
+     "rates float with utilisation; the quoted APY is the current one",
+     "liquidation if the weETH/WETH ratio falls 3.9% (ratio moves are small but the loop is 3.8x)",
+     "borrow rate can exceed the staking yield (negative carry)",
+     "LST depeg / withdrawal queue risk"
+    ],
+    "state": {
+     "kind": "lst_loop",
+     "asset": "0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A",
+     "lst_apy": "0.02298573371664877971595614907997037713360923619137944100121",
+     "supply_apy": "9.4922221317589426620540528091527816310231431737253856E-7",
+     "borrow_apy": "0.02037783715037290350842801838056434291590152365106814941335",
+     "leverage": "3.84615384615384615384615384615384615384615384615384615384615",
+     "ltv_used": "0.74",
+     "liquidation_threshold": "0.77",
+     "net_apy": "0.0304118594137923346691754649370526102077123500150245498995807",
+     "lst_measurement": {
+      "ratio_now": "1.10623059185796305462820097199487078784143156774921937152297",
+      "ratio_then": "1.10574856588410136704699871594490540436421412452829704407144",
+      "blocks": [
+       52641456,
+       52943856
+      ],
+      "lookback_days": 7
+     },
+     "weth_available_raw": 18264782460669062757682,
+     "capital_usd": "10000"
+    },
+    "assumptions": [
+     "staking yield = annualised oracle ratio growth over 7 days",
+     "loop held at a constant LTV; rebalancing gas not included beyond entry/exit",
+     "passive yield, not transaction revenue"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": "1",
+    "attainable_net_profit_usd": "22.688357",
+    "failed_attempt_cost_usd": "0",
+    "model": "none_passive",
+    "assumptions": [
+     "passive yield has no execution race; the risk is rate drift and protocol/peg events, not competition"
+    ],
+    "observed": {}
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "yield_opt",
+    "network": "base",
+    "kind": "yield",
+    "key": "lst_loop:cbETH",
+    "block": "latest",
+    "description": "cbETH loop on Aave: 4.17x at LTV 76.0% (LT 79.0%): staking 2.29% + supply 0.00% vs WETH borrow 2.04% -> net 3.09% APY (unlevered 2.29%)",
+    "required_capital_usd": "10000",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flash loan only to enter/exit the loop atomically; it adds no return",
+    "gross_profit_usd": "78.464012",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": null,
+     "swap_fees_usd": null,
+     "financing_usd": "53.038206",
+     "other_usd": "2.500000",
+     "source": "estimated",
+     "missing": [],
+     "total_usd": "55.538206"
+    },
+    "net_profit_usd": "22.925805",
+    "net_profit_complete": true,
+    "outcome_class": "passive_yield",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "medium",
+    "risk": "high",
+    "risk_notes": [
+     "smart-contract risk of the lending protocol (audited, battle-tested, not zero)",
+     "rates float with utilisation; the quoted APY is the current one",
+     "liquidation if the cbETH/WETH ratio falls 3.8% (ratio moves are small but the loop is 4.2x)",
+     "borrow rate can exceed the staking yield (negative carry)",
+     "LST depeg / withdrawal queue risk"
+    ],
+    "state": {
+     "kind": "lst_loop",
+     "asset": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+     "lst_apy": "0.02290978141424316408132893642620116671740571978806627879864",
+     "supply_apy": "0.00000170995795564357293147759979844545393815992814653584540",
+     "borrow_apy": "0.02037783715037290350842801838056434291590152365106814941335",
+     "leverage": "4.16666666666666666666666666666666666666666666666666666666667",
+     "ltv_used": "0.76",
+     "liquidation_threshold": "0.79",
+     "net_apy": "0.0309347297413141707827296669032112981469113405891709212078917",
+     "lst_measurement": {
+      "ratio_now": "1.14206546441697459215311938084948232093496313843262350811324",
+      "ratio_then": "1.14156944938001105244812952970021890461432884398970959040916",
+      "blocks": [
+       52641457,
+       52943857
+      ],
+      "lookback_days": 7
+     },
+     "weth_available_raw": 18264782460669062757682,
+     "capital_usd": "10000"
+    },
+    "assumptions": [
+     "staking yield = annualised oracle ratio growth over 7 days",
+     "loop held at a constant LTV; rebalancing gas not included beyond entry/exit",
+     "passive yield, not transaction revenue"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": "1",
+    "attainable_net_profit_usd": "22.925805",
+    "failed_attempt_cost_usd": "0",
+    "model": "none_passive",
+    "assumptions": [
+     "passive yield has no execution race; the risk is rate drift and protocol/peg events, not competition"
+    ],
+    "observed": {}
+   }
+  }
+ ],
+ "summary": {
+  "opportunities": 5,
+  "executable": 5,
+  "simulated_success": 0,
+  "net_profitable_complete": 0
+ }
+}

@@ -26,7 +26,11 @@ class ReceiverArtifactMissing(RuntimeError):
 
 def load_artifact() -> dict:
     """Prefer an explicit path, then forge output, then the packaged solc-js artifact."""
-    cands = [os.environ.get("FLASH_RECEIVER_ARTIFACT"), "contracts/out/FlashLiquidator.sol/FlashLiquidator.json"]
+    return load_artifact_named("FlashLiquidator", os.environ.get("FLASH_RECEIVER_ARTIFACT"))
+
+
+def load_artifact_named(name: str, explicit_path: str | None = None) -> dict:
+    cands = [explicit_path, f"contracts/out/{name}.sol/{name}.json"]
     for p in cands:
         if p and os.path.exists(p):
             with open(p) as f:
@@ -36,11 +40,11 @@ def load_artifact() -> dict:
                 bc = bc.get("object")
             return {"abi": raw["abi"], "bytecode": bc, "source": p}
     try:
-        with resources.files("app.simulation.artifacts").joinpath("FlashLiquidator.json").open() as f:
+        with resources.files("app.simulation.artifacts").joinpath(f"{name}.json").open() as f:
             raw = json.load(f)
         return {"abi": raw["abi"], "bytecode": raw["bytecode"], "source": "packaged solc-js artifact (" + raw.get("compiler", "?") + ")"}
     except FileNotFoundError as e:
-        raise ReceiverArtifactMissing("FlashLiquidator artifact not found; run scripts/compile-contracts.sh") from e
+        raise ReceiverArtifactMissing(f"{name} artifact not found; run scripts/compile-contracts.sh") from e
 
 
 @dataclass

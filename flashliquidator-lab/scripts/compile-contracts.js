@@ -20,8 +20,10 @@ const errs = (out.errors || []).filter(e => e.severity === "error"), warns = (ou
 for (const e of errs) console.log("ERROR:", e.formattedMessage);
 for (const w of warns) console.log("warning:", (w.formattedMessage || "").split("\n")[0]);
 if (!errs.length) {
-  const c = out.contracts["src/FlashLiquidator.sol"]["FlashLiquidator"];
   fs.mkdirSync(path.join(root, "out-solcjs"), { recursive: true });
-  fs.writeFileSync(path.join(root, "out-solcjs", "FlashLiquidator.json"), JSON.stringify({ abi: c.abi, bytecode: "0x" + c.evm.bytecode.object, deployedBytecode: "0x" + c.evm.deployedBytecode.object, compiler: "solc-js " + solc.version(), settings: input.settings }, null, 1));
-  console.log("OK bytecode bytes:", c.evm.bytecode.object.length / 2, "abi entries:", c.abi.length);
+  for (const name of ["FlashLiquidator", "CometLiquidator", "FlashArb"]) {
+    const c = out.contracts["src/" + name + ".sol"][name];
+    fs.writeFileSync(path.join(root, "out-solcjs", name + ".json"), JSON.stringify({ abi: c.abi, bytecode: "0x" + c.evm.bytecode.object, deployedBytecode: "0x" + c.evm.deployedBytecode.object, compiler: "solc-js " + solc.version(), settings: input.settings }, null, 1));
+    console.log("OK", name, "bytecode bytes:", c.evm.bytecode.object.length / 2, "abi entries:", c.abi.length);
+  }
 }
