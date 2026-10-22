@@ -135,3 +135,57 @@ the same events and seed. Readiness is a log-normal draw fitted to the measured 
 event's window (one block, or the measured lead); win probability from the empirical winning bids; availability of
 predictable events measured from the reveal timing; profit per captured event is the Phase 3 simulated net profit
 with complete costs. Bootstrap intervals over events. A verdict is positive only when the whole interval is.
+
+## Phase 5 additions
+
+**Strategy plugins** (`app/plugins/`). One interface for every strategy kind: `discover` → `Opportunity` rows with
+`required_capital_usd`, `flash_loan_eligible`, `gross_profit_usd`, a `CostBreakdown` (gas units and price, L2
+execution, L1 data fee, flash premium, swap fees, financing, other; `total_usd` is None when anything is missing),
+`net_profit_usd` with `net_profit_complete`, an `outcome_class` (`theoretical`, `simulated`, `modeled`,
+`onchain_actual`, `passive_yield`), `evidence` (`historical`, `fork`, `shadow`, `live_read`, `modeled`),
+`data_quality`, `confidence`, `risk` and `risk_notes`; `simulate` → `SimulationOutcome` from a private fork;
+`competition` → `CompetitionEstimate` (`p_capture`, attainable, failed-attempt cost, the model and its
+assumptions); `replay` → `ReplayReport` over a block range; `shadow_tick` → one read-only observation. The runner
+(`app.plugins.run`) only simulates rows whose `state.executable` is true, plus `--force-sim N` validation runs of
+the best non-executable rows so the complete cost of an attempt is measured even when nothing is profitable.
+
+**Compound V3 (Comet) mechanics, not Aave's.** Eligibility is `isLiquidatable(account)`. `absorb` moves the
+account's collateral into protocol reserves and pays the absorber nothing; profit exists only in
+`buyCollateral(asset, minAmount, baseAmount, recipient)` at `quoteCollateral`'s price, which is the oracle price
+reduced by `storeFrontPriceFactor × (1 − liquidationFactor)`; the buyer's gross bonus in bps is
+`discount / (1 − discount)`. `CometLiquidator.sol` flash-borrows the base asset, absorbs the listed accounts, buys the
+collateral, swaps it back on Uniswap v3 and repays; `SimulatedCometLiquidation` carries the measured amounts. The base
+amount is found by binary search on `quoteCollateral` for the collateral that will be for sale (current reserves
+plus the account's balance). Competition: the priority-auction model of Phase 3 over the effective gas prices of
+observed `AbsorbCollateral` transactions (`app/research/comet_history.py`), with the number of competitors taken
+from absorbers above 5 % share. Historical replay forks at N−1 of each recorded absorb and runs the receiver
+against the same account. Dust (collateral for sale whose discount is below the profit floor) is reported as dust
+and not attempted.
+
+**DEX arbitrage.** Registered pools per network with two or more venues (Uniswap v3 fee tiers via `QuoterV2`,
+Aerodrome volatile/stable via the router's `getAmountsOut`), quoted in one Multicall3 call per leg on a geometric
+size grid ($50 … $50,000, 7 points), both directions; the best quoted round trip net of the 5 bps flash premium is
+the candidate and it is executable only when that figure is positive. `FlashArb.sol` runs the complete atomic
+transaction (`flashLoanSimple` → leg 1 → leg 2 → repay, `SimulatedArbitrage` event) on the fork; a settlement
+revert `InsufficientProfit(actual, required)` is decoded into a measured loss (round-trip shortfall + premium +
+gas of the mined attempt). Gas is priced from the real node, never from Anvil's default. Historical sampling
+quotes every pair at every `step`-th block of the window; shadow monitoring quotes at every new head and reports
+how many blocks had an executable spread and how long each persisted (the capture-probability proxy: the share of
+above-cost spreads still quoted one block later). Intra-block spreads (back-running) are outside this method and are
+said so.
+
+**Yield.** Stablecoin supply APY on Aave V3 (`currentLiquidityRate`, ray APR compounded per second) and Compound V3
+(`getSupplyRate(getUtilization())`, per-second rate) with available liquidity, caps and frozen/paused flags (a frozen
+reserve is shown but never chosen); LST loops on Aave (supply LST, borrow WETH) sized at `liquidationThreshold −
+300 bps` with leverage `1 / (1 − LTV)`, staking yield measured as the growth of the LST/WETH oracle ratio over 7
+days, net APY `leverage × (staking + supply) − (leverage − 1) × borrow`. Figures are 30-day USD amounts on
+10,000 USD net of an estimated $0.60 entry/exit gas, class `passive_yield`; a flash loan can enter or exit the loop
+atomically but adds no return. Risks are listed per row (contract, depeg, utilisation, liquidation drop for loops).
+
+**Unified ranking** (`app/plugins/ranking.py`, `GET /api/research/strategies`, dashboard “Strategies”). One row per
+strategy × network from the artefacts: simulated figures win over theoretical ones and are labeled; complete net
+profit counts only complete simulations; capture probability only when a model produced it; attainable = `p × net −
+(1 − p) × failed-attempt cost`; frequency from the replay window (per day) and the shadow run; evidence quality is the
+set of artefact kinds present; the verdict is `positive_attainable` only for a positive modeled attainable figure
+from a fork simulation, `positive_passive` for positive passive yield, otherwise `negative`, `not_estimable` or
+`no_opportunity`. Passive yield is never counted as transaction revenue and nothing is ever summed across classes.

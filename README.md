@@ -34,7 +34,7 @@ open http://localhost:3000
 Docs: [implementation plan](docs/implementation-plan.md), [architecture](docs/architecture.md),
 [data sources](docs/data-sources.md), [simulation methodology](docs/simulation-methodology.md),
 [deployment](docs/deployment.md), [limitations](docs/limitations.md), [Phase 2 results](docs/phase2-results.md),
-[Phase 3 results](docs/phase3-results.md), [Phase 4 results](docs/phase4-results.md), [replication runbook](docs/runbook.md) (fresh server, providers, exact
+[Phase 3 results](docs/phase3-results.md), [Phase 4 results](docs/phase4-results.md), [Phase 5 results](docs/phase5-results.md), [replication runbook](docs/runbook.md) (fresh server, providers, exact
 commands, pitfalls). Contracts: [contracts/README.md](contracts/README.md). Notes for AI-assisted sessions: `CLAUDE.md`.
 
 ## Status
@@ -44,8 +44,10 @@ results. Live results against the real chains: `docs/phase2-results.md` (deploym
 replays through the real receiver) and `docs/phase3-results.md` (profit verification with complete fee
 accounting, intra-block reconstruction, live competitive benchmark, bid/win-probability model) and
 `docs/phase4-results.md` (fast candidate path, per-stage latency, opportunity observability, protocol adapters,
-attainable-profit ranking, strategy comparison). Reproduce with `scripts/phase3-research.sh` and
-`scripts/phase4-research.sh`.
+attainable-profit ranking, strategy comparison) and `docs/phase5-results.md` (multi-strategy research: Compound V3
+liquidations, DEX arbitrage and yield through one plugin framework, with a unified ranking on the dashboard's
+“Strategies” page). Reproduce with `scripts/phase3-research.sh`, `scripts/phase4-research.sh` and
+`scripts/phase5-research.sh`.
 
 ## Tests
 

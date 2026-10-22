@@ -53,3 +53,14 @@
   Docker stack was started and verified (migrations, health checks, workers, persistence, browser tests) but
   host-port publishing and outbound RPC traffic from containers could not be exercised. `docs/test-results.md`
   lists every check with its actual result.
+- **Phase 5 (multi-strategy).** Compound V3 discovery looks at accounts that withdrew in the last 5 h of chain
+  time (plus any configured list), not at every borrower; a borrower idle for days is invisible to it until a
+  full backfill exists. The Compound competitor history covers the Phase 3 window (1.9 days on Base, extended
+  backwards when the slow 10-block Alchemy scan finishes) and holds a handful of absorbs, all dust; there is no
+  Arbitrum Comet history. DEX arbitrage samples block boundaries: spreads that open and close inside a block
+  (back-running) are not observed, and the registered pool set is small (WETH/USDC, USDC/USDbC, cbBTC pairs on
+  Base; WETH/USDC, USDC/USDT, USDC/USDC.e on Arbitrum). Capture probability for arbitrage is a persistence proxy,
+  not a model of searcher competition; when no spread was ever executable the proxy is undefined and reported as
+  such. Yield figures are today's rates held for 30 days; they float with utilisation and are passive, with
+  smart-contract, depeg and (for loops) liquidation risk that the numbers do not price. Infrastructure cost is an
+  explicit estimate ($69/month) and not measured. Shadow windows are 30 minutes; replays cover days, not months.

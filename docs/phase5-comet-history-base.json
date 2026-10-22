@@ -1,0 +1,121 @@
+{
+ "network": "base",
+ "from_block": 52560000,
+ "to_block": 52640886,
+ "span": 10,
+ "markets": {
+  "compound_v3_base_usdc": {
+   "absorbs": [
+    {
+     "tx": "0x593a18f9e20a64746106b02c0db74c19340546c4caad3d0ed4539330fd18a736",
+     "log_index": 156,
+     "block": 52611468,
+     "absorber": "0x6c7C74FD97AD97929447adE7857b56a6ea23148e",
+     "borrower": "0x653f549d35b923f44f0F6ba4719d7890B72E771A",
+     "asset": "0x4200000000000000000000000000000000000006",
+     "collateralAbsorbed": "11538308308",
+     "usdValue": "2774",
+     "gas_used": 144496,
+     "effective_gas_price_wei": 6000000,
+     "tx_index": 60,
+     "sender": "0x6c7C74FD97AD97929447adE7857b56a6ea23148e",
+     "l1_fee_wei": 2532821487
+    },
+    {
+     "tx": "0x593a18f9e20a64746106b02c0db74c19340546c4caad3d0ed4539330fd18a736",
+     "log_index": 157,
+     "block": 52611468,
+     "absorber": "0x6c7C74FD97AD97929447adE7857b56a6ea23148e",
+     "borrower": "0x653f549d35b923f44f0F6ba4719d7890B72E771A",
+     "basePaidOut": "26",
+     "usdValue": "2599",
+     "gas_used": 144496,
+     "effective_gas_price_wei": 6000000,
+     "tx_index": 60,
+     "sender": "0x6c7C74FD97AD97929447adE7857b56a6ea23148e",
+     "l1_fee_wei": 2532821487
+    },
+    {
+     "tx": "0xf557116bec1b32e82aa128d477a9906be63c94e3097d57bd15227fc894f50c6a",
+     "log_index": 591,
+     "block": 52620875,
+     "absorber": "0x6c7C74FD97AD97929447adE7857b56a6ea23148e",
+     "borrower": "0x84c196C53Fb80185083e7928F1eee089a6180cE0",
+     "asset": "0x4200000000000000000000000000000000000006",
+     "collateralAbsorbed": "1802786828974",
+     "usdValue": "425150",
+     "gas_used": 147153,
+     "effective_gas_price_wei": 24725104,
+     "tx_index": 948,
+     "sender": "0x6c7C74FD97AD97929447adE7857b56a6ea23148e",
+     "l1_fee_wei": 879973234
+    },
+    {
+     "tx": "0xf557116bec1b32e82aa128d477a9906be63c94e3097d57bd15227fc894f50c6a",
+     "log_index": 592,
+     "block": 52620875,
+     "absorber": "0x6c7C74FD97AD97929447adE7857b56a6ea23148e",
+     "borrower": "0x84c196C53Fb80185083e7928F1eee089a6180cE0",
+     "basePaidOut": "4039",
+     "usdValue": "403863",
+     "gas_used": 147153,
+     "effective_gas_price_wei": 24725104,
+     "tx_index": 948,
+     "sender": "0x6c7C74FD97AD97929447adE7857b56a6ea23148e",
+     "l1_fee_wei": 879973234
+    }
+   ],
+   "buys": []
+  },
+  "compound_v3_base_weth": {
+   "absorbs": [],
+   "buys": [
+    {
+     "tx": "0x9cc19b57534f4e2af66bd88f2107bb77e3ddacad3be2669e416f5da7b5268845",
+     "log_index": 608,
+     "block": 52596150,
+     "buyer": "0x16e41Af5E034113802D06064FBeB020Cc3D47b19",
+     "asset": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+     "baseAmount": "10",
+     "collateralAmount": "8",
+     "gas_used": 1454802,
+     "effective_gas_price_wei": 6000000,
+     "tx_index": 218,
+     "sender": "0xC0ffeEBABE5D496B2DDE509f9fa189C25cF29671",
+     "l1_fee_wei": 12686908820
+    }
+   ]
+  },
+  "compound_v3_base_usdbc": {
+   "absorbs": [],
+   "buys": []
+  }
+ },
+ "cursor": 52640887,
+ "errors": [],
+ "summary": {
+  "compound_v3_base_usdc": {
+   "absorb_events": 4,
+   "absorb_txs": 2,
+   "absorbers": 1,
+   "buy_events": 0,
+   "buyers": 0
+  },
+  "compound_v3_base_weth": {
+   "absorb_events": 0,
+   "absorb_txs": 0,
+   "absorbers": 0,
+   "buy_events": 1,
+   "buyers": 1
+  },
+  "compound_v3_base_usdbc": {
+   "absorb_events": 0,
+   "absorb_txs": 0,
+   "absorbers": 0,
+   "buy_events": 0,
+   "buyers": 0
+  },
+  "scanned_blocks": 80887,
+  "errors": 0
+ }
+}

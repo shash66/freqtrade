@@ -1,0 +1,99 @@
+{
+ "strategy": "yield_opt",
+ "network": "base",
+ "mode": "replay",
+ "generated_at": "2026-10-22T13:59:57.732244+00:00",
+ "block": "latest",
+ "replay": {
+  "strategy": "yield_opt",
+  "network": "base",
+  "from_block": 52641467,
+  "to_block": 52943867,
+  "opportunities": 8,
+  "simulated": 0,
+  "simulated_success": 0,
+  "net_profitable_complete": 8,
+  "lost_to_competition": null,
+  "expected_profit_per_attempt_usd": "39.879339",
+  "worst_case_loss_usd": null,
+  "sample_note": "8 daily samples; expected profit = 10,000 USD \u00d7 average best stablecoin APY \u00d7 30/365 \u2212 entry/exit gas; worst-case loss not sampled (a depeg or exploit, not a rate path, is the loss scenario)",
+  "details": [
+   {
+    "stats": {
+     "samples": 8,
+     "best_stable_apy_pct_avg": "4.924986",
+     "best_stable_apy_pct_min": "3.857812",
+     "best_stable_apy_pct_max": "5.936891"
+    }
+   },
+   {
+    "block": 52641467,
+    "stable_supply_apy": {
+     "aave_v3": "3.908427",
+     "compound_v3_base_usdc": "5.936891"
+    },
+    "weth_borrow_apy": "1.994646"
+   },
+   {
+    "block": 52684667,
+    "stable_supply_apy": {
+     "aave_v3": "3.857812",
+     "compound_v3_base_usdc": "3.289287"
+    },
+    "weth_borrow_apy": "2.000482"
+   },
+   {
+    "block": 52727867,
+    "stable_supply_apy": {
+     "aave_v3": "3.900718",
+     "compound_v3_base_usdc": "5.800807"
+    },
+    "weth_borrow_apy": "1.982357"
+   },
+   {
+    "block": 52771067,
+    "stable_supply_apy": {
+     "aave_v3": "4.078308",
+     "compound_v3_base_usdc": "3.288172"
+    },
+    "weth_borrow_apy": "1.982060"
+   },
+   {
+    "block": 52814267,
+    "stable_supply_apy": {
+     "aave_v3": "4.692596",
+     "compound_v3_base_usdc": "4.844870"
+    },
+    "weth_borrow_apy": "2.004246"
+   },
+   {
+    "block": 52857467,
+    "stable_supply_apy": {
+     "aave_v3": "4.127823",
+     "compound_v3_base_usdc": "5.192242"
+    },
+    "weth_borrow_apy": "2.030474"
+   },
+   {
+    "block": 52900667,
+    "stable_supply_apy": {
+     "aave_v3": "3.862768",
+     "compound_v3_base_usdc": "4.210645"
+    },
+    "weth_borrow_apy": "2.044196"
+   },
+   {
+    "block": 52943867,
+    "stable_supply_apy": {
+     "aave_v3": "3.795875",
+     "compound_v3_base_usdc": "5.478315"
+    },
+    "weth_borrow_apy": "2.037742"
+   }
+  ],
+  "assumptions": [
+   "rates read at daily blocks on the archive endpoint; APY in percent",
+   "passive yield: every sampled day counts as 'net profitable' when the APY is positive"
+  ]
+ }
+}

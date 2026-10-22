@@ -1,0 +1,392 @@
+{
+ "strategy": "dex_arb",
+ "network": "base",
+ "mode": "discover",
+ "generated_at": "2026-10-22T13:46:05.646380+00:00",
+ "block": "latest",
+ "discovery_ms": 16713.12813499992,
+ "rows": [
+  {
+   "opportunity": {
+    "strategy": "dex_arb",
+    "network": "base",
+    "kind": "arbitrage",
+    "key": "WETH/USDC:Aerodrome vAMM->Uniswap v3 0.05%:ab",
+    "block": "latest",
+    "description": "WETH/USDC: buy on Aerodrome vAMM, sell on Uniswap v3 0.05%, size 0.0208 A; quoted gross -0.120673 USD, premium 0.025000 USD",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(tokenIn) -> leg 1 -> leg 2 -> repay (FlashArb.sol)",
+    "gross_profit_usd": "-0.120673",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": "0.025000",
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "estimated",
+     "missing": [
+      "gas (simulate)"
+     ],
+     "total_usd": null
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "medium",
+    "risk_notes": [
+     "atomic: a failed leg reverts the whole transaction; the cost of a failed attempt is gas only"
+    ],
+    "state": {
+     "kind": "arbitrage",
+     "pair": "WETH/USDC",
+     "token_in": "0x4200000000000000000000000000000000000006",
+     "token_out": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+     "dec_in": 18,
+     "size_raw": 20758018916118380,
+     "mid_raw": 49819053,
+     "back_raw": 20707920324611798,
+     "premium_raw": 10379009458059,
+     "net_pre_gas_raw": -60477600964641,
+     "leg1": {
+      "kind": "solidly",
+      "name": "Aerodrome vAMM",
+      "router": "0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43",
+      "pool": "0xcDAC0d6c6C59727a65F871236188350531885C43",
+      "fee": 0,
+      "stable": false,
+      "factory": "0x420DD381b31aEf6683db6B902084cB0FFECe40Da"
+     },
+     "leg2": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.05%",
+      "router": "0x2626664c2603336E57B271c5C0b26F421741e481",
+      "pool": "0xd0b53D9277642d899DF5C87A3966A349A798F224",
+      "fee": 500,
+      "stable": false,
+      "factory": ""
+     },
+     "price_in": 240870770000,
+     "executable": false,
+     "grid": [
+      20758018916118380,
+      65642619487793784,
+      207580189161183776,
+      656426194877937920,
+      2075801891611837440,
+      6564261948779380736,
+      20758018916118380544
+     ]
+    },
+    "assumptions": [
+     "quotes are eth_call at this block (QuoterV2 / Aerodrome getAmountsOut); size chosen on the quoted profit curve; gas not yet included"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "spread_persistence_proxy",
+    "assumptions": [
+     "capture probability not estimated: no shadow persistence measurement or no complete net profit"
+    ],
+    "observed": {}
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "dex_arb",
+    "network": "base",
+    "kind": "arbitrage",
+    "key": "WETH/USDC:Uniswap v3 0.05%->Aerodrome vAMM:ba",
+    "block": "latest",
+    "description": "WETH/USDC: buy on Uniswap v3 0.05%, sell on Aerodrome vAMM, size 50.0083 B; quoted gross -0.120675 USD, premium 0.025000 USD",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(tokenIn) -> leg 1 -> leg 2 -> repay (FlashArb.sol)",
+    "gross_profit_usd": "-0.120675",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": "0.025000",
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "estimated",
+     "missing": [
+      "gas (simulate)"
+     ],
+     "total_usd": null
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "medium",
+    "risk_notes": [
+     "atomic: a failed leg reverts the whole transaction; the cost of a failed attempt is gas only"
+    ],
+    "state": {
+     "kind": "arbitrage",
+     "pair": "WETH/USDC",
+     "token_in": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+     "token_out": "0x4200000000000000000000000000000000000006",
+     "dec_in": 6,
+     "size_raw": 50008287,
+     "mid_raw": 20786577600253593,
+     "back_raw": 49887592,
+     "premium_raw": 25004,
+     "net_pre_gas_raw": -145699,
+     "leg1": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.05%",
+      "router": "0x2626664c2603336E57B271c5C0b26F421741e481",
+      "pool": "0xd0b53D9277642d899DF5C87A3966A349A798F224",
+      "fee": 500,
+      "stable": false,
+      "factory": ""
+     },
+     "leg2": {
+      "kind": "solidly",
+      "name": "Aerodrome vAMM",
+      "router": "0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43",
+      "pool": "0xcDAC0d6c6C59727a65F871236188350531885C43",
+      "fee": 0,
+      "stable": false,
+      "factory": "0x420DD381b31aEf6683db6B902084cB0FFECe40Da"
+     },
+     "price_in": 99983427,
+     "executable": false,
+     "grid": [
+      50008287,
+      158140091,
+      500082878,
+      1581400915,
+      5000828787,
+      15814009156,
+      50008287873
+     ]
+    },
+    "assumptions": [
+     "quotes are eth_call at this block (QuoterV2 / Aerodrome getAmountsOut); size chosen on the quoted profit curve; gas not yet included"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "spread_persistence_proxy",
+    "assumptions": [
+     "capture probability not estimated: no shadow persistence measurement or no complete net profit"
+    ],
+    "observed": {}
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "dex_arb",
+    "network": "base",
+    "kind": "arbitrage",
+    "key": "USDC/USDbC:Aerodrome sAMM->Uniswap v3 0.01%:ab",
+    "block": "latest",
+    "description": "USDC/USDbC: buy on Aerodrome sAMM, sell on Uniswap v3 0.01%, size 50.0083 A; quoted gross -0.018812 USD, premium 0.025000 USD",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(tokenIn) -> leg 1 -> leg 2 -> repay (FlashArb.sol)",
+    "gross_profit_usd": "-0.018812",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": "0.025000",
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "estimated",
+     "missing": [
+      "gas (simulate)"
+     ],
+     "total_usd": null
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "medium",
+    "risk_notes": [
+     "atomic: a failed leg reverts the whole transaction; the cost of a failed attempt is gas only"
+    ],
+    "state": {
+     "kind": "arbitrage",
+     "pair": "USDC/USDbC",
+     "token_in": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+     "token_out": "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+     "dec_in": 6,
+     "size_raw": 50008287,
+     "mid_raw": 49997069,
+     "back_raw": 49989472,
+     "premium_raw": 25004,
+     "net_pre_gas_raw": -43819,
+     "leg1": {
+      "kind": "solidly",
+      "name": "Aerodrome sAMM",
+      "router": "0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43",
+      "pool": "0x27a8Afa3Bd49406e48a074350fB7b2020c43B2bD",
+      "fee": 0,
+      "stable": true,
+      "factory": "0x420DD381b31aEf6683db6B902084cB0FFECe40Da"
+     },
+     "leg2": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.01%",
+      "router": "0x2626664c2603336E57B271c5C0b26F421741e481",
+      "pool": "0x06959273E9A65433De71F5A452D529544E07dDD0",
+      "fee": 100,
+      "stable": false,
+      "factory": ""
+     },
+     "price_in": 99983427,
+     "executable": false,
+     "grid": [
+      50008287,
+      158140089,
+      500082872,
+      1581400901,
+      5000828758,
+      15814009110,
+      50008287873
+     ]
+    },
+    "assumptions": [
+     "quotes are eth_call at this block (QuoterV2 / Aerodrome getAmountsOut); size chosen on the quoted profit curve; gas not yet included"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "spread_persistence_proxy",
+    "assumptions": [
+     "capture probability not estimated: no shadow persistence measurement or no complete net profit"
+    ],
+    "observed": {}
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "dex_arb",
+    "network": "base",
+    "kind": "arbitrage",
+    "key": "USDC/USDbC:Uniswap v3 0.01%->Aerodrome sAMM:ba",
+    "block": "latest",
+    "description": "USDC/USDbC: buy on Uniswap v3 0.01%, sell on Aerodrome sAMM, size 50.0083 B; quoted gross -0.018811 USD, premium 0.025000 USD",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(tokenIn) -> leg 1 -> leg 2 -> repay (FlashArb.sol)",
+    "gross_profit_usd": "-0.018811",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": "0.025000",
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "estimated",
+     "missing": [
+      "gas (simulate)"
+     ],
+     "total_usd": null
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "medium",
+    "risk_notes": [
+     "atomic: a failed leg reverts the whole transaction; the cost of a failed attempt is gas only"
+    ],
+    "state": {
+     "kind": "arbitrage",
+     "pair": "USDC/USDbC",
+     "token_in": "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+     "token_out": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+     "dec_in": 6,
+     "size_raw": 50008287,
+     "mid_raw": 50000689,
+     "back_raw": 49989473,
+     "premium_raw": 25004,
+     "net_pre_gas_raw": -43818,
+     "leg1": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.01%",
+      "router": "0x2626664c2603336E57B271c5C0b26F421741e481",
+      "pool": "0x06959273E9A65433De71F5A452D529544E07dDD0",
+      "fee": 100,
+      "stable": false,
+      "factory": ""
+     },
+     "leg2": {
+      "kind": "solidly",
+      "name": "Aerodrome sAMM",
+      "router": "0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43",
+      "pool": "0x27a8Afa3Bd49406e48a074350fB7b2020c43B2bD",
+      "fee": 0,
+      "stable": true,
+      "factory": "0x420DD381b31aEf6683db6B902084cB0FFECe40Da"
+     },
+     "price_in": 99983427,
+     "executable": false,
+     "grid": [
+      50008287,
+      158140089,
+      500082872,
+      1581400901,
+      5000828758,
+      15814009110,
+      50008287873
+     ]
+    },
+    "assumptions": [
+     "quotes are eth_call at this block (QuoterV2 / Aerodrome getAmountsOut); size chosen on the quoted profit curve; gas not yet included"
+    ],
+    "notes": []
+   },
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": null,
+    "model": "spread_persistence_proxy",
+    "assumptions": [
+     "capture probability not estimated: no shadow persistence measurement or no complete net profit"
+    ],
+    "observed": {}
+   }
+  }
+ ],
+ "summary": {
+  "opportunities": 4,
+  "executable": 4,
+  "simulated_success": 0,
+  "net_profitable_complete": 0
+ }
+}

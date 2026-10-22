@@ -12,5 +12,6 @@ export const NAV: NavItem[] = [
   { href: "/competition", label: "Competition Lab", short: "CL", description: "Model competing liquidators" },
   { href: "/simulator", label: "Flash-Loan Simulator", short: "FS", description: "Simulate a single liquidation" },
   { href: "/research", label: "Research", short: "RS", description: "Networks, protocols, observability and latency" },
+  { href: "/strategies", label: "Strategies", short: "SG", description: "Multi-strategy profitability ranking (Phase 5)" },
   { href: "/settings", label: "Settings", short: "ST", description: "Read-only runtime configuration" },
 ];
