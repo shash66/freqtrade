@@ -116,6 +116,31 @@
    "buys": []
   }
  },
- "cursor": 52544570,
- "errors": []
+ "cursor": 52560000,
+ "errors": [],
+ "summary": {
+  "compound_v3_base_usdc": {
+   "absorb_events": 0,
+   "absorb_txs": 0,
+   "absorbers": 0,
+   "buy_events": 0,
+   "buyers": 0
+  },
+  "compound_v3_base_weth": {
+   "absorb_events": 0,
+   "absorb_txs": 0,
+   "absorbers": 0,
+   "buy_events": 7,
+   "buyers": 1
+  },
+  "compound_v3_base_usdbc": {
+   "absorb_events": 0,
+   "absorb_txs": 0,
+   "absorbers": 0,
+   "buy_events": 0,
+   "buyers": 0
+  },
+  "scanned_blocks": 80000,
+  "errors": 0
+ }
 }
