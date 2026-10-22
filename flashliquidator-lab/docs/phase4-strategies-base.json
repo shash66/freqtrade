@@ -1,0 +1,873 @@
+{
+ "seed": 42,
+ "bootstrap_samples": 2000,
+ "events": 24,
+ "categories": {
+  "publicly_observable": 3,
+  "predictable_not_yet_eligible": 17,
+  "intra_block_only": 4,
+  "unknown": 0
+ },
+ "inputs": {
+  "winning_bids_n": 15,
+  "median_winning_bid_gwei": 0.040444595,
+  "competitors": 8,
+  "failed_attempt_cost_usd": "0.20",
+  "predictable_available_share_override": null,
+  "predictable_available_share_measured": 0.588,
+  "predictable_events": 17,
+  "block_seconds": 2.0,
+  "bid_grid_gwei": [
+   0.008052681,
+   0.009912352,
+   0.00995713,
+   0.010584236,
+   0.012302484,
+   0.020222297,
+   0.0252,
+   0.02771561,
+   0.040444595,
+   0.044489054,
+   0.047828097,
+   0.048533514,
+   0.060666892,
+   0.079308287,
+   0.08088919,
+   0.095814445,
+   0.121333785,
+   0.170210899,
+   0.295988869,
+   0.300283674,
+   0.309615
+  ],
+  "latency_ms": {
+   "head_poll": [
+    61.476816999856965,
+    68.96821000009368
+   ],
+   "fast_path": [
+    373.2348000000911,
+    427.4677349999365
+   ],
+   "evm_simulation": [
+    10566.208770000003,
+    10795.487675000004
+   ]
+  }
+ },
+ "strategies": [
+  {
+   "name": "A_boundary_polling",
+   "description": "poll every head, evaluate on the fast path, confirm on a fork, then send",
+   "events_in_scope": 3,
+   "events_with_profit": 1,
+   "expected_profit_total_usd": "0.0000",
+   "expected_profit_ci95_usd": [
+    "0.0000",
+    "0.0000"
+   ],
+   "expected_profit_per_event_usd": "0.0000",
+   "capture_probability_mean": 0.0,
+   "modeled_captures": 0.0,
+   "captures_ci95_wilson": [
+    0.0,
+    0.5615060804490177
+   ],
+   "ready_in_time_rate": 0.0,
+   "bid_gwei": 0.121333785,
+   "p_win_bid": 0.0836,
+   "per_event": [
+    {
+     "tx": "0x7ed309a3c25caaadc07571f2cbc02a01249d45edd9199539a4f54f1964253f3c",
+     "log_index": 1352,
+     "category": "publicly_observable",
+     "net_profit_usd": "0.435773000000000000",
+     "window_s": 2.0,
+     "p_ready": 0.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x881aaaf8b6328f10ace673b6acfe2b4b05a89e3e8757aa3c0106e7e174bd6d86",
+     "log_index": 140,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 0.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xa49fddc8db76e18e888c56c651c2aa322dc0e1bf6e142df30089ac6b2db27890",
+     "log_index": 532,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 0.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    }
+   ],
+   "assumptions": [
+    "latency: head poll + fast path + fork gate drawn log-normal from measured median/p90",
+    "window: one block (2.0 s) for publicly observable events; the measured lead for predictable events",
+    "bid chosen from the observed winning-bid grid to maximise expected profit over in-scope events (extra gas above the median bid charged at 565,190 units, ETH 4000 USD); P(win) = F(bid)^8 over observed winning bids",
+    "profit per captured event = Phase 3 simulated net profit with complete costs; events without one contribute 0",
+    "predictable events are multiplied by the measured share still open at the reveal block (0 when unmeasured and reported as such)"
+   ]
+  },
+  {
+   "name": "B_event_driven",
+   "description": "poll every head, evaluate on the fast path, send without a fork gate",
+   "events_in_scope": 3,
+   "events_with_profit": 1,
+   "expected_profit_total_usd": "-0.1468",
+   "expected_profit_ci95_usd": [
+    "-0.4405",
+    "0.0000"
+   ],
+   "expected_profit_per_event_usd": "-0.0489",
+   "capture_probability_mean": 0.0836,
+   "modeled_captures": 0.251,
+   "captures_ci95_wilson": [
+    0.0,
+    0.5615060804490177
+   ],
+   "ready_in_time_rate": 1.0,
+   "bid_gwei": 0.121333785,
+   "p_win_bid": 0.0836,
+   "per_event": [
+    {
+     "tx": "0x7ed309a3c25caaadc07571f2cbc02a01249d45edd9199539a4f54f1964253f3c",
+     "log_index": 1352,
+     "category": "publicly_observable",
+     "net_profit_usd": "0.435773000000000000",
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "-0.1468"
+    },
+    {
+     "tx": "0x881aaaf8b6328f10ace673b6acfe2b4b05a89e3e8757aa3c0106e7e174bd6d86",
+     "log_index": 140,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xa49fddc8db76e18e888c56c651c2aa322dc0e1bf6e142df30089ac6b2db27890",
+     "log_index": 532,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "0.0000"
+    }
+   ],
+   "assumptions": [
+    "latency: head poll + fast path drawn log-normal from measured median/p90",
+    "window: one block (2.0 s) for publicly observable events; the measured lead for predictable events",
+    "bid chosen from the observed winning-bid grid to maximise expected profit over in-scope events (extra gas above the median bid charged at 565,190 units, ETH 4000 USD); P(win) = F(bid)^8 over observed winning bids",
+    "profit per captured event = Phase 3 simulated net profit with complete costs; events without one contribute 0",
+    "predictable events are multiplied by the measured share still open at the reveal block (0 when unmeasured and reported as such)"
+   ]
+  },
+  {
+   "name": "C_predictive",
+   "description": "read the aggregators directly, precompute the transaction during the lead, submit at the reveal block",
+   "events_in_scope": 20,
+   "events_with_profit": 6,
+   "expected_profit_total_usd": "-0.8734",
+   "expected_profit_ci95_usd": [
+    "-1.5999",
+    "-0.3270"
+   ],
+   "expected_profit_per_event_usd": "-0.0437",
+   "capture_probability_mean": 0.0543,
+   "modeled_captures": 1.087,
+   "captures_ci95_wilson": [
+    0.008881219432873136,
+    0.23613589351256675
+   ],
+   "ready_in_time_rate": 1.0,
+   "bid_gwei": 0.121333785,
+   "p_win_bid": 0.0836,
+   "per_event": [
+    {
+     "tx": "0xd1032cc331048abee80d4114fb510d130bc2213cefd65fa6ab9e856d4d4a1df1",
+     "log_index": 211,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": "0.037453000000000000",
+     "window_s": 32.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "-0.1801"
+    },
+    {
+     "tx": "0x473a4cb738531ecc8b153207c05287e9eb3c51d49b6c26de844ad27180521a2b",
+     "log_index": 47,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": "0.015430000000000000",
+     "window_s": 32.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "-0.1820"
+    },
+    {
+     "tx": "0x7ed309a3c25caaadc07571f2cbc02a01249d45edd9199539a4f54f1964253f3c",
+     "log_index": 1352,
+     "category": "publicly_observable",
+     "net_profit_usd": "0.435773000000000000",
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "-0.1468"
+    },
+    {
+     "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
+     "log_index": 1426,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
+     "log_index": 1414,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
+     "log_index": 1373,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xa0927afbf117e86277c56cb823e841851177643d189e5b5e6a00cf29214f4c91",
+     "log_index": 981,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 0.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xa0927afbf117e86277c56cb823e841851177643d189e5b5e6a00cf29214f4c91",
+     "log_index": 969,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 0.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xa0927afbf117e86277c56cb823e841851177643d189e5b5e6a00cf29214f4c91",
+     "log_index": 957,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": "3120.281860000000000000",
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 0.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x8ba80f45a86ea4b05df399227c79fc773656502f8bf8cecdc095c2378ec1682e",
+     "log_index": 1085,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 0.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x58cbcf9113a49bdaef8739bcafec8e5a6f3d70879c060ebe538522c1caba70c0",
+     "log_index": 483,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 0.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x881aaaf8b6328f10ace673b6acfe2b4b05a89e3e8757aa3c0106e7e174bd6d86",
+     "log_index": 140,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x51c350c841b613fbb6a911424469ceb09720652d267b1eb1232ccd8411d16d40",
+     "log_index": 1536,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x51c350c841b613fbb6a911424469ceb09720652d267b1eb1232ccd8411d16d40",
+     "log_index": 1524,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x51c350c841b613fbb6a911424469ceb09720652d267b1eb1232ccd8411d16d40",
+     "log_index": 1512,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xa49fddc8db76e18e888c56c651c2aa322dc0e1bf6e142df30089ac6b2db27890",
+     "log_index": 532,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x5c7e3657a903df12b78df329bdd3e3d7ca0701342097642fc18317ef700eb5be",
+     "log_index": 574,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 0.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x03399cc3aa1c29693528b4323bc6e03ac2fbc64892e48fb67beb80d59999b2d2",
+     "log_index": 19,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 0.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x9366d3daa32503289c11113499f19e056697a1f32a1fde84cfb5c59d494d713f",
+     "log_index": 81,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": "0.013788000000000000",
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "-0.1821"
+    },
+    {
+     "tx": "0xcf07e08bd6fb4c0997b7ee39998c45a22f9f8f24f1f49f90c6e2c171cfa79112",
+     "log_index": 97,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": "0.011386000000000000",
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 0.084,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0836,
+     "expected_value_usd": "-0.1823"
+    }
+   ],
+   "assumptions": [
+    "latency: head poll + fast path drawn log-normal from measured median/p90",
+    "window: one block (2.0 s) for publicly observable events; the measured lead for predictable events",
+    "bid chosen from the observed winning-bid grid to maximise expected profit over in-scope events (extra gas above the median bid charged at 565,190 units, ETH 4000 USD); P(win) = F(bid)^8 over observed winning bids",
+    "profit per captured event = Phase 3 simulated net profit with complete costs; events without one contribute 0",
+    "predictable events are multiplied by the measured share still open at the reveal block (0 when unmeasured and reported as such)"
+   ]
+  },
+  {
+   "name": "D_ceiling_no_competition",
+   "description": "reference ceiling: every simulated-profitable event captured with certainty; not a strategy, the upper bound",
+   "events_in_scope": 24,
+   "events_with_profit": 6,
+   "expected_profit_total_usd": "3120.7957",
+   "expected_profit_ci95_usd": [
+    "0.0512",
+    "9361.7853"
+   ],
+   "expected_profit_per_event_usd": "130.0332",
+   "capture_probability_mean": 1.0,
+   "modeled_captures": 24.0,
+   "captures_ci95_wilson": [
+    0.8620194241710247,
+    1.0
+   ],
+   "ready_in_time_rate": 1.0,
+   "bid_gwei": 0.040444595,
+   "p_win_bid": 0.0022,
+   "per_event": [
+    {
+     "tx": "0xd1032cc331048abee80d4114fb510d130bc2213cefd65fa6ab9e856d4d4a1df1",
+     "log_index": 211,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": "0.037453000000000000",
+     "window_s": 32.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0375"
+    },
+    {
+     "tx": "0x473a4cb738531ecc8b153207c05287e9eb3c51d49b6c26de844ad27180521a2b",
+     "log_index": 47,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": "0.015430000000000000",
+     "window_s": 32.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0154"
+    },
+    {
+     "tx": "0x7ed309a3c25caaadc07571f2cbc02a01249d45edd9199539a4f54f1964253f3c",
+     "log_index": 1352,
+     "category": "publicly_observable",
+     "net_profit_usd": "0.435773000000000000",
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.4358"
+    },
+    {
+     "tx": "0x2dfa8c66d59248f584d90bd66c2a2ad79a3b56fd91667a3962e67707762ed383",
+     "log_index": 2322,
+     "category": "intra_block_only",
+     "net_profit_usd": null,
+     "window_s": 0.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "no public signal before the winning block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
+     "log_index": 1426,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
+     "log_index": 1414,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
+     "log_index": 1402,
+     "category": "intra_block_only",
+     "net_profit_usd": null,
+     "window_s": 0.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "no public signal before the winning block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
+     "log_index": 1388,
+     "category": "intra_block_only",
+     "net_profit_usd": null,
+     "window_s": 0.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "no public signal before the winning block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
+     "log_index": 1373,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xa0927afbf117e86277c56cb823e841851177643d189e5b5e6a00cf29214f4c91",
+     "log_index": 981,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xa0927afbf117e86277c56cb823e841851177643d189e5b5e6a00cf29214f4c91",
+     "log_index": 969,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xa0927afbf117e86277c56cb823e841851177643d189e5b5e6a00cf29214f4c91",
+     "log_index": 957,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": "3120.281860000000000000",
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 1.0,
+     "expected_value_usd": "3120.2819"
+    },
+    {
+     "tx": "0x8ba80f45a86ea4b05df399227c79fc773656502f8bf8cecdc095c2378ec1682e",
+     "log_index": 1085,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x58cbcf9113a49bdaef8739bcafec8e5a6f3d70879c060ebe538522c1caba70c0",
+     "log_index": 502,
+     "category": "intra_block_only",
+     "net_profit_usd": null,
+     "window_s": 0.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "no public signal before the winning block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x58cbcf9113a49bdaef8739bcafec8e5a6f3d70879c060ebe538522c1caba70c0",
+     "log_index": 483,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x881aaaf8b6328f10ace673b6acfe2b4b05a89e3e8757aa3c0106e7e174bd6d86",
+     "log_index": 140,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x51c350c841b613fbb6a911424469ceb09720652d267b1eb1232ccd8411d16d40",
+     "log_index": 1536,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x51c350c841b613fbb6a911424469ceb09720652d267b1eb1232ccd8411d16d40",
+     "log_index": 1524,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x51c350c841b613fbb6a911424469ceb09720652d267b1eb1232ccd8411d16d40",
+     "log_index": 1512,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xa49fddc8db76e18e888c56c651c2aa322dc0e1bf6e142df30089ac6b2db27890",
+     "log_index": 532,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x5c7e3657a903df12b78df329bdd3e3d7ca0701342097642fc18317ef700eb5be",
+     "log_index": 574,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x03399cc3aa1c29693528b4323bc6e03ac2fbc64892e48fb67beb80d59999b2d2",
+     "log_index": 19,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0x9366d3daa32503289c11113499f19e056697a1f32a1fde84cfb5c59d494d713f",
+     "log_index": 81,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": "0.013788000000000000",
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0138"
+    },
+    {
+     "tx": "0xcf07e08bd6fb4c0997b7ee39998c45a22f9f8f24f1f49f90c6e2c171cfa79112",
+     "log_index": 97,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": "0.011386000000000000",
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0114"
+    }
+   ],
+   "assumptions": [
+    "latency: head poll + fast path drawn log-normal from measured median/p90",
+    "window: one block (2.0 s) for publicly observable events; the measured lead for predictable events",
+    "bid chosen from the observed winning-bid grid to maximise expected profit over in-scope events (extra gas above the median bid charged at 565,190 units, ETH 4000 USD); P(win) = F(bid)^8 over observed winning bids",
+    "profit per captured event = Phase 3 simulated net profit with complete costs; events without one contribute 0",
+    "predictable events are multiplied by the measured share still open at the reveal block (0 when unmeasured and reported as such)"
+   ]
+  }
+ ],
+ "verdict": {
+  "A_boundary_polling": {
+   "expected_profit_total_usd": "0.0000",
+   "ci95": [
+    "0.0000",
+    "0.0000"
+   ],
+   "positive_after_costs_and_competition": false,
+   "point_estimate_positive": false,
+   "statement": "no positive expected profit on this dataset"
+  },
+  "B_event_driven": {
+   "expected_profit_total_usd": "-0.1468",
+   "ci95": [
+    "-0.4405",
+    "0.0000"
+   ],
+   "positive_after_costs_and_competition": false,
+   "point_estimate_positive": false,
+   "statement": "no positive expected profit on this dataset"
+  },
+  "C_predictive": {
+   "expected_profit_total_usd": "-0.8734",
+   "ci95": [
+    "-1.5999",
+    "-0.3270"
+   ],
+   "positive_after_costs_and_competition": false,
+   "point_estimate_positive": false,
+   "statement": "no positive expected profit on this dataset"
+  },
+  "D_ceiling_no_competition": {
+   "expected_profit_total_usd": "3120.7957",
+   "ci95": [
+    "0.0512",
+    "9361.7853"
+   ],
+   "positive_after_costs_and_competition": true,
+   "point_estimate_positive": true,
+   "statement": "positive expected profit with 95 % confidence"
+  }
+ },
+ "network": "base"
+}

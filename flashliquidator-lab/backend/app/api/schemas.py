@@ -109,6 +109,8 @@ class OpportunityOut(BaseModel):
     swap_impact_bps: int | None
     gas_usd: str | None
     net_profit_usd: str | None
+    attainable_net_profit_usd: str | None = None   # modeled (Phase 4): p_capture x net - (1 - p_capture) x failed-attempt cost
+    observability: str | None = None
     status: str
     outcome_class: str
     block_number: int

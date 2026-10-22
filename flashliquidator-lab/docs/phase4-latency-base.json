@@ -1,0 +1,639 @@
+{
+ "network": "base",
+ "generated_at": "2026-10-22T12:55:54.265963+00:00",
+ "rpc": "base-rpc.publicnode.com",
+ "anvil": "http://127.0.0.1:8546",
+ "positions": 5,
+ "rounds": 10,
+ "stages": {
+  "rpc_rtt_ms": {
+   "n": 10,
+   "median": 65.36820300016188,
+   "p90": 73.30742699991788,
+   "max": 470.305246999942,
+   "mean": 104.89265150001756
+  },
+  "head_poll_ms": {
+   "n": 10,
+   "median": 61.476816999856965,
+   "p90": 68.96821000009368,
+   "max": 71.62214999993921,
+   "mean": 63.05580599998848
+  },
+  "rpc_reads_ms": {
+   "n": 50,
+   "median": 211.17110199998024,
+   "p90": 236.74645999994937,
+   "max": 272.2961080000914,
+   "mean": 212.23413509999318
+  },
+  "math_ms": {
+   "n": 50,
+   "median": 0.04975100000592647,
+   "p90": 0.07583699994029303,
+   "max": 0.7744700001239835,
+   "mean": 0.07242068001232838
+  },
+  "quote_ms": {
+   "n": 40,
+   "median": 220.54901000001337,
+   "p90": 240.46908199989048,
+   "max": 445.5041840001286,
+   "mean": 229.00663977499676
+  },
+  "fee_estimate_ms": {
+   "n": 0
+  },
+  "fast_total_ms": {
+   "n": 50,
+   "median": 373.2348000000911,
+   "p90": 427.4677349999365,
+   "max": 461.34606000009626,
+   "mean": 380.8927837799911
+  },
+  "evm_simulation_ms": {
+   "n": 3,
+   "median": 10566.208770000003,
+   "p90": 10795.487675000004,
+   "max": 10795.487675000004,
+   "mean": 10515.802279000052
+  }
+ },
+ "evaluations": [
+  {
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2",
+   "block": 52942171,
+   "eligible": false,
+   "health_factor": "1.011260605452960934",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 327.4
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942171,
+   "quote_probe_error": "base-latency: {'code': -32003, 'message': 'out of gas: gas required exceeds: 50000000'}"
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942171,
+   "eligible": false,
+   "health_factor": "1.065321044237679382",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 411.3
+  },
+  {
+   "borrower": "0x8b81420441aC3933C58D1190c8499C2F89EB1263",
+   "block": 52942171,
+   "eligible": false,
+   "health_factor": "1.024901038025396871",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 380.1
+  },
+  {
+   "borrower": "0xcfd2f32E6d533653cEd5Ba7E5fe1a76C3c626757",
+   "block": 52942171,
+   "eligible": false,
+   "health_factor": "1.032068076146710979",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 395.4
+  },
+  {
+   "borrower": "0x7Aef226A7A37d907bA07FC70bdF44c4Ad1d541a2",
+   "block": 52942171,
+   "eligible": false,
+   "health_factor": "1.054073061913863698",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 351.2
+  },
+  {
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2",
+   "block": 52942173,
+   "eligible": false,
+   "health_factor": "1.011260604110248492",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 434.3
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942173,
+   "quote_probe_error": "base-latency: {'code': -32003, 'message': 'out of gas: gas required exceeds: 50000000'}"
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942173,
+   "eligible": false,
+   "health_factor": "1.065321047770906617",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 347.8
+  },
+  {
+   "borrower": "0x8b81420441aC3933C58D1190c8499C2F89EB1263",
+   "block": 52942173,
+   "eligible": false,
+   "health_factor": "1.024901035814657155",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 343.0
+  },
+  {
+   "borrower": "0xcfd2f32E6d533653cEd5Ba7E5fe1a76C3c626757",
+   "block": 52942173,
+   "eligible": false,
+   "health_factor": "1.032068073497087314",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 413.2
+  },
+  {
+   "borrower": "0x7Aef226A7A37d907bA07FC70bdF44c4Ad1d541a2",
+   "block": 52942173,
+   "eligible": false,
+   "health_factor": "1.054073060604422205",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 461.3
+  },
+  {
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2",
+   "block": 52942174,
+   "eligible": false,
+   "health_factor": "1.011260603429172218",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 372.0
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942174,
+   "quote_probe_error": "base-latency: {'code': -32003, 'message': 'out of gas: gas required exceeds: 50000000'}"
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942174,
+   "eligible": false,
+   "health_factor": "1.065321050401315334",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 376.1
+  },
+  {
+   "borrower": "0x8b81420441aC3933C58D1190c8499C2F89EB1263",
+   "block": 52942174,
+   "eligible": false,
+   "health_factor": "1.024901034709539503",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 396.7
+  },
+  {
+   "borrower": "0xcfd2f32E6d533653cEd5Ba7E5fe1a76C3c626757",
+   "block": 52942174,
+   "eligible": false,
+   "health_factor": "1.032068072172257925",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 350.4
+  },
+  {
+   "borrower": "0x7Aef226A7A37d907bA07FC70bdF44c4Ad1d541a2",
+   "block": 52942174,
+   "eligible": false,
+   "health_factor": "1.05407305994872802",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 345.3
+  },
+  {
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2",
+   "block": 52942176,
+   "eligible": false,
+   "health_factor": "1.011260602086301182",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 349.9
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942176,
+   "quote_probe_error": "base-latency: {'code': -32003, 'message': 'out of gas: gas required exceeds: 50000000'}"
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942176,
+   "eligible": false,
+   "health_factor": "1.065321052158436363",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 403.2
+  },
+  {
+   "borrower": "0x8b81420441aC3933C58D1190c8499C2F89EB1263",
+   "block": 52942176,
+   "eligible": false,
+   "health_factor": "1.024901032493352398",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 421.6
+  },
+  {
+   "borrower": "0xcfd2f32E6d533653cEd5Ba7E5fe1a76C3c626757",
+   "block": 52942176,
+   "eligible": false,
+   "health_factor": "1.032068069522601746",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 393.8
+  },
+  {
+   "borrower": "0x7Aef226A7A37d907bA07FC70bdF44c4Ad1d541a2",
+   "block": 52942176,
+   "eligible": false,
+   "health_factor": "1.0540730587098154",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 349.2
+  },
+  {
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2",
+   "block": 52942178,
+   "eligible": false,
+   "health_factor": "1.011260600758494967",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 411.7
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942178,
+   "quote_probe_error": "base-latency: {'code': -32003, 'message': 'out of gas: gas required exceeds: 50000000'}"
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942178,
+   "eligible": false,
+   "health_factor": "1.06532105569166357",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 404.7
+  },
+  {
+   "borrower": "0x8b81420441aC3933C58D1190c8499C2F89EB1263",
+   "block": 52942178,
+   "eligible": false,
+   "health_factor": "1.024901030282612709",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 330.1
+  },
+  {
+   "borrower": "0xcfd2f32E6d533653cEd5Ba7E5fe1a76C3c626757",
+   "block": 52942178,
+   "eligible": false,
+   "health_factor": "1.032068066872942993",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 415.5
+  },
+  {
+   "borrower": "0x7Aef226A7A37d907bA07FC70bdF44c4Ad1d541a2",
+   "block": 52942178,
+   "eligible": false,
+   "health_factor": "1.054073057399663398",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 451.9
+  },
+  {
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2",
+   "block": 52942179,
+   "eligible": false,
+   "health_factor": "1.011192808499853615",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 411.3
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942179,
+   "quote_probe_error": "base-latency: {'code': -32003, 'message': 'out of gas: gas required exceeds: 50000000'}"
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942179,
+   "eligible": false,
+   "health_factor": "1.066569520391192376",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 354.7
+  },
+  {
+   "borrower": "0x8b81420441aC3933C58D1190c8499C2F89EB1263",
+   "block": 52942179,
+   "eligible": false,
+   "health_factor": "1.02509334499417469",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 372.7
+  },
+  {
+   "borrower": "0xcfd2f32E6d533653cEd5Ba7E5fe1a76C3c626757",
+   "block": 52942179,
+   "eligible": false,
+   "health_factor": "1.032068065549234882",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 410.2
+  },
+  {
+   "borrower": "0x7Aef226A7A37d907bA07FC70bdF44c4Ad1d541a2",
+   "block": 52942179,
+   "eligible": false,
+   "health_factor": "1.054073056744679779",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 354.0
+  },
+  {
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2",
+   "block": 52942181,
+   "eligible": false,
+   "health_factor": "1.011192807157382873",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 391.2
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942181,
+   "quote_probe_error": "base-latency: {'code': -32003, 'message': 'out of gas: gas required exceeds: 50000000'}"
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942181,
+   "eligible": false,
+   "health_factor": "1.066569522148266421",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 333.3
+  },
+  {
+   "borrower": "0x8b81420441aC3933C58D1190c8499C2F89EB1263",
+   "block": 52942181,
+   "eligible": false,
+   "health_factor": "1.025093343199791186",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 333.0
+  },
+  {
+   "borrower": "0xcfd2f32E6d533653cEd5Ba7E5fe1a76C3c626757",
+   "block": 52942181,
+   "eligible": false,
+   "health_factor": "1.032068062899610946",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 335.6
+  },
+  {
+   "borrower": "0x7Aef226A7A37d907bA07FC70bdF44c4Ad1d541a2",
+   "block": 52942181,
+   "eligible": false,
+   "health_factor": "1.054073055505056649",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 345.1
+  },
+  {
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2",
+   "block": 52942182,
+   "eligible": false,
+   "health_factor": "1.011192806495638553",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 372.3
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942182,
+   "quote_probe_error": "base-latency: {'code': -32003, 'message': 'out of gas: gas required exceeds: 50000000'}"
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942182,
+   "eligible": false,
+   "health_factor": "1.066569524804991059",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 357.4
+  },
+  {
+   "borrower": "0x8b81420441aC3933C58D1190c8499C2F89EB1263",
+   "block": 52942182,
+   "eligible": false,
+   "health_factor": "1.025093342097418645",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 441.0
+  },
+  {
+   "borrower": "0xcfd2f32E6d533653cEd5Ba7E5fe1a76C3c626757",
+   "block": 52942182,
+   "eligible": false,
+   "health_factor": "1.032068061574768982",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 396.7
+  },
+  {
+   "borrower": "0x7Aef226A7A37d907bA07FC70bdF44c4Ad1d541a2",
+   "block": 52942182,
+   "eligible": false,
+   "health_factor": "1.054073054850598836",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 427.5
+  },
+  {
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2",
+   "block": 52942184,
+   "eligible": false,
+   "health_factor": "1.011192805153202462",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 401.5
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942184,
+   "quote_probe_error": "base-latency: {'code': -32003, 'message': 'out of gas: gas required exceeds: 50000000'}"
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942184,
+   "eligible": false,
+   "health_factor": "1.066569528340252706",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 373.2
+  },
+  {
+   "borrower": "0x8b81420441aC3933C58D1190c8499C2F89EB1263",
+   "block": 52942184,
+   "eligible": false,
+   "health_factor": "1.025093339877311803",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 370.8
+  },
+  {
+   "borrower": "0xcfd2f32E6d533653cEd5Ba7E5fe1a76C3c626757",
+   "block": 52942184,
+   "eligible": false,
+   "health_factor": "1.032068058925145066",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 367.7
+  },
+  {
+   "borrower": "0x7Aef226A7A37d907bA07FC70bdF44c4Ad1d541a2",
+   "block": 52942184,
+   "eligible": false,
+   "health_factor": "1.054073053540631632",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 415.6
+  },
+  {
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2",
+   "block": 52942186,
+   "eligible": false,
+   "health_factor": "1.011192803825637947",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 335.6
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942186,
+   "quote_probe_error": "base-latency: {'code': -32003, 'message': 'out of gas: gas required exceeds: 50000000'}"
+  },
+  {
+   "borrower": "0xB11D999A62B0D36EDCB1123D8B3c7A02Ee046B71",
+   "block": 52942186,
+   "eligible": false,
+   "health_factor": "1.06656953009732673",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 367.1
+  },
+  {
+   "borrower": "0x8b81420441aC3933C58D1190c8499C2F89EB1263",
+   "block": 52942186,
+   "eligible": false,
+   "health_factor": "1.025093337667614927",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 445.0
+  },
+  {
+   "borrower": "0xcfd2f32E6d533653cEd5Ba7E5fe1a76C3c626757",
+   "block": 52942186,
+   "eligible": false,
+   "health_factor": "1.032068056275491163",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 373.1
+  },
+  {
+   "borrower": "0x7Aef226A7A37d907bA07FC70bdF44c4Ad1d541a2",
+   "block": 52942186,
+   "eligible": false,
+   "health_factor": "1.05407305230100854",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 321.9
+  }
+ ],
+ "evm": [
+  {
+   "ms": 10566.2,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver"
+  },
+  {
+   "ms": 10795.5,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver"
+  },
+  {
+   "ms": 10185.7,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver"
+  }
+ ],
+ "notes": [
+  "fast path = 2 RPC round trips (Multicall3 reads; Multicall3 quotes + L1 fee) + gas price; nothing is executed",
+  "evm simulation = full path on a private Anvil forked from the archive endpoint; the call reverts when the position is not liquidatable, the time is what is measured",
+  "quote and fee stages are only sampled when the position is liquidatable (otherwise the fast path stops after the math)"
+ ]
+}

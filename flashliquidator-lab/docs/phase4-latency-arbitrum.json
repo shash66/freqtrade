@@ -1,0 +1,49 @@
+{
+ "network": "arbitrum",
+ "generated_at": "2026-10-22T13:00:57.697132+00:00",
+ "rpc": "arbitrum-one-rpc.publicnode.com",
+ "anvil": "http://127.0.0.1:8548",
+ "positions": 0,
+ "rounds": 10,
+ "stages": {
+  "rpc_rtt_ms": {
+   "n": 10,
+   "median": 74.79549100003169,
+   "p90": 116.02964700000484,
+   "max": 491.30841200008035,
+   "mean": 117.26949520002563
+  },
+  "head_poll_ms": {
+   "n": 10,
+   "median": 75.85578600014742,
+   "p90": 83.68152299999565,
+   "max": 90.3468660001181,
+   "mean": 73.34570450004776
+  },
+  "rpc_reads_ms": {
+   "n": 0
+  },
+  "math_ms": {
+   "n": 0
+  },
+  "quote_ms": {
+   "n": 0
+  },
+  "fee_estimate_ms": {
+   "n": 0
+  },
+  "fast_total_ms": {
+   "n": 0
+  },
+  "evm_simulation_ms": {
+   "n": 0
+  }
+ },
+ "evaluations": [],
+ "evm": [],
+ "notes": [
+  "fast path = 2 RPC round trips (Multicall3 reads; Multicall3 quotes + L1 fee) + gas price; nothing is executed",
+  "evm simulation = full path on a private Anvil forked from the archive endpoint; the call reverts when the position is not liquidatable, the time is what is measured",
+  "quote and fee stages are only sampled when the position is liquidatable (otherwise the fast path stops after the math)"
+ ]
+}

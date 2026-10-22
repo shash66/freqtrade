@@ -217,6 +217,9 @@ class LiquidationCandidate(TimestampMixin, Base):
     breakeven_gas_usd: Mapped[Numeric | None] = mapped_column(USD)
     breakeven_slippage_bps: Mapped[int | None] = mapped_column(Integer)
     max_rational_bid_usd: Mapped[Numeric | None] = mapped_column(USD)
+    attainable_net_profit_usd: Mapped[Numeric | None] = mapped_column(USD)   # modeled: p_capture x net - (1-p) x failed cost (Phase 4)
+    observability: Mapped[str | None] = mapped_column(String(32))            # publicly_observable | predictable_not_yet_eligible | intra_block_only | unknown
+    attainable_inputs: Mapped[dict | None] = mapped_column(JSON)
     incomplete_reasons: Mapped[list | None] = mapped_column(JSON)
     breakdown: Mapped[dict | None] = mapped_column(JSON)
     data_sources: Mapped[dict | None] = mapped_column(JSON)
