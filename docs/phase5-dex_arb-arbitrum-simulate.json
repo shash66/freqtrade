@@ -1,0 +1,284 @@
+{
+ "strategy": "dex_arb",
+ "network": "arbitrum",
+ "mode": "simulate",
+ "generated_at": "2026-10-22T14:15:16.302986+00:00",
+ "block": "latest",
+ "discovery_ms": 7282.019371999922,
+ "rows": [
+  {
+   "opportunity": {
+    "strategy": "dex_arb",
+    "network": "arbitrum",
+    "kind": "arbitrage",
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "block": "latest",
+    "description": "WETH/USDC: buy on Uniswap v3 0.3%, sell on Uniswap v3 0.05%, size 0.0208 A; quoted gross -0.146564 USD, premium 0.025000 USD",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(tokenIn) -> leg 1 -> leg 2 -> repay (FlashArb.sol)",
+    "gross_profit_usd": "-0.146564",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": "0.025000",
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "estimated",
+     "missing": [
+      "gas (simulate)"
+     ],
+     "total_usd": null
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "medium",
+    "risk_notes": [
+     "atomic: a failed leg reverts the whole transaction; the cost of a failed attempt is gas only"
+    ],
+    "state": {
+     "kind": "arbitrage",
+     "pair": "WETH/USDC",
+     "token_in": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+     "token_out": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+     "dec_in": 18,
+     "size_raw": 20785724043276688,
+     "mid_raw": 49846778,
+     "back_raw": 20724795347105727,
+     "premium_raw": 10392862021638,
+     "net_pre_gas_raw": -71321558192599,
+     "leg1": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.3%",
+      "router": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+      "pool": "0xC473e2aEE3441BF9240Be85eb122aBB059A3B57c",
+      "fee": 3000,
+      "stable": false,
+      "factory": ""
+     },
+     "leg2": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.05%",
+      "router": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+      "pool": "0xC6962004f452bE9203591991D15f6b388e09E8D0",
+      "fee": 500,
+      "stable": false,
+      "factory": ""
+     },
+     "price_in": 240549715256,
+     "executable": false,
+     "net_pre_gas_usd": "-0.171564",
+     "grid": [
+      20785724043276688,
+      65730230792478624,
+      207857240432766848,
+      657302307924786304,
+      2078572404327668224,
+      6573023079247864832,
+      20785724043276689408
+     ]
+    },
+    "assumptions": [
+     "quotes are eth_call at this block (QuoterV2 / Aerodrome getAmountsOut); size chosen on the quoted profit curve; gas not yet included"
+    ],
+    "notes": []
+   },
+   "simulation": {
+    "success": false,
+    "outcome_class": "simulated",
+    "revert_reason": "InsufficientProfit(actual=20727545177581116, required=20796116905298327) [('0x4e88422a0000000000000000000000000000000000000000000000000049a397af60263c0000]",
+    "gross_profit_usd": "-0.139949",
+    "costs": {
+     "gas_units": 406375,
+     "gas_price_wei": 20000000,
+     "l2_execution_usd": "0.019551",
+     "l1_data_fee_usd": "0.000998",
+     "flash_premium_usd": "0.025000",
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "measured",
+     "missing": [],
+     "total_usd": "0.045549"
+    },
+    "net_profit_usd": "-0.185498",
+    "net_profit_complete": true,
+    "measured": {
+     "size_raw": 20785724043276688,
+     "round_trip_out": "20727545177581116",
+     "owed": "20796116905298327",
+     "gas_units_until_revert": 406375
+    },
+    "fork_block": 517248177,
+    "path": "flash_arb",
+    "assumptions": [
+     "both swap legs executed on the fork; the receiver reverted at settlement because the round trip returned less than principal + premium",
+     "net = measured round-trip P&L \u2212 measured flash premium \u2212 gas of the reverted transaction (what an attempt would have cost)",
+     "gas priced at live eth_gasPrice"
+    ],
+    "warnings": [
+     "negative result: a reverted attempt on-chain costs only its gas; the swap shortfall is never realised"
+    ]
+   },
+   "simulation_ms": 8878.63250700002,
+   "validation_run": true,
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": "0.027329",
+    "model": "spread_persistence_proxy",
+    "assumptions": [
+     "capture probability not estimated: no shadow persistence measurement or no complete net profit"
+    ],
+    "observed": {}
+   }
+  },
+  {
+   "opportunity": {
+    "strategy": "dex_arb",
+    "network": "arbitrum",
+    "kind": "arbitrage",
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "block": "latest",
+    "description": "WETH/USDC: buy on Uniswap v3 0.05%, sell on Uniswap v3 0.3%, size 50.0050 B; quoted gross -0.146563 USD, premium 0.024999 USD",
+    "required_capital_usd": "0",
+    "flash_loan_eligible": true,
+    "flash_loan_note": "flashLoanSimple(tokenIn) -> leg 1 -> leg 2 -> repay (FlashArb.sol)",
+    "gross_profit_usd": "-0.146563",
+    "costs": {
+     "gas_units": null,
+     "gas_price_wei": null,
+     "l2_execution_usd": null,
+     "l1_data_fee_usd": null,
+     "flash_premium_usd": "0.024999",
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "estimated",
+     "missing": [
+      "gas (simulate)"
+     ],
+     "total_usd": null
+    },
+    "net_profit_usd": null,
+    "net_profit_complete": false,
+    "outcome_class": "theoretical",
+    "evidence": "live_read",
+    "data_quality": "verified",
+    "confidence": "high",
+    "risk": "medium",
+    "risk_notes": [
+     "atomic: a failed leg reverts the whole transaction; the cost of a failed attempt is gas only"
+    ],
+    "state": {
+     "kind": "arbitrage",
+     "pair": "WETH/USDC",
+     "token_in": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+     "token_out": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+     "dec_in": 6,
+     "size_raw": 50005000,
+     "mid_raw": 20790579339822339,
+     "back_raw": 49858422,
+     "premium_raw": 25002,
+     "net_pre_gas_raw": -171580,
+     "leg1": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.05%",
+      "router": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+      "pool": "0xC6962004f452bE9203591991D15f6b388e09E8D0",
+      "fee": 500,
+      "stable": false,
+      "factory": ""
+     },
+     "leg2": {
+      "kind": "univ3",
+      "name": "Uniswap v3 0.3%",
+      "router": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+      "pool": "0xC473e2aEE3441BF9240Be85eb122aBB059A3B57c",
+      "fee": 3000,
+      "stable": false,
+      "factory": ""
+     },
+     "price_in": 99990000,
+     "executable": false,
+     "net_pre_gas_usd": "-0.171562",
+     "grid": [
+      50005000,
+      158129695,
+      500050005,
+      1581296959,
+      5000500050,
+      15812969597,
+      50005000500
+     ]
+    },
+    "assumptions": [
+     "quotes are eth_call at this block (QuoterV2 / Aerodrome getAmountsOut); size chosen on the quoted profit curve; gas not yet included"
+    ],
+    "notes": []
+   },
+   "simulation": {
+    "success": false,
+    "outcome_class": "simulated",
+    "revert_reason": "InsufficientProfit(actual=49865037, required=50030003) [('0x4e88422a0000000000000000000000000000000000000000000000000000000002f8e14d0000]",
+    "gross_profit_usd": "-0.139949",
+    "costs": {
+     "gas_units": 407586,
+     "gas_price_wei": 20066000,
+     "l2_execution_usd": "0.019660",
+     "l1_data_fee_usd": "0.000989",
+     "flash_premium_usd": "0.025000",
+     "swap_fees_usd": null,
+     "financing_usd": null,
+     "other_usd": null,
+     "source": "measured",
+     "missing": [],
+     "total_usd": "0.045649"
+    },
+    "net_profit_usd": "-0.185598",
+    "net_profit_complete": true,
+    "measured": {
+     "size_raw": 50005000,
+     "round_trip_out": "49865037",
+     "owed": "50030003",
+     "gas_units_until_revert": 407586
+    },
+    "fork_block": 517248211,
+    "path": "flash_arb",
+    "assumptions": [
+     "both swap legs executed on the fork; the receiver reverted at settlement because the round trip returned less than principal + premium",
+     "net = measured round-trip P&L \u2212 measured flash premium \u2212 gas of the reverted transaction (what an attempt would have cost)",
+     "gas priced at live eth_gasPrice"
+    ],
+    "warnings": [
+     "negative result: a reverted attempt on-chain costs only its gas; the swap shortfall is never realised"
+    ]
+   },
+   "simulation_ms": 70698.34090999984,
+   "validation_run": true,
+   "competition": {
+    "p_capture": null,
+    "attainable_net_profit_usd": null,
+    "failed_attempt_cost_usd": "0.027389",
+    "model": "spread_persistence_proxy",
+    "assumptions": [
+     "capture probability not estimated: no shadow persistence measurement or no complete net profit"
+    ],
+    "observed": {}
+   }
+  }
+ ],
+ "summary": {
+  "opportunities": 2,
+  "executable": 0,
+  "simulated_success": 0,
+  "net_profitable_complete": 0
+ }
+}
