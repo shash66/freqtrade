@@ -144,6 +144,7 @@ class Reconstruction:
     prices_before_liquidation: dict
     changes: list[TxStep] = field(default_factory=list)      # only steps where HF or a price changed, plus key txs
     simulated_at_position: dict | None = None
+    oracle_time_gate: dict | None = None
     assumptions: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
 
@@ -161,6 +162,31 @@ def _touches(rc: dict | None, addrs: set[str]) -> bool:
         if topics and topics[0] in CHAINLINK_TOPICS:
             return True
     return False
+
+
+def probe_time_gate(reader: AaveReader, anvil: AnvilFork, assets: list[str], base_ts: int, max_seconds: int = 120, step: int = 5) -> dict:
+    """Detect time-gated oracle rounds: on a fork at N-1 with no transactions applied, advance only the block
+    timestamp and watch the Aave oracle prices. A price that changes with time alone means the feed already
+    holds a newer round at N-1 that it only reveals after a delay (Chainlink SVR-style dual aggregators). The
+    probe runs on a snapshot and reverts; it never touches the replay state."""
+    snap = anvil.snapshot()
+    try:
+        cs = [Web3.to_checksum_address(a) for a in assets]
+        p0 = reader.asset_prices(cs)
+        out = {a: {"price_at_boundary": p0[a], "revealed_price": None, "reveal_after_seconds": None} for a in cs}
+        for extra in range(0, max_seconds + 1, step):
+            anvil.rpc("evm_setNextBlockTimestamp", [base_ts + extra])
+            anvil.mine(1)
+            p = reader.asset_prices(cs)
+            for a in cs:
+                if out[a]["reveal_after_seconds"] is None and p[a] != p0[a]:
+                    out[a].update({"revealed_price": p[a], "reveal_after_seconds": extra})
+            if all(v["reveal_after_seconds"] is not None for v in out.values()):
+                break
+        return {"base_timestamp": base_ts, "max_seconds": max_seconds, "step": step, "assets": out,
+                "note": "price change with no transaction applied = pending oracle round hidden behind a time gate at N-1"}
+    finally:
+        anvil.revert(snap)
 
 
 def _hf(acct) -> tuple[str, bool]:
@@ -223,6 +249,14 @@ def reconstruct_block(net: NetworkConfig, block_number: int, borrower: str, coll
         "OP-stack system (deposit) transactions are skipped: they set L1 attributes only",
         "classification uses the on-chain receipt logs of block N; health factor and prices are read from the fork after each transaction",
     ]
+    try:
+        rec.oracle_time_gate = probe_time_gate(reader, anvil, [coll, dbt], ts)
+        for a, v in rec.oracle_time_gate["assets"].items():
+            if v["reveal_after_seconds"] is not None:
+                rec.warnings.append(f"oracle for {a} reveals a newer round {v['reveal_after_seconds']} s after block N's timestamp with no transaction: "
+                                    f"time-gated feed (price {v['price_at_boundary']} -> {v['revealed_price']})")
+    except Exception as e:  # noqa: BLE001
+        rec.warnings.append(f"time-gate probe failed: {str(e)[:100]}")
     liq_hash = liquidation_tx.lower() if liquidation_tx else None
     prev = (hf_ts, cp, dp)
     trigger_seen = False
@@ -239,6 +273,8 @@ def reconstruct_block(net: NetworkConfig, block_number: int, borrower: str, coll
         if relevant_only and not is_liq and not _touches(rc_chain, relevant_addrs):
             rec.skipped_irrelevant_txs += 1
             continue
+        if is_liq and simulate_at_position and debt_to_cover_raw:
+            rec.simulated_at_position = _simulate_before(anvil, net, client, reader, borrower, coll, dbt, debt_to_cover_raw, i)
         sender = Web3.to_checksum_address(tx["from"])
         anvil.impersonate(sender)
         anvil.rpc("anvil_setNextBlockBaseFeePerGas", [0])
@@ -260,6 +296,17 @@ def reconstruct_block(net: NetworkConfig, block_number: int, borrower: str, coll
             note = (note or "") + f" status fork={status_fork} chain={status_chain}"
         hf, elig, cpx, dpx = observe()
         changed = (hf, cpx, dpx) != prev
+        if (cpx, dpx) != (prev[1], prev[2]) and kind in ("other", "pool_activity"):
+            gate = rec.oracle_time_gate["assets"] if rec.oracle_time_gate else {}
+            gated = [a for a, v in gate.items() if v.get("reveal_after_seconds") is not None and v.get("revealed_price") in (cpx, dpx)]
+            if gated:
+                kind = "time_gated_oracle_reveal"
+                evidence = evidence + [f"price change matches the time-gated round of {', '.join(gated)}; fork timestamp {ts + rec.replayed + 1} (block N + {rec.replayed + 1} s); not caused by this transaction"]
+            else:
+                emitters = sorted({str(lg.get("address")) for lg in (rc_chain.get("logs", []) if rc_chain else [])})
+                kind = "oracle_update_by_price_change"
+                evidence = evidence + [f"collateral price {prev[1]} -> {cpx}" if cpx != prev[1] else f"debt price {prev[2]} -> {dpx}",
+                                       "log emitters: " + ", ".join(emitters[:6])]
         if is_liq:
             rec.liquidation_tx_index, rec.liquidation_tx_hash = i, h
             rec.health_factor_before_liquidation, rec.eligible_before_liquidation = prev[0], Decimal(prev[0]) < 1 if prev[0] not in (None, "Infinity") else False
@@ -275,10 +322,7 @@ def reconstruct_block(net: NetworkConfig, block_number: int, borrower: str, coll
         if is_liq:
             if rec.trigger is not None:
                 rec.txs_between_trigger_and_liquidation = i - rec.trigger["index"] - 1
-            break_now = stop_after_liquidation
-            if simulate_at_position and debt_to_cover_raw:
-                rec.simulated_at_position = _simulate_before(anvil, net, client, reader, borrower, coll, dbt, debt_to_cover_raw, i)
-            if break_now:
+            if stop_after_liquidation:
                 break
         prev = (hf, cpx, dpx)
     if el_ts and rec.trigger is None:
@@ -319,6 +363,18 @@ def _simulate_before(anvil: AnvilFork, net: NetworkConfig, client: RpcClient, re
         anvil.revert(snap)
 
 
+def time_gate_only(net: NetworkConfig, block_number: int, collateral: str, debt: str, *, anvil_url: str, archive_rpc: str) -> dict:
+    s = get_settings()
+    src = RpcClient(f"{net.slug}-archive", archive_rpc, s.rpc_timeout_seconds, s.rpc_max_retries)
+    ts = int(src.call(src.w3.eth.get_block, block_number)["timestamp"])
+    anvil = AnvilFork(anvil_url, timeout=300)
+    anvil.reset_fork(archive_rpc, block_number - 1)
+    reader = AaveReader(net, RpcClient(f"{net.slug}-anvil", anvil_url, 300.0, 1))
+    out = probe_time_gate(reader, anvil, [collateral, debt], ts)
+    out.update({"network": net.slug, "block_number": block_number})
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Reconstruct intra-block state for a historical liquidation on a private Anvil fork")
     ap.add_argument("--network", default="base")
@@ -331,6 +387,7 @@ def main() -> int:
     ap.add_argument("--anvil", default=None)
     ap.add_argument("--simulate", action="store_true", help="also execute our receiver right before the winning liquidation")
     ap.add_argument("--relevant-only", action="store_true", help="replay only transactions whose logs touch Aave or Chainlink contracts")
+    ap.add_argument("--time-gate-only", action="store_true", help="only probe for time-gated oracle rounds at N-1 (no transaction replay)")
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
     s = get_settings()
@@ -338,6 +395,13 @@ def main() -> int:
     net = build_networks(s)[a.network]
     if not net.archive_rpc:
         raise SystemExit("archive RPC required")
+    if a.time_gate_only:
+        out = time_gate_only(net, a.block, a.collateral, a.debt, anvil_url=a.anvil or s.anvil_rpc_url, archive_rpc=net.archive_rpc)
+        print(json.dumps(out, indent=1, default=str))
+        if a.out:
+            with open(a.out, "w") as f:
+                json.dump(out, f, indent=1, default=str)
+        return 0
     rec = reconstruct_block(net, a.block, a.borrower, a.collateral, a.debt, anvil_url=a.anvil or s.anvil_rpc_url, archive_rpc=net.archive_rpc,
                             liquidation_tx=a.tx, debt_to_cover_raw=a.debt_to_cover, simulate_at_position=a.simulate, relevant_only=a.relevant_only)
     out = json.dumps(rec.as_dict(), indent=1, default=str)
