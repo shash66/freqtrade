@@ -86,7 +86,7 @@ def section_compound(arts: dict[str, dict], net: str, history: dict | None) -> l
         out += [f"Historical replay over blocks {rep['from_block']:,}–{rep['to_block']:,}: {rep['sample_note']}.", "",
                 "| Absorb tx | Block | Liquidatable at N−1? | Our receiver | Gross | Net (complete?) | Note |", "|---|---|---|---|---|---|---|"]
         for d in rep.get("details", []):
-            sim = d.get("simulation") or {}
+            sim = d.get("simulation") or d   # the Compound replay records the outcome fields on the detail itself
             out.append(f"| {_short(d.get('tx'))} | {d.get('block', '—')} | {d.get('liquidatable_at_n_minus_1', '—')} | "
                        f"{('success' if sim.get('success') else 'revert: ' + (sim.get('revert_reason') or d.get('error') or '')[:70]) if (sim or d.get('error')) else '—'} | "
                        f"{_usd(sim.get('gross_profit_usd'))} | {_usd(sim.get('net_profit_usd'))} ({'complete' if sim.get('net_profit_complete') else 'incomplete'}) | {(d.get('note') or '')[:80]} |")
@@ -224,7 +224,7 @@ def _ranking_line(r: dict) -> str:
     return (f"| {r['strategy']} | {r['network']} | {_usd(r['capital_usd'])} | {'yes' if r['flash_loan'] else 'no' if r['flash_loan'] is not None else '—'} | "
             f"{_usd(r['gross_profit_usd'])} ({r['gross_class']}) | {_usd(r['net_profit_complete_usd'])} ({r['net_class']}) | {_pct(r['p_capture'])}"
             f"{' (' + r['p_capture_model'].replace('_', ' ') + ')' if r['p_capture'] is not None and r['p_capture_model'] else ''} | "
-            f"{_usd(r['attainable_profit_usd'])}{' (modeled)' if r['attainable_profit_usd'] is not None else ''} | {r['frequency_observed'][:90]} | {r['risk']} | "
+            f"{_usd(r['attainable_profit_usd'])}{' (' + r['attainable_class'] + ')' if r['attainable_profit_usd'] is not None else ''} | {r['frequency_observed'][:90]} | {r['risk']} | "
             f"{', '.join(r['evidence_quality']) or 'none'} | **{r['verdict'].replace('_', ' ')}** |")
 
 

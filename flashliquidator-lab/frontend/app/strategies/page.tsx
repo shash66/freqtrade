@@ -77,7 +77,7 @@ function Row({ r }: { r: StrategyRankingRow }) {
         {r.p_capture_model ? <div className="text-faint text-xs">{r.p_capture_model.replaceAll("_", " ")}</div> : null}
       </Td>
       <Td align="right">
-        <Money value={r.attainable_profit_usd} cls={r.attainable_profit_usd !== null ? "modeled" : undefined} />
+        <Money value={r.attainable_profit_usd} cls={r.attainable_profit_usd !== null ? r.attainable_class : undefined} />
       </Td>
       <Td className="max-w-[16rem] whitespace-normal text-xs" title={r.frequency_observed}>
         {r.frequency_per_day !== null ? <div className="font-medium">{Number(r.frequency_per_day).toFixed(2)} / day</div> : null}
