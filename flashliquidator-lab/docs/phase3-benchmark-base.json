@@ -25,83 +25,99 @@
  },
  "multicall_batch_size": 3,
  "simulation_latency_seconds": {
-  "n": 0,
-  "median": null,
-  "p90": null,
-  "max": null,
-  "mean": null
+  "n": 8,
+  "median": 17.15801709799962,
+  "p90": 18.85975868499918,
+  "max": 20.610212966999825,
+  "mean": 17.412986720124763
  },
  "simulations": [
   {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52933648,
+   "seconds": 20.610212966999825,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver",
+   "hf_at_probe": "1.010786496527537471",
+   "debt_asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+   "collateral_asset": "0x4200000000000000000000000000000000000006",
+   "block": 52938946,
    "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
   },
   {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52933758,
+   "seconds": 17.15801709799962,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver",
+   "hf_at_probe": "1.010786480767505532",
+   "debt_asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+   "collateral_asset": "0x4200000000000000000000000000000000000006",
+   "block": 52938970,
    "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
   },
   {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52933867,
+   "seconds": 16.86269604900008,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver",
+   "hf_at_probe": "1.010786467017733599",
+   "debt_asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+   "collateral_asset": "0x4200000000000000000000000000000000000006",
+   "block": 52938991,
    "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
   },
   {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52933976,
+   "seconds": 18.85975868499918,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver",
+   "hf_at_probe": "1.010786452580098471",
+   "debt_asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+   "collateral_asset": "0x4200000000000000000000000000000000000006",
+   "block": 52939013,
    "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
   },
   {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52934085,
+   "seconds": 18.040654922999238,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver",
+   "hf_at_probe": "1.010786438161940666",
+   "debt_asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+   "collateral_asset": "0x4200000000000000000000000000000000000006",
+   "block": 52939035,
    "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
   },
   {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52934196,
+   "seconds": 15.637869644000602,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver",
+   "hf_at_probe": "1.010786423743933814",
+   "debt_asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+   "collateral_asset": "0x4200000000000000000000000000000000000006",
+   "block": 52939057,
    "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
   },
   {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52934305,
+   "seconds": 16.28376389799996,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver",
+   "hf_at_probe": "1.010786410628661898",
+   "debt_asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+   "collateral_asset": "0x4200000000000000000000000000000000000006",
+   "block": 52939077,
    "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
   },
   {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52934414,
-   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
-  },
-  {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52934524,
-   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
-  },
-  {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52934636,
-   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
-  },
-  {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52934745,
-   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
-  },
-  {
-   "seconds": null,
-   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
-   "block": 52934855,
+   "seconds": 15.850920496999606,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver",
+   "hf_at_probe": "1.01078639684518601",
+   "debt_asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+   "collateral_asset": "0x4200000000000000000000000000000000000006",
+   "block": 52939098,
    "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
   }
  ],
@@ -124,8 +140,15 @@
   "block lag = wall clock at first observation minus block timestamp; includes sequencer clock skew and the polling interval",
   "detection latency = monotonic time from first observation of the head to one Multicall3 read of every watched position",
   "watch set = borrowers with debt whose last reconciled health factor was below the threshold; positions outside it are not detected",
-  "simulation latency = fork reset at the head + receiver deploy + liquidate() on a private Anvil (the call may revert when the target is not eligible; the time is what is measured)",
-  "no transaction is ever built or sent; 'blocks after our detection' is a lower bound on how much faster a competitor was"
+  "no transaction is ever built or sent; 'blocks after our detection' is a lower bound on how much faster a competitor was",
+  "simulation latency = fork reset at the live head + receiver deploy + liquidate() on a private Anvil forked from the archive endpoint, measured in a separate short run (see simulation_probe); the call reverts when the probed position is not liquidatable and the time is still what is measured"
  ],
- "warnings": []
+ "warnings": [],
+ "simulation_probe": {
+  "started_at": "2026-10-22T11:07:19.594793+00:00",
+  "duration_seconds": 361.516203,
+  "anvil": "http://127.0.0.1:8545",
+  "blocks_observed": 104,
+  "note": "simulation latency measured in this separate run on an Anvil forked from the archive-capable endpoint; the main run's probes failed because the public endpoint refused the fork's state reads (HTTP 403)"
+ }
 }
