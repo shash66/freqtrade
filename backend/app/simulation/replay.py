@@ -230,7 +230,7 @@ def _run_replay_once(req: ReplayRequest) -> ReplayResult:
                 out_min = (pre.amount_out_raw * (10_000 - req.slippage_bps) // 10_000) if pre.amount_out_raw else 0
             rr = run_receiver_liquidation(anvil, sim, net.market.addresses_provider, net.chain_id, req.collateral_asset, req.debt_asset,
                                           req.borrower, req.debt_to_cover_raw, fee_tier, out_min)
-            l1 = estimate_l1_fee(net.chain_id, client, rr.receiver_address, bytes.fromhex(rr.calldata[2:]), int(rr.gas_used or 0) or 1, gas_price)
+            l1 = _l1_estimate(net, client, fork_src, req.block_number, rr.receiver_address, bytes.fromhex(rr.calldata[2:]), int(rr.gas_used or 0) or 1, gas_price, warnings)
             fees = FeeAccounting(int(rr.gas_used or 0) * gas_price, l1.l1_data_wei, l1.source if rr.gas_used else "unknown", l1.method, l1.notes)
             assumptions = base_assumptions[:1] + [
                 "real flash-loan receiver executed on the fork: premium, swap output, gas and surplus are measured, not modeled",
@@ -305,7 +305,7 @@ def _run_replay_once(req: ReplayRequest) -> ReplayResult:
     gas_used = int(rc["gasUsed"]) + (q.gas_estimate or 0) + FLASH_LOAN_OVERHEAD_GAS
     if q.gas_estimate is None:
         warnings.append("swap gas not quoted; gas figure excludes the swap")
-    l1 = estimate_l1_fee(net.chain_id, client, pool_addr, bytes.fromhex(calldata[2:]) + b"\x00" * 160, gas_used, gas_price)
+    l1 = _l1_estimate(net, client, fork_src, req.block_number, pool_addr, bytes.fromhex(calldata[2:]) + b"\x00" * 160, gas_used, gas_price, warnings)
     fees = FeeAccounting(gas_used * gas_price, l1.l1_data_wei, l1.source, l1.method, l1.notes)
     rec = reconcile_profit(swap_out_raw=swap_out, repaid_raw=repaid, premium_raw=premium, event_surplus_raw=None, gas_used=gas_used,
                            gas_price_wei=gas_price, l1_data_wei=l1.l1_data_wei, l1_source=l1.source, native_price_raw=native_p,
@@ -326,6 +326,27 @@ def _run_replay_once(req: ReplayRequest) -> ReplayResult:
                         rpc_capability=cap, execution_path="direct_liquidation_call", fees=fees.as_dict(), eligible_at_execution=exec_eligible,
                         health_factor_at_execution=None if exec_hf is None else str(exec_hf), surplus_raw=rec.surplus_raw,
                         profit_complete=rec.complete, reconciliation=rec.as_dict())
+
+
+def _l1_estimate(net: NetworkConfig, fork_client: RpcClient, src_url: str | None, block: int | None, to: str, data: bytes, gas: int,
+                 gas_price: int, warnings: list[str]):
+    """L1 data fee estimate. The OP-stack GasPriceOracle is a real contract and works on the fork; Arbitrum's
+    NodeInterface is a node-level virtual contract that Anvil does not emulate, so for Arbitrum the estimate is
+    taken from the real RPC (at the historical block when the provider allows it, else at latest, both labeled)."""
+    l1 = estimate_l1_fee(net.chain_id, fork_client, to, data, gas, gas_price)
+    if l1.source != "unknown" or not src_url:
+        return l1
+    s = get_settings()
+    src = RpcClient(f"{net.slug}-l1fee", src_url, s.rpc_timeout_seconds, s.rpc_max_retries)
+    for blk, label in ((block, f"block {block}"), ("latest", "latest block")):
+        if blk is None:
+            continue
+        alt = estimate_l1_fee(net.chain_id, src, to, data, gas, gas_price, block=blk)
+        if alt.source != "unknown":
+            alt.notes = list(alt.notes or []) + [f"estimated on the real RPC at {label} (Anvil does not emulate the node's fee interface)"]
+            warnings.append(f"L1 data fee estimated on the real RPC at {label}, not on the fork")
+            return alt
+    return l1
 
 
 def _expected_collateral(reader: AaveReader, req: ReplayRequest, prices: dict, c_dec: int, d_dec: int) -> int:
