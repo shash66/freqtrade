@@ -220,9 +220,14 @@ def _run_replay_once(req: ReplayRequest) -> ReplayResult:
     if not req.force_direct_path:
         try:
             snap = anvil.snapshot()
-            pre = quoter.quote_exact_in(req.collateral_asset, req.debt_asset, _expected_collateral(reader, req, prices, c_dec, d_dec))
-            fee_tier = pre.fee_tier or 500
-            out_min = (pre.amount_out_raw * (10_000 - req.slippage_bps) // 10_000) if pre.amount_out_raw else 0
+            same_asset = req.collateral_asset.lower() == req.debt_asset.lower()
+            if same_asset:  # the receiver skips the swap; the seized collateral already is the debt asset
+                fee_tier, out_min = 0, 0
+                warnings.append("same-asset liquidation: no swap executed; swapOut = collateral received")
+            else:
+                pre = quoter.quote_exact_in(req.collateral_asset, req.debt_asset, _expected_collateral(reader, req, prices, c_dec, d_dec))
+                fee_tier = pre.fee_tier or 500
+                out_min = (pre.amount_out_raw * (10_000 - req.slippage_bps) // 10_000) if pre.amount_out_raw else 0
             rr = run_receiver_liquidation(anvil, sim, net.market.addresses_provider, net.chain_id, req.collateral_asset, req.debt_asset,
                                           req.borrower, req.debt_to_cover_raw, fee_tier, out_min)
             l1 = estimate_l1_fee(net.chain_id, client, rr.receiver_address, bytes.fromhex(rr.calldata[2:]), int(rr.gas_used or 0) or 1, gas_price)

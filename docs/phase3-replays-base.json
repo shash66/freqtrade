@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-22T08:02:35.064354+00:00",
+ "generated_at": "2026-10-22T08:45:35.743673+00:00",
  "network": "base",
  "items": [
   {
@@ -20,12 +20,12 @@
    "status": "EXECUTED",
    "reason": null,
    "detail": {
-    "rpc_block": 52933404,
-    "latency_ms": 297,
+    "rpc_block": 52934694,
+    "latency_ms": 530,
     "address_book_version": "4.44.22",
     "verified": true,
     "error": null,
-    "checked_at": "2026-10-22T08:02:37.237845+00:00",
+    "checked_at": "2026-10-22T08:45:38.119691+00:00",
     "flashloan_premium_total_bps": 5,
     "flashloan_premium_to_protocol_bps": 10000
    }
@@ -55,18 +55,18 @@
     "liquidation_events": 24,
     "simulation_attempts": 26,
     "events_with_retry": 2,
-    "succeeded": 3,
-    "reverted": 21,
+    "succeeded": 6,
+    "reverted": 18,
     "execution_paths": {
      "flash_loan_receiver": 24
     },
-    "profitable": 3,
+    "profitable": 6,
     "unprofitable_after_costs": 0,
     "succeeded_with_incomplete_costs": 0,
-    "net_profit_usd_total_complete": "3120.755086",
+    "net_profit_usd_total_complete": "3120.795690000000000000",
     "fee_sources": {
-     "estimated": 3,
-     "unknown": 21
+     "estimated": 6,
+     "unknown": 18
     },
     "not_eligible_at_block_boundary": 21,
     "eligible_at_execution_only": 4,
@@ -84,9 +84,9 @@
       "simplified": false,
       "revert_reason": null,
       "eligible_at_fork": false,
-      "net_profit_usd": "0.037453",
-      "premium_raw": 483,
-      "swap_out_raw": 1011101,
+      "net_profit_usd": "0.037453000000000000",
+      "premium_raw": "483",
+      "swap_out_raw": "1011101",
       "gas_used": 682132,
       "fees": {
        "l2_execution_wei": "5492991395892",
@@ -98,9 +98,9 @@
         "L1 fee depends on the L1 base fee and blob fee at inclusion time; quote is for the current block"
        ]
       },
-      "collateral_seized_raw": 482609739541135,
-      "debt_repaid_raw": 965705,
-      "gas_cost_usd": "0.012877",
+      "collateral_seized_raw": "482609739541135",
+      "debt_repaid_raw": "965705",
+      "gas_cost_usd": null,
       "retried": false,
       "attempts": 1,
       "historical_collateral_seized_raw": "482609739541135",
@@ -126,38 +126,41 @@
        "missing": []
       },
       "warnings": [
-       "not liquidatable at N-1 but liquidatable at block N's timestamp before its transactions (interest accrual)"
+       "not liquidatable at N-1 but liquidatable at block N's timestamp before its transactions (interest accrual)",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0x81B66C921A9d4eBc31e137149e8ed123df5EF857",
       "historical_l1_fee_wei": "1517871850",
       "historical_fee_source": "verified",
       "event_id": 24,
-      "log_index": 211
+      "log_index": 211,
+      "historical_effective_gas_price_wei": 8052681,
+      "historical_tx_index": 65
      },
      {
       "tx": "0x473a4cb738531ecc8b153207c05287e9eb3c51d49b6c26de844ad27180521a2b",
       "block": 52621716,
-      "success": false,
+      "success": true,
       "execution_path": "flash_loan_receiver",
       "simplified": false,
-      "revert_reason": "('execution reverted', '0x')",
+      "revert_reason": null,
       "eligible_at_fork": false,
-      "net_profit_usd": null,
-      "premium_raw": null,
-      "swap_out_raw": null,
-      "gas_used": null,
+      "net_profit_usd": "0.015430000000000000",
+      "premium_raw": "1",
+      "swap_out_raw": "586",
+      "gas_used": 565190,
       "fees": {
-       "l2_execution_wei": "0",
-       "l1_data_wei": "6077922327",
-       "total_wei": "6077922327",
-       "source": "unknown",
+       "l2_execution_wei": "5627670304700",
+       "l1_data_wei": "5945858705",
+       "total_wei": "5633616163405",
+       "source": "estimated",
        "method": "op_gas_price_oracle.getL1Fee(serialized_tx)",
        "notes": [
         "L1 fee depends on the L1 base fee and blob fee at inclusion time; quote is for the current block"
        ]
       },
-      "collateral_seized_raw": null,
-      "debt_repaid_raw": null,
+      "collateral_seized_raw": "586",
+      "debt_repaid_raw": "550",
       "gas_cost_usd": null,
       "retried": false,
       "attempts": 1,
@@ -166,17 +169,35 @@
       "eligible_at_execution": true,
       "health_factor_at_fork": "1.000846395571684261",
       "health_factor_at_execution": "0.999939636360748384",
-      "surplus_raw": null,
-      "profit_complete": null,
-      "reconciliation": null,
+      "surplus_raw": 35,
+      "profit_complete": true,
+      "reconciliation": {
+       "complete": "True",
+       "surplus_raw": "35",
+       "surplus_matches_event": "True",
+       "l2_execution_wei": "5627670304700",
+       "l1_data_wei": "5945858705",
+       "l1_source": "estimated",
+       "total_fee_wei": "5633616163405",
+       "fee_usd": "0.013332",
+       "fee_in_debt_raw": "16",
+       "net_profit_debt_raw": "19",
+       "net_profit_usd": "0.015430",
+       "gross_surplus_usd": "0.028424",
+       "missing": []
+      },
       "warnings": [
-       "not liquidatable at N-1 but liquidatable at block N's timestamp before its transactions (interest accrual)"
+       "not liquidatable at N-1 but liquidatable at block N's timestamp before its transactions (interest accrual)",
+       "same-asset liquidation: no swap executed; swapOut = collateral received",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0x5AC9bC14376BF2727C6211960Cf3cEC1e2f295bd",
       "historical_l1_fee_wei": "9808719655",
       "historical_fee_source": "verified",
       "event_id": 23,
-      "log_index": 47
+      "log_index": 47,
+      "historical_effective_gas_price_wei": 9957130,
+      "historical_tx_index": 15
      },
      {
       "tx": "0x7ed309a3c25caaadc07571f2cbc02a01249d45edd9199539a4f54f1964253f3c",
@@ -186,9 +207,9 @@
       "simplified": false,
       "revert_reason": null,
       "eligible_at_fork": true,
-      "net_profit_usd": "0.435773",
-      "premium_raw": 4575,
-      "swap_out_raw": 9653389,
+      "net_profit_usd": "0.435773000000000000",
+      "premium_raw": "4575",
+      "swap_out_raw": "9653389",
       "gas_used": 569713,
       "fees": {
        "l2_execution_wei": "27248288626161",
@@ -200,9 +221,9 @@
         "L1 fee depends on the L1 base fee and blob fee at inclusion time; quote is for the current block"
        ]
       },
-      "collateral_seized_raw": 4115949317907073,
-      "debt_repaid_raw": 9149694,
-      "gas_cost_usd": "0.063302",
+      "collateral_seized_raw": "4115949317907073",
+      "debt_repaid_raw": "9149694",
+      "gas_cost_usd": null,
       "retried": false,
       "attempts": 1,
       "historical_collateral_seized_raw": "4115949317907073",
@@ -227,12 +248,16 @@
        "gross_surplus_usd": "0.499074",
        "missing": []
       },
-      "warnings": [],
+      "warnings": [
+       "result reused from an earlier run"
+      ],
       "historical_liquidator": "0xAB1c40889175EA24b83175d9e09ee335DdF5A1aB",
       "historical_l1_fee_wei": "3135848859",
       "historical_fee_source": "verified",
       "event_id": 22,
-      "log_index": 1352
+      "log_index": 1352,
+      "historical_effective_gas_price_wei": 47828097,
+      "historical_tx_index": 751
      },
      {
       "tx": "0x2dfa8c66d59248f584d90bd66c2a2ad79a3b56fd91667a3962e67707762ed383",
@@ -270,13 +295,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xF15bC3b00432e97B797B792053D5804baaCddA84",
       "historical_l1_fee_wei": "6753201748",
       "historical_fee_source": "verified",
       "event_id": 21,
-      "log_index": 2322
+      "log_index": 2322,
+      "historical_effective_gas_price_wei": 79308287,
+      "historical_tx_index": 2109
      },
      {
       "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
@@ -314,13 +342,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "50242550978",
       "historical_fee_source": "verified",
       "event_id": 20,
-      "log_index": 1426
+      "log_index": 1426,
+      "historical_effective_gas_price_wei": 170210899,
+      "historical_tx_index": 1666
      },
      {
       "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
@@ -358,13 +389,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "50242550978",
       "historical_fee_source": "verified",
       "event_id": 19,
-      "log_index": 1414
+      "log_index": 1414,
+      "historical_effective_gas_price_wei": 170210899,
+      "historical_tx_index": 1666
      },
      {
       "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
@@ -402,13 +436,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "50242550978",
       "historical_fee_source": "verified",
       "event_id": 18,
-      "log_index": 1402
+      "log_index": 1402,
+      "historical_effective_gas_price_wei": 170210899,
+      "historical_tx_index": 1666
      },
      {
       "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
@@ -446,13 +483,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "50242550978",
       "historical_fee_source": "verified",
       "event_id": 17,
-      "log_index": 1388
+      "log_index": 1388,
+      "historical_effective_gas_price_wei": 170210899,
+      "historical_tx_index": 1666
      },
      {
       "tx": "0x6afc97044963d729a42d4fd71bbb7f277e1c7f2d7a06bc139d5bdc5770deb026",
@@ -490,13 +530,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "50242550978",
       "historical_fee_source": "verified",
       "event_id": 16,
-      "log_index": 1373
+      "log_index": 1373,
+      "historical_effective_gas_price_wei": 170210899,
+      "historical_tx_index": 1666
      },
      {
       "tx": "0xa0927afbf117e86277c56cb823e841851177643d189e5b5e6a00cf29214f4c91",
@@ -534,13 +577,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "14528591969",
       "historical_fee_source": "verified",
       "event_id": 15,
-      "log_index": 981
+      "log_index": 981,
+      "historical_effective_gas_price_wei": 309615000,
+      "historical_tx_index": 653
      },
      {
       "tx": "0xa0927afbf117e86277c56cb823e841851177643d189e5b5e6a00cf29214f4c91",
@@ -578,13 +624,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "14528591969",
       "historical_fee_source": "verified",
       "event_id": 14,
-      "log_index": 969
+      "log_index": 969,
+      "historical_effective_gas_price_wei": 309615000,
+      "historical_tx_index": 653
      },
      {
       "tx": "0xa0927afbf117e86277c56cb823e841851177643d189e5b5e6a00cf29214f4c91",
@@ -594,9 +643,9 @@
       "simplified": false,
       "revert_reason": null,
       "eligible_at_fork": false,
-      "net_profit_usd": "3120.281860",
-      "premium_raw": 33053443,
-      "swap_out_raw": 69261008785,
+      "net_profit_usd": "3120.281860000000000000",
+      "premium_raw": "33053443",
+      "swap_out_raw": "69261008785",
       "gas_used": 684995,
       "fees": {
        "l2_execution_wei": "212084726925000",
@@ -608,9 +657,9 @@
         "L1 fee depends on the L1 base fee and blob fee at inclusion time; quote is for the current block"
        ]
       },
-      "collateral_seized_raw": 29402226667349087290,
-      "debt_repaid_raw": 66106884515,
-      "gas_cost_usd": "0.502890",
+      "collateral_seized_raw": "29402226667349087290",
+      "debt_repaid_raw": "66106884515",
+      "gas_cost_usd": null,
       "retried": false,
       "attempts": 1,
       "historical_collateral_seized_raw": "29402226667349087290",
@@ -636,13 +685,16 @@
        "missing": []
       },
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "14528591969",
       "historical_fee_source": "verified",
       "event_id": 13,
-      "log_index": 957
+      "log_index": 957,
+      "historical_effective_gas_price_wei": 309615000,
+      "historical_tx_index": 653
      },
      {
       "tx": "0x8ba80f45a86ea4b05df399227c79fc773656502f8bf8cecdc095c2378ec1682e",
@@ -680,13 +732,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xAB1c40889175EA24b83175d9e09ee335DdF5A1aB",
       "historical_l1_fee_wei": "907991011",
       "historical_fee_source": "verified",
       "event_id": 12,
-      "log_index": 1085
+      "log_index": 1085,
+      "historical_effective_gas_price_wei": 95814445,
+      "historical_tx_index": 780
      },
      {
       "tx": "0x58cbcf9113a49bdaef8739bcafec8e5a6f3d70879c060ebe538522c1caba70c0",
@@ -724,13 +779,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD8413bF7E7782b536ABdEebbCB9e7C4fC481e2E7",
       "historical_l1_fee_wei": "12429136376",
       "historical_fee_source": "verified",
       "event_id": 11,
-      "log_index": 502
+      "log_index": 502,
+      "historical_effective_gas_price_wei": 300283674,
+      "historical_tx_index": 387
      },
      {
       "tx": "0x58cbcf9113a49bdaef8739bcafec8e5a6f3d70879c060ebe538522c1caba70c0",
@@ -768,13 +826,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD8413bF7E7782b536ABdEebbCB9e7C4fC481e2E7",
       "historical_l1_fee_wei": "12429136376",
       "historical_fee_source": "verified",
       "event_id": 10,
-      "log_index": 483
+      "log_index": 483,
+      "historical_effective_gas_price_wei": 300283674,
+      "historical_tx_index": 387
      },
      {
       "tx": "0x881aaaf8b6328f10ace673b6acfe2b4b05a89e3e8757aa3c0106e7e174bd6d86",
@@ -801,7 +862,7 @@
       "collateral_seized_raw": null,
       "debt_repaid_raw": null,
       "gas_cost_usd": null,
-      "retried": true,
+      "retried": false,
       "attempts": 2,
       "historical_collateral_seized_raw": "202617055307534",
       "historical_gas_used": 3208577,
@@ -812,13 +873,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "retried on a fresh fork after an Aave eligibility revert (MustNotLeaveDust); second attempt reverted too: treated as a real protocol-rule revert"
+       "retried on a fresh fork after an Aave eligibility revert (MustNotLeaveDust); second attempt reverted too: treated as a real protocol-rule revert",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0x83557C6d286553aD103bB08f0c04eC25724c0e06",
       "historical_l1_fee_wei": "6470612891",
       "historical_fee_source": "verified",
       "event_id": 9,
-      "log_index": 140
+      "log_index": 140,
+      "historical_effective_gas_price_wei": 27715610,
+      "historical_tx_index": 71
      },
      {
       "tx": "0x51c350c841b613fbb6a911424469ceb09720652d267b1eb1232ccd8411d16d40",
@@ -856,13 +920,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "17778950903",
       "historical_fee_source": "verified",
       "event_id": 8,
-      "log_index": 1536
+      "log_index": 1536,
+      "historical_effective_gas_price_wei": 295988869,
+      "historical_tx_index": 1350
      },
      {
       "tx": "0x51c350c841b613fbb6a911424469ceb09720652d267b1eb1232ccd8411d16d40",
@@ -900,13 +967,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "17778950903",
       "historical_fee_source": "verified",
       "event_id": 7,
-      "log_index": 1524
+      "log_index": 1524,
+      "historical_effective_gas_price_wei": 295988869,
+      "historical_tx_index": 1350
      },
      {
       "tx": "0x51c350c841b613fbb6a911424469ceb09720652d267b1eb1232ccd8411d16d40",
@@ -944,13 +1014,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xD12810B19B596347a3AFAC206d3cA65d08594b3f",
       "historical_l1_fee_wei": "17778950903",
       "historical_fee_source": "verified",
       "event_id": 6,
-      "log_index": 1512
+      "log_index": 1512,
+      "historical_effective_gas_price_wei": 295988869,
+      "historical_tx_index": 1350
      },
      {
       "tx": "0xa49fddc8db76e18e888c56c651c2aa322dc0e1bf6e142df30089ac6b2db27890",
@@ -977,7 +1050,7 @@
       "collateral_seized_raw": null,
       "debt_repaid_raw": null,
       "gas_cost_usd": null,
-      "retried": true,
+      "retried": false,
       "attempts": 2,
       "historical_collateral_seized_raw": "227494274771691",
       "historical_gas_used": 517442,
@@ -988,13 +1061,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "retried on a fresh fork after an Aave eligibility revert (MustNotLeaveDust); second attempt reverted too: treated as a real protocol-rule revert"
+       "retried on a fresh fork after an Aave eligibility revert (MustNotLeaveDust); second attempt reverted too: treated as a real protocol-rule revert",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0x5AC9bC14376BF2727C6211960Cf3cEC1e2f295bd",
       "historical_l1_fee_wei": "3779621528",
       "historical_fee_source": "verified",
       "event_id": 5,
-      "log_index": 532
+      "log_index": 532,
+      "historical_effective_gas_price_wei": 10584236,
+      "historical_tx_index": 170
      },
      {
       "tx": "0x5c7e3657a903df12b78df329bdd3e3d7ca0701342097642fc18317ef700eb5be",
@@ -1032,13 +1108,16 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0x6240236c3D6a8D9C111429A768ef601398bC4da3",
       "historical_l1_fee_wei": "139802994981",
       "historical_fee_source": "verified",
       "event_id": 4,
-      "log_index": 574
+      "log_index": 574,
+      "historical_effective_gas_price_wei": 25200000,
+      "historical_tx_index": 167
      },
      {
       "tx": "0x03399cc3aa1c29693528b4323bc6e03ac2fbc64892e48fb67beb80d59999b2d2",
@@ -1076,38 +1155,41 @@
       "profit_complete": null,
       "reconciliation": null,
       "warnings": [
-       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state"
+       "borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0x6240236c3D6a8D9C111429A768ef601398bC4da3",
       "historical_l1_fee_wei": "149578909599",
       "historical_fee_source": "verified",
       "event_id": 3,
-      "log_index": 19
+      "log_index": 19,
+      "historical_effective_gas_price_wei": 40444595,
+      "historical_tx_index": 4
      },
      {
       "tx": "0x9366d3daa32503289c11113499f19e056697a1f32a1fde84cfb5c59d494d713f",
       "block": 52593994,
-      "success": false,
+      "success": true,
       "execution_path": "flash_loan_receiver",
       "simplified": false,
-      "revert_reason": "('execution reverted', '0x')",
+      "revert_reason": null,
       "eligible_at_fork": false,
-      "net_profit_usd": null,
-      "premium_raw": null,
-      "swap_out_raw": null,
-      "gas_used": null,
+      "net_profit_usd": "0.013788000000000000",
+      "premium_raw": "267",
+      "swap_out_raw": "557572",
+      "gas_used": 401522,
       "fees": {
-       "l2_execution_wei": "0",
-       "l1_data_wei": "1018723788",
-       "total_wei": "1018723788",
-       "source": "unknown",
+       "l2_execution_wei": "3980027399744",
+       "l1_data_wei": "991204210",
+       "total_wei": "3981018603954",
+       "source": "estimated",
        "method": "op_gas_price_oracle.getL1Fee(serialized_tx)",
        "notes": [
         "L1 fee depends on the L1 base fee and blob fee at inclusion time; quote is for the current block"
        ]
       },
-      "collateral_seized_raw": null,
-      "debt_repaid_raw": null,
+      "collateral_seized_raw": "557572",
+      "debt_repaid_raw": "533562",
       "gas_cost_usd": null,
       "retried": false,
       "attempts": 1,
@@ -1116,42 +1198,60 @@
       "eligible_at_execution": true,
       "health_factor_at_fork": "1.000000624181710429",
       "health_factor_at_execution": "0.999998749764503055",
-      "surplus_raw": null,
-      "profit_complete": null,
-      "reconciliation": null,
+      "surplus_raw": 23743,
+      "profit_complete": true,
+      "reconciliation": {
+       "complete": "True",
+       "surplus_raw": "23743",
+       "surplus_matches_event": "True",
+       "l2_execution_wei": "3980027399744",
+       "l1_data_wei": "991204210",
+       "l1_source": "estimated",
+       "total_fee_wei": "3981018603954",
+       "fee_usd": "0.009952",
+       "fee_in_debt_raw": "9953",
+       "net_profit_debt_raw": "13790",
+       "net_profit_usd": "0.013788",
+       "gross_surplus_usd": "0.023740",
+       "missing": []
+      },
       "warnings": [
-       "not liquidatable at N-1 but liquidatable at block N's timestamp before its transactions (interest accrual)"
+       "not liquidatable at N-1 but liquidatable at block N's timestamp before its transactions (interest accrual)",
+       "same-asset liquidation: no swap executed; swapOut = collateral received",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0xAB1c40889175EA24b83175d9e09ee335DdF5A1aB",
       "historical_l1_fee_wei": "727016260",
       "historical_fee_source": "verified",
       "event_id": 2,
-      "log_index": 81
+      "log_index": 81,
+      "historical_effective_gas_price_wei": 9912352,
+      "historical_tx_index": 17
      },
      {
       "tx": "0xcf07e08bd6fb4c0997b7ee39998c45a22f9f8f24f1f49f90c6e2c171cfa79112",
       "block": 52592297,
-      "success": false,
+      "success": true,
       "execution_path": "flash_loan_receiver",
       "simplified": false,
-      "revert_reason": "('execution reverted', '0x')",
+      "revert_reason": null,
       "eligible_at_fork": false,
-      "net_profit_usd": null,
-      "premium_raw": null,
-      "swap_out_raw": null,
-      "gas_used": null,
+      "net_profit_usd": "0.011386000000000000",
+      "premium_raw": "267",
+      "swap_out_raw": "557565",
+      "gas_used": 401522,
       "fees": {
-       "l2_execution_wei": "0",
-       "l1_data_wei": "958225486",
-       "total_wei": "958225486",
-       "source": "unknown",
+       "l2_execution_wei": "4939717980648",
+       "l1_data_wei": "937517253",
+       "total_wei": "4940655497901",
+       "source": "estimated",
        "method": "op_gas_price_oracle.getL1Fee(serialized_tx)",
        "notes": [
         "L1 fee depends on the L1 base fee and blob fee at inclusion time; quote is for the current block"
        ]
       },
-      "collateral_seized_raw": null,
-      "debt_repaid_raw": null,
+      "collateral_seized_raw": "557565",
+      "debt_repaid_raw": "533556",
       "gas_cost_usd": null,
       "retried": false,
       "attempts": 1,
@@ -1160,17 +1260,35 @@
       "eligible_at_execution": true,
       "health_factor_at_fork": "1.000001636386671534",
       "health_factor_at_execution": "0.999999761946485982",
-      "surplus_raw": null,
-      "profit_complete": null,
-      "reconciliation": null,
+      "surplus_raw": 23742,
+      "profit_complete": true,
+      "reconciliation": {
+       "complete": "True",
+       "surplus_raw": "23742",
+       "surplus_matches_event": "True",
+       "l2_execution_wei": "4939717980648",
+       "l1_data_wei": "937517253",
+       "l1_source": "estimated",
+       "total_fee_wei": "4940655497901",
+       "fee_usd": "0.012354",
+       "fee_in_debt_raw": "12355",
+       "net_profit_debt_raw": "11387",
+       "net_profit_usd": "0.011386",
+       "gross_surplus_usd": "0.023739",
+       "missing": []
+      },
       "warnings": [
-       "not liquidatable at N-1 but liquidatable at block N's timestamp before its transactions (interest accrual)"
+       "not liquidatable at N-1 but liquidatable at block N's timestamp before its transactions (interest accrual)",
+       "same-asset liquidation: no swap executed; swapOut = collateral received",
+       "result reused from an earlier run"
       ],
       "historical_liquidator": "0x5AC9bC14376BF2727C6211960Cf3cEC1e2f295bd",
       "historical_l1_fee_wei": "1605475318",
       "historical_fee_source": "verified",
       "event_id": 1,
-      "log_index": 97
+      "log_index": 97,
+      "historical_effective_gas_price_wei": 12302484,
+      "historical_tx_index": 35
      }
     ]
    }
@@ -1182,13 +1300,13 @@
    "reason": null,
    "detail": {
     "classes": {
-     "profitable": 3,
-     "not_eligible_at_block_boundary": 19,
+     "profitable": 6,
+     "not_eligible_at_block_boundary": 16,
      "aave_rule_revert_while_eligible_at_boundary": 2
     },
     "examples": {
      "profitable": "0xd1032cc331048abee80d4114fb510d130bc2213cefd65fa6ab9e856d4d4a1df1",
-     "not_eligible_at_block_boundary": "0x473a4cb738531ecc8b153207c05287e9eb3c51d49b6c26de844ad27180521a2b",
+     "not_eligible_at_block_boundary": "0x2dfa8c66d59248f584d90bd66c2a2ad79a3b56fd91667a3962e67707762ed383",
      "aave_rule_revert_while_eligible_at_boundary": "0x881aaaf8b6328f10ace673b6acfe2b4b05a89e3e8757aa3c0106e7e174bd6d86"
     }
    }

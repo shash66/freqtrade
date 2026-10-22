@@ -83,6 +83,15 @@ Not verified (first things to run after deployment, in this order):
 3. With archive RPCs: one historical replay through the Backtesting page (milestone 4 acceptance).
 4. `forge build && forge test --fork-url $BASE_ARCHIVE_RPC` in `contracts/`.
 
+## Phase 3 state (2026-10-22)
+
+Profit verification and competition research are done and documented in `phase3-results.md`: complete fee
+reconciliation on every replay, eligibility tracked at observation and execution, normalised counts, all
+Base and Arbitrum replays executed on archive forks, intra-block reconstruction with a time-gated oracle
+probe, a live read-only competitive benchmark, and an observed-vs-modeled bid model. Tools:
+`app/simulation/{accounting,reconstruct}.py`, `app/competition/{benchmark,bidmodel}.py`,
+`app/validation/{theoretical,phase3_report}.py`, `scripts/phase3-research.sh`.
+
 ## Known dependencies on paid or external services
 
 - Archive RPC (historical state) is required for M4 replay and for M2 backfill older than a provider's

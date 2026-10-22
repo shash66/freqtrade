@@ -1,0 +1,20 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "description": "Solidity package for the **Aave V3 liquidation research platform**. It contains one contract, `FlashLiquidator`, its Foundry fork tests, and a deploy script that targets a **local Anvil fork only**.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "solc": "^0.8.24"
+  }
+}

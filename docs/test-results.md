@@ -82,6 +82,28 @@ verified live; 4,226 borrowers and 24 liquidations indexed; 19 replays executed 
 receiver (3 succeeded, measured); Forge fork tests still blocked by the archive provider's quota; Arbitrum
 replays blocked for lack of an archive provider.
 
+## Phase 3 (profit verification and competition) addendum
+
+Executed 2026-10-22 against Base and Arbitrum with an Alchemy archive key (Base and Arbitrum), PublicNode for
+live reads, and three private Anvil forks. Full figures in `phase3-results.md`.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Profit reconciliation (balances vs event surplus, every cost) | PASS | `app/simulation/accounting.py`; `tests/test_accounting.py` (4); every Phase 3 replay carries `profit_complete`, `surplus_raw`, `reconciliation`; migration `c55ca9144780`. |
+| No "net profitable" label with an unknown material cost | PASS | `summarize_replays` counts `succeeded_with_incomplete_costs` separately; `tests/test_report_normalization.py`. |
+| Eligibility at observation (N−1) and at execution (block N timestamp) stored separately | PASS | `eligible_at_fork` / `eligible_at_execution` columns; Base batch: 3 eligible at both, 4 only at execution, 17 at neither. |
+| Replay reporting normalised (unique txs / events / attempts) | PASS | Base: 15 txs / 24 events / 26 attempts; Arbitrum: 4 / 4 / 5. |
+| Base replays complete on the archive provider | PASS | 24 of 24 events through `flash_loan_receiver`; 3 net profitable with complete costs. |
+| Arbitrum replays | PASS (executed) | 4 of 4 events replayed on an Arbitrum archive fork; 0 succeeded (see triage in the report). |
+| Intra-block reconstruction of block 52,620,870 | PASS | `app/simulation/reconstruct.py`: 61 relevant transactions re-executed; trigger = time-gated ETH/USD round revealed inside the winner's transaction; our receiver succeeded at the winner's position (surplus 3,120.95 USDC). |
+| Time-gated oracle probe over all recorded events | PASS | Base 18 of 24 events, Arbitrum 1 of 4, had a newer hidden round at N−1 (reveal 0/15/30 s). |
+| Live competitive benchmark (read-only) | PASS | `app/competition/benchmark.py`, 150-minute Base window; latencies and competitor transactions in `phase3-benchmark-base.json`. |
+| Bid / win-probability model with observed vs modeled separation | PASS | `app/competition/bidmodel.py`; `tests/test_bidmodel.py` (4). |
+| Forge fork tests on real archive state | PASS 16/16 | `forge test --fork-url $BASE_ARCHIVE_RPC` (Foundry 1.8.5, fork block 30,000,000) after fixing two test bugs (a wrong accounting identity in `test_Liquidate_SwapsAllCollateral`, selector-only `expectRevert` → `expectPartialRevert`). |
+| Receiver same-asset liquidation (collateral == debt) | FIXED | Found by the Arbitrum USDT/USDT replay (router reverted swapping a token into itself); the receiver now skips the swap; artifact recompiled with solc-js, bytecode identical to `forge build` except the metadata hash. |
+| Backend `pytest` / `ruff` | PASS 75/75 / PASS | after Phase 3 changes. |
+| Live trading still impossible | PASS | no signer, no broadcast path, `LIVE_TRADING_ENABLED=true` aborts startup; the benchmark and reconstruction never build a transaction for a public chain. |
+
 ## Not done, and why
 - Nothing on a real chain: every RPC host is blocked in this sandbox. First action on the target host: set
   `BASE_RPC_HTTP` / `ARBITRUM_RPC_HTTP` (+ archive URLs), confirm `deployment_verified: true` on the Overview,
