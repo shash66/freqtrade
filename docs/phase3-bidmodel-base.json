@@ -46,11 +46,11 @@
    "mean": 1.3531455342098122
   },
   "benchmark_simulation_latency_seconds": {
-   "n": 0,
-   "median": null,
-   "p90": null,
-   "max": null,
-   "mean": null
+   "n": 8,
+   "median": 17.15801709799962,
+   "p90": 18.85975868499918,
+   "max": 20.610212966999825,
+   "mean": 17.412986720124763
   },
   "benchmark_block_lag_seconds": {
    "n": 4380,
@@ -63,7 +63,7 @@
  "modeled": {
   "effective_competitors_ready": 8.0,
   "our_gas_units": 565190,
-  "our_ready_seconds_assumed": 3.0119735169992055,
+  "our_ready_seconds_assumed": 18.669990614998824,
   "p_win_fcfs_vs_observed_competitor_reaction": null,
   "competitor_reaction_samples": 0,
   "median_simulated_profit_usd": "0.026442",
