@@ -19,8 +19,10 @@
  "trigger": {
   "index": 424,
   "tx_hash": "0x26695ebb510d99957fea47563d18b95d007da8810e922ee3e73ccbd3619e4ce9",
-  "kind": "other",
-  "evidence": [],
+  "kind": "time_gated_oracle_reveal",
+  "evidence": [
+   "price change matches the time-gated round of 0x4200000000000000000000000000000000000006; fork timestamp 1792031117 (block N + 30 s); not caused by this transaction"
+  ],
   "sender": "0x42076AbFe0eF6AF3463d692FDcd40feae31F24E0",
   "to": "0x0770d2124C0a581C28Cfc47a659817145e6Cc137",
   "health_factor_after": "0.99450125162639521",
@@ -465,8 +467,10 @@
    "tx_hash": "0x26695ebb510d99957fea47563d18b95d007da8810e922ee3e73ccbd3619e4ce9",
    "sender": "0x42076AbFe0eF6AF3463d692FDcd40feae31F24E0",
    "to": "0x0770d2124C0a581C28Cfc47a659817145e6Cc137",
-   "kind": "other",
-   "evidence": [],
+   "kind": "time_gated_oracle_reveal",
+   "evidence": [
+    "price change matches the time-gated round of 0x4200000000000000000000000000000000000006; fork timestamp 1792031117 (block N + 30 s); not caused by this transaction"
+   ],
    "status_onchain": 1,
    "status_fork": 1,
    "health_factor": "0.99450125162639521",
@@ -972,6 +976,24 @@
   "premium_raw": "33053443",
   "note": "state immediately before the winning liquidation inside block N (not the block boundary)"
  },
+ "oracle_time_gate": {
+  "base_timestamp": 1792031087,
+  "max_seconds": 120,
+  "step": 5,
+  "assets": {
+   "0x4200000000000000000000000000000000000006": {
+    "price_at_boundary": 237115930000,
+    "revealed_price": 234932418798,
+    "reveal_after_seconds": 30
+   },
+   "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913": {
+    "price_at_boundary": 99990834,
+    "revealed_price": null,
+    "reveal_after_seconds": null
+   }
+  },
+  "note": "price change with no transaction applied = pending oracle round hidden behind a time gate at N-1"
+ },
  "assumptions": [
   "fork at N-1 with block N's timestamp pinned; each replayed transaction mined in its own block (+1 s)",
   "relevant-only mode: only transactions whose on-chain receipt logs touch the Pool, the oracle, a reserve token or a Chainlink feed are replayed; other transactions cannot change this position's health factor or prices and are skipped",
@@ -980,6 +1002,7 @@
   "classification uses the on-chain receipt logs of block N; health factor and prices are read from the fork after each transaction"
  ],
  "warnings": [
+  "oracle for 0x4200000000000000000000000000000000000006 reveals a newer round 30 s after block N's timestamp with no transaction: time-gated feed (price 237115930000 -> 234932418798)",
   "19 transaction(s) had a different status on the fork; state after them is approximate"
  ]
 }
