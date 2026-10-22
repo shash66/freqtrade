@@ -9,14 +9,14 @@
   "network": "base",
   "from_block": 52560000,
   "to_block": 52640886,
-  "opportunities": 203,
+  "opportunities": 0,
   "simulated": 0,
   "simulated_success": 0,
   "net_profitable_complete": 0,
   "lost_to_competition": null,
   "expected_profit_per_attempt_usd": "-0.053137",
-  "worst_case_loss_usd": "-0.086987",
-  "sample_note": "203 sampled blocks every 400 blocks; 0 with a quoted spread above the 0.05 USD gas floor (before competition)",
+  "worst_case_loss_usd": null,
+  "sample_note": "203 sampled blocks every 400 blocks; 0 with a quoted spread above the 0.05 USD gas floor (before competition); expected figure = mean best net-before-gas spread per sampled block; worst case = cost of a failed attempt (see simulate), not the quoted shortfall",
   "details": [
    {
     "block": 52560000,
