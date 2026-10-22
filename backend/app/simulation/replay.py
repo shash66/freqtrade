@@ -28,7 +28,8 @@ from app.chains.rpc import RpcClient
 from app.chains.validation import load_abi
 from app.core.config import get_settings
 from app.core.logging import get_logger
-from app.core.money import WAD, percent_mul, quantize_usd, raw_to_usd
+from app.core.money import WAD, percent_mul
+from app.simulation.accounting import reconcile_profit
 from app.simulation.anvil import AnvilFork, AnvilUnavailable
 from app.simulation.receiver import ReceiverArtifactMissing, run_receiver_liquidation
 from app.strategies.quotes import UniswapV3Quoter, price_impact_bps
@@ -80,6 +81,12 @@ class ReplayResult:
     execution_path: str = "direct_liquidation_call"   # or flash_loan_receiver
     fees: dict | None = None                          # FeeAccounting.as_dict()
     retried: bool = False
+    attempts: int = 1
+    eligible_at_execution: bool | None = None         # HF < 1 at the execution timestamp, before block N's own txs
+    health_factor_at_execution: str | None = None
+    surplus_raw: int | None = None
+    profit_complete: bool | None = None
+    reconciliation: dict | None = None
 
 
 AAVE_ELIGIBILITY_SELECTORS = {"0x930bb771": "HealthFactorNotBelowThreshold", "0xb629b0e4": "MustNotLeaveDust"}
@@ -90,17 +97,20 @@ def run_replay(req: ReplayRequest) -> ReplayResult:
     fork. Rate-limited archive providers have produced one-off inconsistent fork state in live validation;
     a result that changes between two forks is reported with `retried` so it can be triaged as infrastructure."""
     r = _run_with_fork_retries(req)
+    attempts = r.attempts
     if (not r.success and r.eligible_at_fork and r.revert_reason
             and any(sel in r.revert_reason for sel in AAVE_ELIGIBILITY_SELECTORS)):
         first = r.revert_reason
         r = _run_with_fork_retries(req)
+        attempts += r.attempts
         if not r.success and r.revert_reason and _decode_sel(r.revert_reason):
             r.revert_reason = f"{r.revert_reason} [{_decode_sel(r.revert_reason)}]"
         r.warnings.append(f"retried on a fresh fork after an Aave eligibility revert ({_decode_sel(first)}); "
                           + ("second attempt succeeded: first revert attributed to inconsistent fork state" if r.success
                              else "second attempt reverted too: treated as a real protocol-rule revert"))
         r.retried = True
-    elif not r.success and r.revert_reason:
+    r.attempts = attempts
+    if not r.success and r.revert_reason:
         r.revert_reason = f"{r.revert_reason} [{_decode_sel(r.revert_reason)}]" if _decode_sel(r.revert_reason) else r.revert_reason
     return r
 
@@ -114,7 +124,9 @@ def _run_with_fork_retries(req: ReplayRequest, attempts: int = 3) -> ReplayResul
     last: Exception | None = None
     for i in range(1, attempts + 1):
         try:
-            return _run_replay_once(req)
+            r = _run_replay_once(req)
+            r.attempts = i
+            return r
         except Exception as e:  # noqa: BLE001 - classified below
             msg = str(e).lower()
             if not any(k in msg for k in FORK_FETCH_MARKERS):
@@ -127,6 +139,7 @@ def _run_with_fork_retries(req: ReplayRequest, attempts: int = 3) -> ReplayResul
                      None, None, None, None, None, None, None, None, None, None,
                      warnings=["infrastructure: archive provider rate limit exhausted during fork state fetch"],
                      assumptions=[], rpc_capability={}, execution_path="none")
+    r.attempts = attempts
     return r
 
 
@@ -165,11 +178,28 @@ def _run_replay_once(req: ReplayRequest) -> ReplayResult:
     pool_addr = Web3.to_checksum_address(net.market.pool)
     pool = w3.eth.contract(address=pool_addr, abi=load_abi("pool"))
     warnings: list[str] = []
-    # 1. eligibility at the fork block
+    # 1. eligibility at the fork block (state of N-1, as first observable)
     acct = reader.user_account_data(req.borrower)
     hf = Decimal(acct.health_factor_wad) / Decimal(WAD) if acct.health_factor_wad < 2**256 - 1 else Decimal("Infinity")
     eligible = acct.total_debt_base > 0 and acct.health_factor_wad < WAD
-    if not eligible:
+    # 1b. eligibility at execution: advance an empty block to the historical block's timestamp (interest accrues,
+    #     no block-N transactions applied) and read again. This separates "observable at N-1" from "liquidatable
+    #     when our transaction would execute".
+    exec_hf, exec_eligible = None, None
+    if req.block_number is not None:
+        try:
+            src = RpcClient(f"{net.slug}-archive", fork_src, s.rpc_timeout_seconds, s.rpc_max_retries)
+            hist_blk = src.call(src.w3.eth.get_block, req.block_number)
+            anvil.rpc("evm_setNextBlockTimestamp", [int(hist_blk["timestamp"])])
+            anvil.mine(1)
+            acct2 = reader.user_account_data(req.borrower)
+            exec_hf = Decimal(acct2.health_factor_wad) / Decimal(WAD) if acct2.health_factor_wad < 2**256 - 1 else Decimal("Infinity")
+            exec_eligible = acct2.total_debt_base > 0 and acct2.health_factor_wad < WAD
+        except Exception as e:  # recorded, never guessed
+            warnings.append(f"eligibility at execution timestamp not determined: {str(e)[:100]}")
+    if not eligible and exec_eligible:
+        warnings.append("not liquidatable at N-1 but liquidatable at block N's timestamp before its transactions (interest accrual)")
+    elif not eligible:
         warnings.append("borrower not liquidatable at the fork block (N-1): the historical liquidation depended on intra-block state")
     sim = anvil.accounts()[0]
     anvil.set_balance(sim, 100 * 10**18)
@@ -207,24 +237,28 @@ def _run_replay_once(req: ReplayRequest) -> ReplayResult:
                                     None, None, None, None, rr.gas_used, gas_price, None, None, None, rr.calldata,
                                     trace_summary=[c.__dict__ for c in anvil.trace(rr.tx_hash)] if rr.tx_hash else [], warnings=warnings,
                                     assumptions=assumptions, rpc_capability=cap, funding_path="aave_flash_loan",
-                                    execution_path="flash_loan_receiver", fees=fees.as_dict())
+                                    execution_path="flash_loan_receiver", fees=fees.as_dict(), eligible_at_execution=exec_eligible,
+                                    health_factor_at_execution=None if exec_hf is None else str(exec_hf))
             ev = rr.event or {}
-            swap_out = int(ev.get("swapOut", 0))
-            repaid = int(ev.get("debtToCover", req.debt_to_cover_raw))
-            seized = int(ev.get("collateralReceived", 0))
-            premium = int(ev.get("premium", 0))
-            surplus = int(ev.get("surplus", 0))
-            total_fee_wei = fees.total_wei if fees.total_wei is not None else int(rr.gas_used or 0) * gas_price
-            gas_usd = quantize_usd(raw_to_usd(total_fee_wei, 18, native_p))
-            gas_in_debt = int(gas_usd * Decimal(10**d_dec) * Decimal(10**8) / Decimal(dp))
-            net_raw = surplus - gas_in_debt
-            net_usd = quantize_usd(raw_to_usd(abs(net_raw), d_dec, dp)) * (1 if net_raw >= 0 else -1)
-            if fees.source == "unknown":
-                warnings.append("L1 data fee unknown; net profit covers L2 execution cost only")
+            swap_out = int(ev["swapOut"]) if "swapOut" in ev else None
+            repaid = int(ev["debtToCover"]) if "debtToCover" in ev else None
+            seized = int(ev["collateralReceived"]) if "collateralReceived" in ev else None
+            premium = int(ev["premium"]) if "premium" in ev else None
+            surplus = int(ev["surplus"]) if "surplus" in ev else None
+            rec = reconcile_profit(swap_out_raw=swap_out, repaid_raw=repaid, premium_raw=premium, event_surplus_raw=surplus,
+                                   gas_used=rr.gas_used, gas_price_wei=gas_price, l1_data_wei=l1.l1_data_wei, l1_source=l1.source,
+                                   native_price_raw=native_p, debt_price_raw=dp, debt_decimals=d_dec,
+                                   l1_required=l1.source != "not_applicable")
+            if not rec.complete:
+                warnings.append("profit INCOMPLETE: " + "; ".join(rec.missing))
+            if rec.surplus_matches_event is False:
+                warnings.append("event surplus does not equal swapOut − repaid − premium; reported surplus is the event value")
             return ReplayResult(True, None, fork_block, fork_hash, True, str(hf), eligible, repaid, seized, swap_out, premium, rr.gas_used, gas_price,
-                                gas_usd, net_raw, net_usd, rr.calldata, trace_summary=[c.__dict__ for c in anvil.trace(rr.tx_hash)], warnings=warnings,
-                                assumptions=assumptions, rpc_capability=cap, funding_path="aave_flash_loan", execution_path="flash_loan_receiver",
-                                fees=fees.as_dict())
+                                rec.fee_usd, rec.net_profit_debt_raw, rec.net_profit_usd, rr.calldata, trace_summary=[c.__dict__ for c in anvil.trace(rr.tx_hash)],
+                                warnings=warnings, assumptions=assumptions, rpc_capability=cap, funding_path="aave_flash_loan",
+                                execution_path="flash_loan_receiver", fees=fees.as_dict(), eligible_at_execution=exec_eligible,
+                                health_factor_at_execution=None if exec_hf is None else str(exec_hf), surplus_raw=rec.surplus_raw,
+                                profit_complete=rec.complete, reconciliation=rec.as_dict())
         except ReceiverArtifactMissing as e:
             warnings.append(f"simplified path: {e}")
         except Exception as e:
@@ -268,15 +302,13 @@ def _run_replay_once(req: ReplayRequest) -> ReplayResult:
         warnings.append("swap gas not quoted; gas figure excludes the swap")
     l1 = estimate_l1_fee(net.chain_id, client, pool_addr, bytes.fromhex(calldata[2:]) + b"\x00" * 160, gas_used, gas_price)
     fees = FeeAccounting(gas_used * gas_price, l1.l1_data_wei, l1.source, l1.method, l1.notes)
-    gas_cost_wei = fees.total_wei if fees.total_wei is not None else gas_used * gas_price
-    if fees.source == "unknown":
-        warnings.append("L1 data fee unknown; gas figure covers L2 execution only")
-    gas_usd = quantize_usd(raw_to_usd(gas_cost_wei, 18, native_p))
-    net_raw = net_usd = None
-    if swap_out is not None:
-        gas_in_debt = int(gas_usd * Decimal(10**d_dec) * Decimal(10**8) / Decimal(dp))
-        net_raw = swap_out - repaid - premium - gas_in_debt
-        net_usd = quantize_usd(raw_to_usd(abs(net_raw), d_dec, dp)) * (1 if net_raw >= 0 else -1)
+    rec = reconcile_profit(swap_out_raw=swap_out, repaid_raw=repaid, premium_raw=premium, event_surplus_raw=None, gas_used=gas_used,
+                           gas_price_wei=gas_price, l1_data_wei=l1.l1_data_wei, l1_source=l1.source, native_price_raw=native_p,
+                           debt_price_raw=dp, debt_decimals=d_dec, l1_required=l1.source != "not_applicable")
+    gas_usd, net_raw, net_usd = rec.fee_usd, rec.net_profit_debt_raw, rec.net_profit_usd
+    if not rec.complete:
+        warnings.append("profit INCOMPLETE: " + "; ".join(rec.missing))
+    if swap_out is not None and net_usd is not None:
         if req.min_profit_usd and net_usd < req.min_profit_usd:
             warnings.append(f"net profit {net_usd} below requested minimum {req.min_profit_usd}")
         cp = prices[Web3.to_checksum_address(req.collateral_asset)]
@@ -286,7 +318,9 @@ def _run_replay_once(req: ReplayRequest) -> ReplayResult:
     trace = [c.__dict__ for c in anvil.trace(rc["transactionHash"])]
     return ReplayResult(True, None, fork_block, fork_hash, True, str(hf), eligible, repaid, seized, swap_out, premium, gas_used, gas_price,
                         gas_usd, net_raw, net_usd, calldata, trace_summary=trace, warnings=warnings, assumptions=base_assumptions,
-                        rpc_capability=cap, execution_path="direct_liquidation_call", fees=fees.as_dict())
+                        rpc_capability=cap, execution_path="direct_liquidation_call", fees=fees.as_dict(), eligible_at_execution=exec_eligible,
+                        health_factor_at_execution=None if exec_hf is None else str(exec_hf), surplus_raw=rec.surplus_raw,
+                        profit_complete=rec.complete, reconciliation=rec.as_dict())
 
 
 def _expected_collateral(reader: AaveReader, req: ReplayRequest, prices: dict, c_dec: int, d_dec: int) -> int:
