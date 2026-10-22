@@ -1,0 +1,107 @@
+{
+ "network": "base",
+ "started_at": "2026-10-22T10:46:24.382050+00:00",
+ "duration_seconds": 420.256194,
+ "rpc": "https://base-rpc.publicnode.com",
+ "anvil": "http://127.0.0.1:8545",
+ "watch_set_size": 348,
+ "watch_hf_max": "1000000",
+ "blocks_observed": 131,
+ "first_block": 52938318,
+ "last_block": 52938528,
+ "block_lag_wallclock_seconds": {
+  "n": 131,
+  "median": 0.33797359466552734,
+  "p90": 0.8470954895019531,
+  "max": 1.7988007068634033,
+  "mean": 0.39884223282792186
+ },
+ "detection_latency_seconds": {
+  "n": 131,
+  "median": 1.3551290080013132,
+  "p90": 1.5040993650000019,
+  "max": 1.69333025800006,
+  "mean": 1.3655761311375214
+ },
+ "multicall_batch_size": 3,
+ "simulation_latency_seconds": {
+  "n": 0,
+  "median": null,
+  "p90": null,
+  "max": null,
+  "mean": null
+ },
+ "simulations": [
+  {
+   "seconds": null,
+   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
+   "block": 52938318,
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
+  },
+  {
+   "seconds": null,
+   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
+   "block": 52938341,
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
+  },
+  {
+   "seconds": null,
+   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
+   "block": 52938363,
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
+  },
+  {
+   "seconds": null,
+   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
+   "block": 52938385,
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
+  },
+  {
+   "seconds": null,
+   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
+   "block": 52938407,
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
+  },
+  {
+   "seconds": null,
+   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
+   "block": 52938428,
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
+  },
+  {
+   "seconds": null,
+   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
+   "block": 52938451,
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
+  },
+  {
+   "seconds": null,
+   "error": "Web3RPCError: {'code': -32603, 'message': 'Fork Error: Transport(HttpError(HttpError { status: 403, body: \"{\\\\\"jsonrpc\\\\\":\\\\\"2.0\\\\\",\\\\",
+   "block": 52938473,
+   "borrower": "0xA6EcF99c043D7b7b3d0255c33BC5576593b41AF2"
+  }
+ ],
+ "candidates": [],
+ "competitor_txs": [],
+ "summary": {
+  "candidates_total": 0,
+  "liquidated_by_competitor": 0,
+  "healed": 0,
+  "still_open": 0,
+  "blocks_alive_when_taken": [],
+  "competitor_txs": 0,
+  "competitor_txs_same_block_as_our_detection": 0,
+  "competitor_txs_before_our_detection": 0,
+  "unique_liquidators": 0,
+  "median_competitor_priority_fee_wei": null,
+  "median_competitor_effective_gas_price_wei": null
+ },
+ "assumptions": [
+  "block lag = wall clock at first observation minus block timestamp; includes sequencer clock skew and the polling interval",
+  "detection latency = monotonic time from first observation of the head to one Multicall3 read of every watched position",
+  "watch set = borrowers with debt whose last reconciled health factor was below the threshold; positions outside it are not detected",
+  "simulation latency = fork reset at the head + receiver deploy + liquidate() on a private Anvil (the call may revert when the target is not eligible; the time is what is measured)",
+  "no transaction is ever built or sent; 'blocks after our detection' is a lower bound on how much faster a competitor was"
+ ],
+ "warnings": []
+}
