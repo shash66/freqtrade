@@ -104,6 +104,23 @@ live reads, and three private Anvil forks. Full figures in `phase3-results.md`.
 | Backend `pytest` / `ruff` | PASS 75/75 / PASS | after Phase 3 changes. |
 | Live trading still impossible | PASS | no signer, no broadcast path, `LIVE_TRADING_ENABLED=true` aborts startup; the benchmark and reconstruction never build a transaction for a public chain. |
 
+## Phase 4 (competitive strategy optimization) addendum
+
+| Check | Result | Evidence |
+|---|---|---|
+| Simulator split into fast candidate path and full fork path | PASS | `app/simulation/fast_path.py` (3 round trips, stage timings) vs `replay.py`; `POST /api/simulations/fast`; fast path reproduced the fork's debt, collateral and swap output to the unit on the 0x7ed3 event. |
+| Component latency measured independently | PASS | Base: RPC 65 ms, head poll 62 ms, reads 211 ms, math 0.04 ms, quotes 220 ms, fast total 373 ms (p90 428), fork simulation 10.6 s; Arbitrum: 54 / 52 / 171 / 0.04 / 220 / 343 ms / 11.1 s. |
+| Oracle mechanism investigated with public data | PASS | Chainlink `DualAggregator 1.0.0`: aggregator returns the new round to ordinary callers at N−1 while the Pool's proxy lags (unlock by the winner or 30 s gate); verified by direct calls at N−5…N−1 and by re-pointing the oracle source on a fork. |
+| Observable-before-winner rate | PASS | Base 20 of 24 (83 %), Arbitrum 4 of 4; categories 3 / 17 / 4 / 0 (Base), 2 / 2 / 0 / 0 (Arbitrum). |
+| Observability categories recorded | PASS | `observability` column on candidates; per-event JSON; report tables. |
+| Additional markets through adapters | PASS (6 verified, 14 not configured) | Aave V3 Base/Arbitrum + Compound V3 Base USDC/WETH/USDbC + Arbitrum USDC verified live; 14 Aave V3 markets on other chains registered, endpoints not allowed here. |
+| Ranking by attainable net profit | PASS | `attainable_net_profit_usd` computed at candidate build, API sort default, dashboard column; `tests/test_attainable.py`. |
+| Strategy comparison with confidence intervals | PASS (executed) | Base: A $0 (never ready: fork gate), B −$0.15 [−0.44, 0], C −$0.87 [−1.60, −0.33], ceiling $3,120.80 [0.05, 9,362]; Arbitrum: all $0 (0.25 s blocks, nothing ready in time). No public-data strategy positive. |
+| Research dashboard view | PASS | `/research` page + `GET /api/research/summary`; `npm run lint` and `npm run build` pass. |
+| Backend `pytest` / `ruff` | PASS 86/86 / PASS | includes compare, adapters, attainable, fast-path and observability tests. |
+| Fixture rows removed from the validation DB | PASS | dependencies checked first (no simulation runs, candidates or observations referenced them); 4 liquidations, 4 events, 4 deployments, 1 checkpoint, 3 borrowers, 1 manual run, 1 strategy run, 1 audit event deleted by exact id. |
+| Live trading still impossible | PASS | no signer, no broadcast; nothing added. |
+
 ## Not done, and why
 - Nothing on a real chain: every RPC host is blocked in this sandbox. First action on the target host: set
   `BASE_RPC_HTTP` / `ARBITRUM_RPC_HTTP` (+ archive URLs), confirm `deployment_verified: true` on the Overview,

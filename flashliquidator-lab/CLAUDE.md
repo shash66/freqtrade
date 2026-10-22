@@ -79,6 +79,21 @@ CBOR metadata hash), rerun fork tests, rerun affected replays with `--fresh`.
   price median 0.04 gwei, p90 0.30 gwei.
 - Known gap: four test-fixture rows remain in the validation DB (see runbook §5); all queries exclude them.
 
+## Phase 4 state (22 Oct 2026)
+
+- Oracle mechanism: Aave's Base/Arbitrum price sources are Chainlink `DualAggregator` proxies. The aggregator
+  returns the newest round to any ordinary caller as soon as it lands (usually block N−1); the proxy the Pool reads
+  returns it only inside the auction winner's transaction or after a 30 s gate. Base: 3 publicly observable, 17
+  predictable (16 via the aggregator, lead median 2 s, max 32 s), 4 intra-block only; 83 % observable before the
+  winner. 10 of 17 predictable events were still contestable at the reveal (share 0.59).
+- Latency (Base, PublicNode): fast path 373 ms median (reads 211, quotes 220, math 0.04), fork simulation 10.6 s.
+  Arbitrum 343 ms / 11.1 s. A fork gate can never be ready inside a 2 s block.
+- Strategy verdicts (same 24 Base events, seed 42): no public-data strategy positive; ceiling $3,120.80.
+- Markets: 20 registered (Aave V3 ×16, Compound V3 ×4), 6 verified live, 14 need endpoints for other chains.
+- New modules: `simulation/fast_path.py`, `competition/{latency,attainable,compare}.py`, `research/observability.py`,
+  `protocols/{base,aave_v3,compound_v3,registry}.py`, `validation/phase4_report.py`, `api/routes_research.py`,
+  frontend `/research`. Migration `ecdc7637b17c` (attainable columns).
+
 ## Operational facts (learned the hard way)
 
 - Forks must use the archive endpoint (PublicNode returns 403 for pinned-block reads within seconds).

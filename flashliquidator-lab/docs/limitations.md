@@ -33,6 +33,14 @@
   liquidation on the Pool and no position crossing HF < 1 in its watch set, so candidate lifetime and the
   FCFS win probability are "not estimable" for that window; simulation latency was measured in a separate
   short run on an Alchemy-forked Anvil because the PublicNode fork refused the fork's state calls (HTTP 403).
+- **Phase 4.** The dataset is 24 Base and 4 Arbitrum events; intervals are wide and the verdicts are about this
+  sample, not the market in general. Observability is judged from the aggregator behind the Pool's price source
+  read as an ordinary caller; feeds without an `aggregator()` are reported with type `?` and no lead. The win
+  model compounds the empirical winning-bid distribution over the number of liquidators with ≥ 5 % of recent
+  events; the failed-attempt cost is a stated input. The fast path uses the reserve liquidation bonus (not the
+  e-mode bonus) and the configured gas estimate; the full path corrects both. Compound V3 valuation covers the
+  storefront discount only (no execution path, swap or gas model). Markets on chains without an allowed endpoint
+  in this environment are registered but unverified.
 - **Time-gated oracle feeds.** On Base (and for one Arbitrum event) the feed Aave reads already held the
   price that made a position liquidatable at N−1 but revealed it only after a delay; the winner's own
   transaction revealed it early. The public health factor this system computes lags that hidden round. A bot

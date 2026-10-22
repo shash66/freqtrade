@@ -1,0 +1,178 @@
+{
+ "network": "arbitrum",
+ "observed": {
+  "liquidation_txs": 4,
+  "liquidation_events": 4,
+  "unique_liquidators": 4,
+  "liquidator_shares_top5": [
+   0.25,
+   0.25,
+   0.25,
+   0.25
+  ],
+  "winning_effective_gas_price_wei": {
+   "n": 4,
+   "p25": 22879481,
+   "median": 38292600,
+   "p75": 38292600,
+   "p90": 40148000,
+   "max": 40148000
+  },
+  "winning_gas_used": {
+   "n": 4,
+   "median": 447225,
+   "p90": 1805076
+  },
+  "winning_l1_fee_wei": {
+   "n": 4,
+   "median": 25579456800
+  },
+  "benchmark": null,
+  "benchmark_detection_latency_seconds": null,
+  "benchmark_simulation_latency_seconds": null,
+  "benchmark_block_lag_seconds": null
+ },
+ "modeled": {
+  "effective_competitors_ready": 4.0,
+  "our_gas_units": 418808,
+  "our_ready_seconds_assumed": 2.0,
+  "p_win_fcfs_vs_observed_competitor_reaction": null,
+  "competitor_reaction_samples": 0,
+  "median_simulated_profit_usd": null,
+  "failed_attempt_cost_share_of_gas": 0.35,
+  "eth_usd": "4000"
+ },
+ "bid_curve": [
+  {
+   "label": "p25",
+   "bid_wei": 22879481,
+   "bid_gwei": 0.022879481,
+   "gas_cost_usd": "0.038431",
+   "p_win_priority_auction": 0.0039,
+   "expected_profit_usd_priority_auction": "n/a"
+  },
+  {
+   "label": "median",
+   "bid_wei": 38292600,
+   "bid_gwei": 0.0382926,
+   "gas_cost_usd": "0.064251",
+   "p_win_priority_auction": 0.0625,
+   "expected_profit_usd_priority_auction": "n/a"
+  },
+  {
+   "label": "p75",
+   "bid_wei": 38292600,
+   "bid_gwei": 0.0382926,
+   "gas_cost_usd": "0.064251",
+   "p_win_priority_auction": 0.0625,
+   "expected_profit_usd_priority_auction": "n/a"
+  },
+  {
+   "label": "p90",
+   "bid_wei": 40148000,
+   "bid_gwei": 0.040148,
+   "gas_cost_usd": "0.067360",
+   "p_win_priority_auction": 0.3164,
+   "expected_profit_usd_priority_auction": "n/a"
+  },
+  {
+   "label": "max",
+   "bid_wei": 40148000,
+   "bid_gwei": 0.040148,
+   "gas_cost_usd": "0.067360",
+   "p_win_priority_auction": 0.3164,
+   "expected_profit_usd_priority_auction": "n/a"
+  },
+  {
+   "label": "2x_max",
+   "bid_wei": 80296000,
+   "bid_gwei": 0.080296,
+   "gas_cost_usd": "0.134617",
+   "p_win_priority_auction": 1.0,
+   "expected_profit_usd_priority_auction": "n/a"
+  }
+ ],
+ "opportunities": [
+  {
+   "tx_hash": "0xf365aef0152ab2fedfec691c1b271e65d9bc972c94fbaabcff4bf3bf47a8cc03",
+   "block_number": 517085787,
+   "simulated_profit_usd": null,
+   "profit_complete": null,
+   "eligible_at_fork": false,
+   "eligible_at_execution": false,
+   "bucket": "not_simulated_profitably",
+   "historical_gas_price_wei": 38292600,
+   "historical_gas_used": 1805076,
+   "p_win_fcfs": null,
+   "p_win_priority_auction_at_median_bid": null,
+   "competition_adjusted_usd_fcfs": null,
+   "competition_adjusted_usd_priority_auction": null
+  },
+  {
+   "tx_hash": "0xef1db8a92c6e119358074d740bfcd515e4d887866ed53fa7e61c19da7134bc7a",
+   "block_number": 516716800,
+   "simulated_profit_usd": null,
+   "profit_complete": null,
+   "eligible_at_fork": true,
+   "eligible_at_execution": true,
+   "bucket": "not_simulated_profitably",
+   "historical_gas_price_wei": 40148000,
+   "historical_gas_used": 447225,
+   "p_win_fcfs": null,
+   "p_win_priority_auction_at_median_bid": null,
+   "competition_adjusted_usd_fcfs": null,
+   "competition_adjusted_usd_priority_auction": null
+  },
+  {
+   "tx_hash": "0xaac673ad29ec3738810432400d9572d4c6be7cd19162fb958b7c2a30e60c533d",
+   "block_number": 516312371,
+   "simulated_profit_usd": "-0.016862000000000000",
+   "profit_complete": true,
+   "eligible_at_fork": true,
+   "eligible_at_execution": true,
+   "bucket": "not_simulated_profitably",
+   "historical_gas_price_wei": 20050000,
+   "historical_gas_used": 428836,
+   "p_win_fcfs": null,
+   "p_win_priority_auction_at_median_bid": null,
+   "competition_adjusted_usd_fcfs": null,
+   "competition_adjusted_usd_priority_auction": null
+  },
+  {
+   "tx_hash": "0x4ec4b9b020a915fcc79f039060b8f5bbc32d9d55b9b3197c6a9d48a998707340",
+   "block_number": 516296225,
+   "simulated_profit_usd": null,
+   "profit_complete": null,
+   "eligible_at_fork": false,
+   "eligible_at_execution": true,
+   "bucket": "not_simulated_profitably",
+   "historical_gas_price_wei": 22879481,
+   "historical_gas_used": 426586,
+   "p_win_fcfs": null,
+   "p_win_priority_auction_at_median_bid": null,
+   "competition_adjusted_usd_fcfs": null,
+   "competition_adjusted_usd_priority_auction": null
+  }
+ ],
+ "totals": {
+  "boundary_observable_simulated_profit_usd": "0",
+  "intra_block_only_simulated_profit_usd": "0",
+  "competition_adjusted_fcfs_usd": null,
+  "competition_adjusted_priority_auction_usd": "0",
+  "events_boundary_observable": 0,
+  "events_intra_block_only": 0,
+  "events_not_profitable_or_incomplete": 4
+ },
+ "assumptions": [
+  "competitor bids ~ empirical distribution of *winning* effective gas prices on this Pool (conservative: losers bid less)",
+  "effective competitors ready per opportunity = number of liquidators with >= 5% share of observed wins (+ extra_competitors)",
+  "our gas = median measured receiver gas on successful replays; L1 fee = median verified L1 fee of winners",
+  "failed attempt (lost race, reverted) costs failed_attempt_cost_share_of_gas of a full attempt's gas (revert happens early in the call)",
+  "FCFS win probability = share of observed competitor reactions (blocks after our detection) slower than our assumed ready time; null when no reactions were observed",
+  "positions only liquidatable inside the winning block (eligible_at_fork=false) are not capturable by boundary polling; their profit is reported separately and excluded from capturable totals",
+  "profit per opportunity is the simulated receiver profit (complete costs only); theoretical profit is reported elsewhere"
+ ],
+ "warnings": [
+  "no competitor reaction samples from the benchmark window: the FCFS win probability is not estimated (reported as null, not 0)"
+ ]
+}

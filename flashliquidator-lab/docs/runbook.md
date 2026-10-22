@@ -120,6 +120,23 @@ complete costs (sum $3,120.80, of which $3,120.36 only reachable inside the winn
 1 succeeds, unprofitable after costs; 18 of 24 Base events and 1 of 4 Arbitrum events have a time-gated oracle
 round at N−1; benchmark detection latency ≈ 1.3 s median, fork simulation ≈ 17 s median.
 
+### 4.4 Phase 4 (or run `scripts/phase4-research.sh <network>`)
+
+```bash
+python -m app.research.observability --network base --anvil http://127.0.0.1:8545 --timegate-json ../docs/phase3-timegate-base.json \
+  --replays-json ../docs/phase3-replays-base.json --out ../docs/phase4-observability-base.json      # 24 events ≈ 10 min
+python -m app.competition.latency --network base --positions 5 --rounds 10 --anvil http://127.0.0.1:8546 --evm-rounds 3 --out ../docs/phase4-latency-base.json
+python -m app.competition.compare --network base --observability-json ../docs/phase4-observability-base.json --replays-json ../docs/phase3-replays-base.json \
+  --latency-json ../docs/phase4-latency-base.json --bidmodel-json ../docs/phase3-bidmodel-base.json --out ../docs/phase4-strategies-base.json
+python -m app.protocols.registry --out ../docs/phase4-markets.json --sample-history-blocks 100
+python -m app.validation.phase4_report --docs ../docs --networks base,arbitrum --out ../docs/phase4-results.md
+```
+
+Extra Aave V3 markets (Ethereum Core/Lido/EtherFi, Optimism, Polygon, Avalanche, Scroll, BNB, Gnosis, Linea, Sonic,
+Celo, Soneium, Plasma) are registered from the address book and activate when `<SLUG>_RPC_HTTP` /
+`<SLUG>_ARCHIVE_RPC` are set (Alchemy hosts: `eth-mainnet`, `opt-mainnet`, `polygon-mainnet`, `avax-mainnet`, …
+`.g.alchemy.com`). In the environment used here those hosts were not allowed, so they report `not_configured`.
+
 ## 5. Operational pitfalls (all hit during the runs)
 
 - **Fixture rows in the validation database.** `pytest` once ran in a shell whose `DATABASE_URL` pointed at

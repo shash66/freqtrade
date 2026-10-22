@@ -34,7 +34,7 @@ open http://localhost:3000
 Docs: [implementation plan](docs/implementation-plan.md), [architecture](docs/architecture.md),
 [data sources](docs/data-sources.md), [simulation methodology](docs/simulation-methodology.md),
 [deployment](docs/deployment.md), [limitations](docs/limitations.md), [Phase 2 results](docs/phase2-results.md),
-[Phase 3 results](docs/phase3-results.md), [replication runbook](docs/runbook.md) (fresh server, providers, exact
+[Phase 3 results](docs/phase3-results.md), [Phase 4 results](docs/phase4-results.md), [replication runbook](docs/runbook.md) (fresh server, providers, exact
 commands, pitfalls). Contracts: [contracts/README.md](contracts/README.md). Notes for AI-assisted sessions: `CLAUDE.md`.
 
 ## Status
@@ -42,8 +42,10 @@ commands, pitfalls). Contracts: [contracts/README.md](contracts/README.md). Note
 `docs/implementation-plan.md` has the per-milestone state and `docs/test-results.md` the deployment-readiness
 results. Live results against the real chains: `docs/phase2-results.md` (deployment verification, indexing,
 replays through the real receiver) and `docs/phase3-results.md` (profit verification with complete fee
-accounting, intra-block reconstruction, live competitive benchmark, bid/win-probability model). Phase 3 is
-reproduced with `scripts/phase3-research.sh <network>`.
+accounting, intra-block reconstruction, live competitive benchmark, bid/win-probability model) and
+`docs/phase4-results.md` (fast candidate path, per-stage latency, opportunity observability, protocol adapters,
+attainable-profit ranking, strategy comparison). Reproduce with `scripts/phase3-research.sh` and
+`scripts/phase4-research.sh`.
 
 ## Tests
 

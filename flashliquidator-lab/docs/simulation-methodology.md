@@ -101,3 +101,37 @@ an exponential opportunity lifetime, and resolves inclusion first-come-first-ser
 priority bid (Ethereum). It reports win rate with a Wilson 95% interval, expected profit per attempt with a
 normal-approximation interval, failed-attempt exposure and delay sensitivity. All inputs are adjustable and
 echoed back with the result. These are modeled estimates, never measured execution results.
+
+## Phase 4 additions
+
+**Two simulator paths.** The fast path (`app/simulation/fast_path.py`, `POST /api/simulations/fast`) reads every
+protocol input in one Multicall3 call, runs the pure profitability math, and quotes every Uniswap fee tier plus
+the L1 data fee in a second Multicall3 call: a theoretical candidate with complete costs in three round trips,
+each stage timed. The full path (`app/simulation/replay.py`, `POST /api/simulations`) forks and executes the real
+receiver. They never share a result; the fast path is labeled `theoretical`, the full path `simulated`.
+
+**Observability categories** (`app/research/observability.py`), per recorded event at the state of N−1:
+`publicly_observable` (liquidatable with the Pool's own oracle prices), `predictable_not_yet_eligible` (the
+aggregator behind the Pool's price source, read as an ordinary caller, already carried a newer round under which
+the position is liquidatable, verified by re-pointing the oracle's source on a private fork; or interest alone
+makes it liquidatable at block N's timestamp), `intra_block_only` (no public price or time signal before block N),
+`unknown` (a probe failed). The lead is the time between the aggregator first carrying the round and the winning
+block; whether a public bot can act in that window depends on the proxy's reveal rule (Phase 3 time gate).
+
+**Protocol adapters** (`app/protocols/`): `MarketSpec` + `ProtocolAdapter` (verify, position, value_liquidation,
+historical_liquidations). Aave V3 adapter over the 16 markets of the official address book; Compound V3 (Comet)
+adapter on Base and Arbitrum with eligibility from `isLiquidatable`, value from `quoteCollateral`'s storefront
+discount and history from `AbsorbCollateral`. Markets whose endpoint is not configured or reachable report
+`not_configured`/`blocked`; nothing is assumed about them.
+
+**Attainable net profit** (`app/competition/attainable.py`): `p_capture × net − (1 − p_capture) × failed-attempt
+cost`, where `p_capture` is the observability-class weight (publicly observable 1, predictable = measured share
+still contestable, intra-block 0, unknown 0) times the priority-auction win probability at the chosen bid over the
+Pool's observed winning bids. Candidates are ranked by it; unknown inputs leave it null.
+
+**Strategy comparison** (`app/competition/compare.py`): strategies A (poll + fast path + fork gate), B (poll + fast
+path), C (read the aggregators, precompute, submit at the reveal block) and D (ceiling, no competition) on exactly
+the same events and seed. Readiness is a log-normal draw fitted to the measured median/p90 latencies against the
+event's window (one block, or the measured lead); win probability from the empirical winning bids; availability of
+predictable events measured from the reveal timing; profit per captured event is the Phase 3 simulated net profit
+with complete costs. Bootstrap intervals over events. A verdict is positive only when the whole interval is.

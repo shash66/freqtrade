@@ -1,0 +1,368 @@
+{
+ "seed": 42,
+ "bootstrap_samples": 2000,
+ "events": 4,
+ "categories": {
+  "publicly_observable": 2,
+  "predictable_not_yet_eligible": 2,
+  "intra_block_only": 0,
+  "unknown": 0
+ },
+ "inputs": {
+  "winning_bids_n": 4,
+  "median_winning_bid_gwei": 0.0382926,
+  "competitors": 4,
+  "failed_attempt_cost_usd": "0.20",
+  "predictable_available_share_override": null,
+  "predictable_available_share_measured": 0.5,
+  "predictable_events": 2,
+  "block_seconds": 0.25,
+  "bid_grid_gwei": [
+   0.0191463,
+   0.02005,
+   0.022879481,
+   0.0382926,
+   0.040148,
+   0.04212186,
+   0.04595112,
+   0.0574389,
+   0.0765852,
+   0.1148778
+  ],
+  "latency_ms": {
+   "head_poll": [
+    51.87829500027874,
+    56.07224799996402
+   ],
+   "fast_path": [
+    342.8279879999536,
+    391.7825039998206
+   ],
+   "evm_simulation": [
+    11112.193453000145,
+    12117.182303999925
+   ]
+  }
+ },
+ "strategies": [
+  {
+   "name": "A_boundary_polling",
+   "description": "poll every head, evaluate on the fast path, confirm on a fork, then send",
+   "events_in_scope": 2,
+   "events_with_profit": 1,
+   "expected_profit_total_usd": "0.0000",
+   "expected_profit_ci95_usd": [
+    "0.0000",
+    "0.0000"
+   ],
+   "expected_profit_per_event_usd": "0.0000",
+   "capture_probability_mean": 0.0,
+   "modeled_captures": 0.0,
+   "captures_ci95_wilson": [
+    0.0,
+    0.6576280471103807
+   ],
+   "ready_in_time_rate": 0.0,
+   "bid_gwei": 0.04212186,
+   "p_win_bid": 1.0,
+   "per_event": [
+    {
+     "tx": "0xef1db8a92c6e119358074d740bfcd515e4d887866ed53fa7e61c19da7134bc7a",
+     "log_index": 14,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 0.25,
+     "p_ready": 0.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xaac673ad29ec3738810432400d9572d4c6be7cd19162fb958b7c2a30e60c533d",
+     "log_index": 23,
+     "category": "publicly_observable",
+     "net_profit_usd": "-0.016862000000000000",
+     "window_s": 0.25,
+     "p_ready": 0.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0,
+     "expected_value_usd": "-0.0000"
+    }
+   ],
+   "assumptions": [
+    "latency: head poll + fast path + fork gate drawn log-normal from measured median/p90",
+    "window: one block (0.25 s) for publicly observable events; the measured lead for predictable events",
+    "bid chosen from the observed winning-bid grid to maximise expected profit over in-scope events (extra gas above the median bid charged at 565,190 units, ETH 4000 USD); P(win) = F(bid)^4 over observed winning bids",
+    "profit per captured event = Phase 3 simulated net profit with complete costs; events without one contribute 0",
+    "predictable events are multiplied by the measured share still open at the reveal block (0 when unmeasured and reported as such)"
+   ]
+  },
+  {
+   "name": "B_event_driven",
+   "description": "poll every head, evaluate on the fast path, send without a fork gate",
+   "events_in_scope": 2,
+   "events_with_profit": 1,
+   "expected_profit_total_usd": "0.0000",
+   "expected_profit_ci95_usd": [
+    "0.0000",
+    "0.0000"
+   ],
+   "expected_profit_per_event_usd": "0.0000",
+   "capture_probability_mean": 0.0,
+   "modeled_captures": 0.0,
+   "captures_ci95_wilson": [
+    0.0,
+    0.6576280471103807
+   ],
+   "ready_in_time_rate": 0.0,
+   "bid_gwei": 0.04212186,
+   "p_win_bid": 1.0,
+   "per_event": [
+    {
+     "tx": "0xef1db8a92c6e119358074d740bfcd515e4d887866ed53fa7e61c19da7134bc7a",
+     "log_index": 14,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 0.25,
+     "p_ready": 0.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xaac673ad29ec3738810432400d9572d4c6be7cd19162fb958b7c2a30e60c533d",
+     "log_index": 23,
+     "category": "publicly_observable",
+     "net_profit_usd": "-0.016862000000000000",
+     "window_s": 0.25,
+     "p_ready": 0.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0,
+     "expected_value_usd": "-0.0000"
+    }
+   ],
+   "assumptions": [
+    "latency: head poll + fast path drawn log-normal from measured median/p90",
+    "window: one block (0.25 s) for publicly observable events; the measured lead for predictable events",
+    "bid chosen from the observed winning-bid grid to maximise expected profit over in-scope events (extra gas above the median bid charged at 565,190 units, ETH 4000 USD); P(win) = F(bid)^4 over observed winning bids",
+    "profit per captured event = Phase 3 simulated net profit with complete costs; events without one contribute 0",
+    "predictable events are multiplied by the measured share still open at the reveal block (0 when unmeasured and reported as such)"
+   ]
+  },
+  {
+   "name": "C_predictive",
+   "description": "read the aggregators directly, precompute the transaction during the lead, submit at the reveal block",
+   "events_in_scope": 4,
+   "events_with_profit": 1,
+   "expected_profit_total_usd": "0.0000",
+   "expected_profit_ci95_usd": [
+    "0.0000",
+    "0.0000"
+   ],
+   "expected_profit_per_event_usd": "0.0000",
+   "capture_probability_mean": 0.0,
+   "modeled_captures": 0.0,
+   "captures_ci95_wilson": [
+    0.0,
+    0.48990002040399916
+   ],
+   "ready_in_time_rate": 0.25,
+   "bid_gwei": 0.04212186,
+   "p_win_bid": 1.0,
+   "per_event": [
+    {
+     "tx": "0xf365aef0152ab2fedfec691c1b271e65d9bc972c94fbaabcff4bf3bf47a8cc03",
+     "log_index": 15,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 0.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xef1db8a92c6e119358074d740bfcd515e4d887866ed53fa7e61c19da7134bc7a",
+     "log_index": 14,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 0.25,
+     "p_ready": 0.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xaac673ad29ec3738810432400d9572d4c6be7cd19162fb958b7c2a30e60c533d",
+     "log_index": 23,
+     "category": "publicly_observable",
+     "net_profit_usd": "-0.016862000000000000",
+     "window_s": 0.25,
+     "p_ready": 0.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 0.0,
+     "expected_value_usd": "-0.0000"
+    },
+    {
+     "tx": "0x4ec4b9b020a915fcc79f039060b8f5bbc32d9d55b9b3197c6a9d48a998707340",
+     "log_index": 59,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 0.25,
+     "p_ready": 0.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 0.0,
+     "expected_value_usd": "0.0000"
+    }
+   ],
+   "assumptions": [
+    "latency: head poll + fast path drawn log-normal from measured median/p90",
+    "window: one block (0.25 s) for publicly observable events; the measured lead for predictable events",
+    "bid chosen from the observed winning-bid grid to maximise expected profit over in-scope events (extra gas above the median bid charged at 565,190 units, ETH 4000 USD); P(win) = F(bid)^4 over observed winning bids",
+    "profit per captured event = Phase 3 simulated net profit with complete costs; events without one contribute 0",
+    "predictable events are multiplied by the measured share still open at the reveal block (0 when unmeasured and reported as such)"
+   ]
+  },
+  {
+   "name": "D_ceiling_no_competition",
+   "description": "reference ceiling: every simulated-profitable event captured with certainty; not a strategy, the upper bound",
+   "events_in_scope": 4,
+   "events_with_profit": 1,
+   "expected_profit_total_usd": "-0.0169",
+   "expected_profit_ci95_usd": [
+    "-0.0506",
+    "0.0000"
+   ],
+   "expected_profit_per_event_usd": "-0.0042",
+   "capture_probability_mean": 1.0,
+   "modeled_captures": 4.0,
+   "captures_ci95_wilson": [
+    0.5100999795960008,
+    1.0
+   ],
+   "ready_in_time_rate": 1.0,
+   "bid_gwei": 0.0382926,
+   "p_win_bid": 0.0625,
+   "per_event": [
+    {
+     "tx": "0xf365aef0152ab2fedfec691c1b271e65d9bc972c94fbaabcff4bf3bf47a8cc03",
+     "log_index": 15,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 2.0,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "winner acted 30 s before the public reveal: exclusive window, not contestable",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xef1db8a92c6e119358074d740bfcd515e4d887866ed53fa7e61c19da7134bc7a",
+     "log_index": 14,
+     "category": "publicly_observable",
+     "net_profit_usd": null,
+     "window_s": 0.25,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    },
+    {
+     "tx": "0xaac673ad29ec3738810432400d9572d4c6be7cd19162fb958b7c2a30e60c533d",
+     "log_index": 23,
+     "category": "publicly_observable",
+     "net_profit_usd": "-0.016862000000000000",
+     "window_s": 0.25,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "race in the next block",
+     "p_capture": 1.0,
+     "expected_value_usd": "-0.0169"
+    },
+    {
+     "tx": "0x4ec4b9b020a915fcc79f039060b8f5bbc32d9d55b9b3197c6a9d48a998707340",
+     "log_index": 59,
+     "category": "predictable_not_yet_eligible",
+     "net_profit_usd": null,
+     "window_s": 0.25,
+     "p_ready": 1.0,
+     "p_win_bid": 1.0,
+     "availability": 1.0,
+     "availability_reason": "price public at the winning block (reveal 0 s) or time-only eligibility: race at the reveal block",
+     "p_capture": 1.0,
+     "expected_value_usd": "0.0000"
+    }
+   ],
+   "assumptions": [
+    "latency: head poll + fast path drawn log-normal from measured median/p90",
+    "window: one block (0.25 s) for publicly observable events; the measured lead for predictable events",
+    "bid chosen from the observed winning-bid grid to maximise expected profit over in-scope events (extra gas above the median bid charged at 565,190 units, ETH 4000 USD); P(win) = F(bid)^4 over observed winning bids",
+    "profit per captured event = Phase 3 simulated net profit with complete costs; events without one contribute 0",
+    "predictable events are multiplied by the measured share still open at the reveal block (0 when unmeasured and reported as such)"
+   ]
+  }
+ ],
+ "verdict": {
+  "A_boundary_polling": {
+   "expected_profit_total_usd": "0.0000",
+   "ci95": [
+    "0.0000",
+    "0.0000"
+   ],
+   "positive_after_costs_and_competition": false,
+   "point_estimate_positive": false,
+   "statement": "no positive expected profit on this dataset"
+  },
+  "B_event_driven": {
+   "expected_profit_total_usd": "0.0000",
+   "ci95": [
+    "0.0000",
+    "0.0000"
+   ],
+   "positive_after_costs_and_competition": false,
+   "point_estimate_positive": false,
+   "statement": "no positive expected profit on this dataset"
+  },
+  "C_predictive": {
+   "expected_profit_total_usd": "0.0000",
+   "ci95": [
+    "0.0000",
+    "0.0000"
+   ],
+   "positive_after_costs_and_competition": false,
+   "point_estimate_positive": false,
+   "statement": "no positive expected profit on this dataset"
+  },
+  "D_ceiling_no_competition": {
+   "expected_profit_total_usd": "-0.0169",
+   "ci95": [
+    "-0.0506",
+    "0.0000"
+   ],
+   "positive_after_costs_and_competition": false,
+   "point_estimate_positive": false,
+   "statement": "no positive expected profit on this dataset"
+  }
+ },
+ "network": "arbitrum"
+}
