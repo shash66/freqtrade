@@ -1,0 +1,25 @@
+{
+ "network": "arbitrum",
+ "rpc": "arbitrum.drpc.org",
+ "from_block": 517226162,
+ "to_block": 517235162,
+ "blocks": 9000,
+ "markets": {
+  "aave_v3_arbitrum": {
+   "liquidation_events": 0,
+   "unique_txs": 0,
+   "unique_liquidators": 0,
+   "kind": null,
+   "errors": [],
+   "events": []
+  },
+  "compound_v3_arbitrum_usdc": {
+   "liquidation_events": 0,
+   "unique_txs": 0,
+   "unique_liquidators": 0,
+   "kind": null,
+   "errors": [],
+   "events": []
+  }
+ }
+}

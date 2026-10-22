@@ -55,6 +55,10 @@ def _positions(net: NetworkConfig, n: int) -> list[tuple[str, str, str]]:
                 out.append((b.address, colls[0][1].address, debts[0][1].address))
             if len(out) >= n:
                 break
+        if not out:  # no per-reserve states yet (e.g. a network reconciled only at the account level): use recorded liquidation positions
+            liqs = db.scalars(select(m.HistoricalLiquidation).where(m.HistoricalLiquidation.chain_id == net.chain_id)
+                              .order_by(m.HistoricalLiquidation.block_number.desc()).limit(n)).all()
+            out = [(h.borrower, h.collateral_asset, h.debt_asset) for h in liqs]
     return out
 
 

@@ -1,46 +1,486 @@
 {
  "network": "arbitrum",
- "generated_at": "2026-10-22T13:00:57.697132+00:00",
+ "generated_at": "2026-10-22T13:07:23.320438+00:00",
  "rpc": "arbitrum-one-rpc.publicnode.com",
  "anvil": "http://127.0.0.1:8548",
- "positions": 0,
+ "positions": 4,
  "rounds": 10,
  "stages": {
   "rpc_rtt_ms": {
    "n": 10,
-   "median": 74.79549100003169,
-   "p90": 116.02964700000484,
-   "max": 491.30841200008035,
-   "mean": 117.26949520002563
+   "median": 54.02308900011121,
+   "p90": 61.68021400026191,
+   "max": 489.57250200010094,
+   "mean": 97.28764490005233
   },
   "head_poll_ms": {
    "n": 10,
-   "median": 75.85578600014742,
-   "p90": 83.68152299999565,
-   "max": 90.3468660001181,
-   "mean": 73.34570450004776
+   "median": 51.87829500027874,
+   "p90": 56.07224799996402,
+   "max": 61.65228300005765,
+   "mean": 52.741279500060045
   },
   "rpc_reads_ms": {
-   "n": 0
+   "n": 40,
+   "median": 171.10371700027827,
+   "p90": 193.42853899979673,
+   "max": 243.25458599969352,
+   "mean": 176.8386830250165
   },
   "math_ms": {
-   "n": 0
+   "n": 40,
+   "median": 0.047214999995048856,
+   "p90": 0.09129199997914839,
+   "max": 0.3156440002385352,
+   "mean": 0.06497365000086575
   },
   "quote_ms": {
-   "n": 0
+   "n": 40,
+   "median": 0.2205409996349772,
+   "p90": 220.772788999966,
+   "max": 233.01017799985857,
+   "mean": 54.10376474994791
   },
   "fee_estimate_ms": {
    "n": 0
   },
   "fast_total_ms": {
-   "n": 0
+   "n": 40,
+   "median": 342.8279879999536,
+   "p90": 391.7825039998206,
+   "max": 424.9102559997482,
+   "mean": 347.9580458749524
   },
   "evm_simulation_ms": {
-   "n": 0
+   "n": 3,
+   "median": 11112.193453000145,
+   "p90": 12117.182303999925,
+   "max": 12117.182303999925,
+   "mean": 11383.664607666711
   }
  },
- "evaluations": [],
- "evm": [],
+ "evaluations": [
+  {
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "block": 517232305,
+   "eligible": false,
+   "health_factor": "1.086090833850425867",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 374.3
+  },
+  {
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "block": 517232305,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 339.3
+  },
+  {
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "block": 517232305,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 402.9
+  },
+  {
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "block": 517232305,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 329.3
+  },
+  {
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "block": 517232312,
+   "eligible": false,
+   "health_factor": "1.086090830811409934",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 330.2
+  },
+  {
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "block": 517232312,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 414.6
+  },
+  {
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "block": 517232312,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 399.9
+  },
+  {
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "block": 517232312,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 295.6
+  },
+  {
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "block": 517232319,
+   "eligible": false,
+   "health_factor": "1.086090828207160243",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 387.4
+  },
+  {
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "block": 517232319,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 342.8
+  },
+  {
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "block": 517232319,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 323.9
+  },
+  {
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "block": 517232319,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 307.6
+  },
+  {
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "block": 517232325,
+   "eligible": false,
+   "health_factor": "1.086090826468095348",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 344.9
+  },
+  {
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "block": 517232325,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 321.7
+  },
+  {
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "block": 517232325,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 301.6
+  },
+  {
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "block": 517232325,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 377.5
+  },
+  {
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "block": 517232332,
+   "eligible": false,
+   "health_factor": "1.086090823859498016",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 366.4
+  },
+  {
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "block": 517232332,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 316.8
+  },
+  {
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "block": 517232332,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 379.6
+  },
+  {
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "block": 517232332,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 380.1
+  },
+  {
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "block": 517232338,
+   "eligible": false,
+   "health_factor": "1.086090821255248358",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 332.6
+  },
+  {
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "block": 517232338,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 305.0
+  },
+  {
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "block": 517232338,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 343.5
+  },
+  {
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "block": 517232338,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 319.4
+  },
+  {
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "block": 517232345,
+   "eligible": false,
+   "health_factor": "1.086090818211884834",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 320.9
+  },
+  {
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "block": 517232345,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 389.3
+  },
+  {
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "block": 517232345,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 391.8
+  },
+  {
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "block": 517232345,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 304.6
+  },
+  {
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "block": 517232351,
+   "eligible": false,
+   "health_factor": "1.086090816911933849",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 315.2
+  },
+  {
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "block": 517232351,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 314.9
+  },
+  {
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "block": 517232351,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 385.5
+  },
+  {
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "block": 517232351,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 390.1
+  },
+  {
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "block": 517232358,
+   "eligible": false,
+   "health_factor": "1.086090814303336562",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 326.8
+  },
+  {
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "block": 517232358,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 295.0
+  },
+  {
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "block": 517232358,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 307.6
+  },
+  {
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "block": 517232358,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 354.0
+  },
+  {
+   "borrower": "0x5999865518C9de250b820762130FF7A7119A4558",
+   "block": 517232364,
+   "eligible": false,
+   "health_factor": "1.086090811264320739",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 307.3
+  },
+  {
+   "borrower": "0x2Fe58a6cAf59c9dB5435B5B1fB28Ef4CcEa6274A",
+   "block": 517232364,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 370.8
+  },
+  {
+   "borrower": "0xcE48609b60727De77457fB45Cda71F9080452084",
+   "block": 517232364,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 382.8
+  },
+  {
+   "borrower": "0x83C12b84AfAfc3FEEAb6F912BC43dfBfC0A2758c",
+   "block": 517232364,
+   "eligible": false,
+   "health_factor": "Infinity",
+   "net_profit_usd": null,
+   "complete": true,
+   "round_trips": 1,
+   "total_ms": 424.9
+  }
+ ],
+ "evm": [
+  {
+   "ms": 11112.2,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver"
+  },
+  {
+   "ms": 12117.2,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver"
+  },
+  {
+   "ms": 10921.6,
+   "success": false,
+   "revert_reason": "('0x930bb771', '0x930bb771') [HealthFactorNotBelowThreshold]",
+   "execution_path": "flash_loan_receiver"
+  }
+ ],
  "notes": [
   "fast path = 2 RPC round trips (Multicall3 reads; Multicall3 quotes + L1 fee) + gas price; nothing is executed",
   "evm simulation = full path on a private Anvil forked from the archive endpoint; the call reverts when the position is not liquidatable, the time is what is measured",

@@ -57,6 +57,23 @@ def create_simulation(body: SimulationRequest, request: Request, db: Session = D
     return JobAccepted(job_id=run.id, status="queued", status_url=f"/api/simulations/{run.id}")
 
 
+@router.post("/simulations/fast", dependencies=[Depends(require_admin)])
+def fast_evaluate(body: SimulationRequest, request: Request, settings: Settings = Depends(get_settings)):
+    """Low-latency candidate evaluation (Phase 4): no fork, no transaction; two Multicall3 round trips on the live
+    RPC and the protocol math. Returns a theoretical candidate with stage timings. The full fork replay remains
+    `POST /api/simulations`."""
+    from app.chains.rpc import RpcClient
+    from app.simulation.fast_path import FastEvaluator
+    net = request.app.state.networks.get(body.network)
+    if net is None or not (net.rpc_http or net.archive_rpc):
+        raise HTTPException(400, "network not configured")
+    client = RpcClient(f"{net.slug}-fast", net.rpc_http or net.archive_rpc, settings.rpc_timeout_seconds, 1)
+    r = FastEvaluator(net, client).evaluate(body.borrower, body.collateral_asset, body.debt_asset,
+                                            block=body.block_number if body.block_number is not None else "latest",
+                                            gas_price_wei=int(body.gas_price_wei) if body.gas_price_wei else None, slippage_bps=body.slippage_bps)
+    return r.as_dict()
+
+
 @router.get("/simulations")
 def list_simulations(request: Request, db: Session = Depends(get_db), network: str | None = None, kind: str | None = None,
                      status: str | None = None, limit: int = Query(50, ge=1, le=500), offset: int = Query(0, ge=0)):
