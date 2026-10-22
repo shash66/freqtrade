@@ -1,0 +1,1522 @@
+{
+ "strategy": "dex_arb",
+ "network": "arbitrum",
+ "mode": "replay",
+ "generated_at": "2026-10-22T14:55:24.587925+00:00",
+ "block": "latest",
+ "replay": {
+  "strategy": "dex_arb",
+  "network": "arbitrum",
+  "from_block": 516700000,
+  "to_block": 517350000,
+  "opportunities": 0,
+  "simulated": 0,
+  "simulated_success": 0,
+  "net_profitable_complete": 0,
+  "lost_to_competition": null,
+  "expected_profit_per_attempt_usd": "-0.128260",
+  "worst_case_loss_usd": null,
+  "sample_note": "173 sampled blocks every 3250 blocks; 0 with a quoted spread above the 0.05 USD gas floor (before competition); expected figure = mean best net-before-gas spread per sampled block; worst case = cost of a failed attempt (see simulate), not the quoted shortfall",
+  "details": [
+   {
+    "block": 516700000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.115377",
+    "net_pre_gas_usd": "-0.140377",
+    "above_gas_floor": false,
+    "size_raw": 20536368753925316
+   },
+   {
+    "block": 516703250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.079463",
+    "net_pre_gas_usd": "-0.104463",
+    "above_gas_floor": false,
+    "size_raw": 20526663220045976
+   },
+   {
+    "block": 516706500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.050048",
+    "net_pre_gas_usd": "-0.075048",
+    "above_gas_floor": false,
+    "size_raw": 20508697738710988
+   },
+   {
+    "block": 516709750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.049234",
+    "net_pre_gas_usd": "-0.074234",
+    "above_gas_floor": false,
+    "size_raw": 20474014248485160
+   },
+   {
+    "block": 516713000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.050472",
+    "net_pre_gas_usd": "-0.075472",
+    "above_gas_floor": false,
+    "size_raw": 20436792090618880
+   },
+   {
+    "block": 516716250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.050308",
+    "net_pre_gas_usd": "-0.075308",
+    "above_gas_floor": false,
+    "size_raw": 20387087133238428
+   },
+   {
+    "block": 516719500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.092982",
+    "net_pre_gas_usd": "-0.117982",
+    "above_gas_floor": false,
+    "size_raw": 20396266477548552
+   },
+   {
+    "block": 516722750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.134597",
+    "net_pre_gas_usd": "-0.159597",
+    "above_gas_floor": false,
+    "size_raw": 20422424674494236
+   },
+   {
+    "block": 516726000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.084861",
+    "net_pre_gas_usd": "-0.109861",
+    "above_gas_floor": false,
+    "size_raw": 20375255791371256
+   },
+   {
+    "block": 516729250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.074426",
+    "net_pre_gas_usd": "-0.099426",
+    "above_gas_floor": false,
+    "size_raw": 50008120
+   },
+   {
+    "block": 516732500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.107585",
+    "net_pre_gas_usd": "-0.132585",
+    "above_gas_floor": false,
+    "size_raw": 20344750097571712
+   },
+   {
+    "block": 516735750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.160247",
+    "net_pre_gas_usd": "-0.185247",
+    "above_gas_floor": false,
+    "size_raw": 20356801624679424
+   },
+   {
+    "block": 516739000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.164398",
+    "net_pre_gas_usd": "-0.189398",
+    "above_gas_floor": false,
+    "size_raw": 20366297462988424
+   },
+   {
+    "block": 516742250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.048843",
+    "net_pre_gas_usd": "-0.073843",
+    "above_gas_floor": false,
+    "size_raw": 20426512943811440
+   },
+   {
+    "block": 516745500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.048851",
+    "net_pre_gas_usd": "-0.073851",
+    "above_gas_floor": false,
+    "size_raw": 20449121603891680
+   },
+   {
+    "block": 516748750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.096672",
+    "net_pre_gas_usd": "-0.121672",
+    "above_gas_floor": false,
+    "size_raw": 20439079940614468
+   },
+   {
+    "block": 516752000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.050083",
+    "net_pre_gas_usd": "-0.075083",
+    "above_gas_floor": false,
+    "size_raw": 20461039890372432
+   },
+   {
+    "block": 516755250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.145515",
+    "net_pre_gas_usd": "-0.170515",
+    "above_gas_floor": false,
+    "size_raw": 50008120
+   },
+   {
+    "block": 516758500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.119312",
+    "net_pre_gas_usd": "-0.144312",
+    "above_gas_floor": false,
+    "size_raw": 20378137054680528
+   },
+   {
+    "block": 516761750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.123109",
+    "net_pre_gas_usd": "-0.148109",
+    "above_gas_floor": false,
+    "size_raw": 20385458833059280
+   },
+   {
+    "block": 516765000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.116182",
+    "net_pre_gas_usd": "-0.141182",
+    "above_gas_floor": false,
+    "size_raw": 20451174195116152
+   },
+   {
+    "block": 516768250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.090413",
+    "net_pre_gas_usd": "-0.115413",
+    "above_gas_floor": false,
+    "size_raw": 20466974489962996
+   },
+   {
+    "block": 516771500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.134167",
+    "net_pre_gas_usd": "-0.159167",
+    "above_gas_floor": false,
+    "size_raw": 20410218009021552
+   },
+   {
+    "block": 516774750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.048069",
+    "net_pre_gas_usd": "-0.073069",
+    "above_gas_floor": false,
+    "size_raw": 20358306188925080
+   },
+   {
+    "block": 516778000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.114372",
+    "net_pre_gas_usd": "-0.139372",
+    "above_gas_floor": false,
+    "size_raw": 20380802117574064
+   },
+   {
+    "block": 516781250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.102043",
+    "net_pre_gas_usd": "-0.127043",
+    "above_gas_floor": false,
+    "size_raw": 50008120
+   },
+   {
+    "block": 516784500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.079681",
+    "net_pre_gas_usd": "-0.104681",
+    "above_gas_floor": false,
+    "size_raw": 20444241071243916
+   },
+   {
+    "block": 516787750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.103533",
+    "net_pre_gas_usd": "-0.128533",
+    "above_gas_floor": false,
+    "size_raw": 50008120
+   },
+   {
+    "block": 516791000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.057665",
+    "net_pre_gas_usd": "-0.082665",
+    "above_gas_floor": false,
+    "size_raw": 20448912721032792
+   },
+   {
+    "block": 516794250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.051751",
+    "net_pre_gas_usd": "-0.076751",
+    "above_gas_floor": false,
+    "size_raw": 20460840325075284
+   },
+   {
+    "block": 516797500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.150420",
+    "net_pre_gas_usd": "-0.175420",
+    "above_gas_floor": false,
+    "size_raw": 20421747568561548
+   },
+   {
+    "block": 516800750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.094353",
+    "net_pre_gas_usd": "-0.119353",
+    "above_gas_floor": false,
+    "size_raw": 20446301877379440
+   },
+   {
+    "block": 516804000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.050335",
+    "net_pre_gas_usd": "-0.075335",
+    "above_gas_floor": false,
+    "size_raw": 20465635851768772
+   },
+   {
+    "block": 516807250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.060935",
+    "net_pre_gas_usd": "-0.085935",
+    "above_gas_floor": false,
+    "size_raw": 20461065636295568
+   },
+   {
+    "block": 516810500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.053254",
+    "net_pre_gas_usd": "-0.078254",
+    "above_gas_floor": false,
+    "size_raw": 20477871611936140
+   },
+   {
+    "block": 516813750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.050337",
+    "net_pre_gas_usd": "-0.075337",
+    "above_gas_floor": false,
+    "size_raw": 20478626457566240
+   },
+   {
+    "block": 516817000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.152167",
+    "net_pre_gas_usd": "-0.177167",
+    "above_gas_floor": false,
+    "size_raw": 20417246856764848
+   },
+   {
+    "block": 516820250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.153710",
+    "net_pre_gas_usd": "-0.178710",
+    "above_gas_floor": false,
+    "size_raw": 20440696751341476
+   },
+   {
+    "block": 516823500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.141760",
+    "net_pre_gas_usd": "-0.166760",
+    "above_gas_floor": false,
+    "size_raw": 20440339066883456
+   },
+   {
+    "block": 516826750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.050781",
+    "net_pre_gas_usd": "-0.075781",
+    "above_gas_floor": false,
+    "size_raw": 20513200343822064
+   },
+   {
+    "block": 516830000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.070331",
+    "net_pre_gas_usd": "-0.095331",
+    "above_gas_floor": false,
+    "size_raw": 20510020211394316
+   },
+   {
+    "block": 516833250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.049500",
+    "net_pre_gas_usd": "-0.074500",
+    "above_gas_floor": false,
+    "size_raw": 20533803916989392
+   },
+   {
+    "block": 516836500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.145043",
+    "net_pre_gas_usd": "-0.170043",
+    "above_gas_floor": false,
+    "size_raw": 50008120
+   },
+   {
+    "block": 516839750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.129256",
+    "net_pre_gas_usd": "-0.154256",
+    "above_gas_floor": false,
+    "size_raw": 20501079859029512
+   },
+   {
+    "block": 516843000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.108420",
+    "net_pre_gas_usd": "-0.133420",
+    "above_gas_floor": false,
+    "size_raw": 50008120
+   },
+   {
+    "block": 516846250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.173899",
+    "net_pre_gas_usd": "-0.198899",
+    "above_gas_floor": false,
+    "size_raw": 20488355135541668
+   },
+   {
+    "block": 516849500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.070478",
+    "net_pre_gas_usd": "-0.095478",
+    "above_gas_floor": false,
+    "size_raw": 20400946122019920
+   },
+   {
+    "block": 516852750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.077643",
+    "net_pre_gas_usd": "-0.102643",
+    "above_gas_floor": false,
+    "size_raw": 20406892391265800
+   },
+   {
+    "block": 516856000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.116050",
+    "net_pre_gas_usd": "-0.141050",
+    "above_gas_floor": false,
+    "size_raw": 20383032234501728
+   },
+   {
+    "block": 516859250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.142595",
+    "net_pre_gas_usd": "-0.167595",
+    "above_gas_floor": false,
+    "size_raw": 20392894397761936
+   },
+   {
+    "block": 516862500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.167553",
+    "net_pre_gas_usd": "-0.192553",
+    "above_gas_floor": false,
+    "size_raw": 20409851035028448
+   },
+   {
+    "block": 516865750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.061602",
+    "net_pre_gas_usd": "-0.086602",
+    "above_gas_floor": false,
+    "size_raw": 20356250006681304
+   },
+   {
+    "block": 516869000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.066424",
+    "net_pre_gas_usd": "-0.091424",
+    "above_gas_floor": false,
+    "size_raw": 20401081734410404
+   },
+   {
+    "block": 516872250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.060696",
+    "net_pre_gas_usd": "-0.085696",
+    "above_gas_floor": false,
+    "size_raw": 20321725639319488
+   },
+   {
+    "block": 516875500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.062914",
+    "net_pre_gas_usd": "-0.087914",
+    "above_gas_floor": false,
+    "size_raw": 20307665897406596
+   },
+   {
+    "block": 516878750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.156363",
+    "net_pre_gas_usd": "-0.181363",
+    "above_gas_floor": false,
+    "size_raw": 20360379532133952
+   },
+   {
+    "block": 516882000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.062833",
+    "net_pre_gas_usd": "-0.087833",
+    "above_gas_floor": false,
+    "size_raw": 20407694823080912
+   },
+   {
+    "block": 516885250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.058030",
+    "net_pre_gas_usd": "-0.083030",
+    "above_gas_floor": false,
+    "size_raw": 20445247321132280
+   },
+   {
+    "block": 516888500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.168605",
+    "net_pre_gas_usd": "-0.193605",
+    "above_gas_floor": false,
+    "size_raw": 20410035047210916
+   },
+   {
+    "block": 516891750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.072645",
+    "net_pre_gas_usd": "-0.097645",
+    "above_gas_floor": false,
+    "size_raw": 20366417116366028
+   },
+   {
+    "block": 516895000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.085808",
+    "net_pre_gas_usd": "-0.110808",
+    "above_gas_floor": false,
+    "size_raw": 20347689930831688
+   },
+   {
+    "block": 516898250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.052286",
+    "net_pre_gas_usd": "-0.077286",
+    "above_gas_floor": false,
+    "size_raw": 20319586273033288
+   },
+   {
+    "block": 516901500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.150772",
+    "net_pre_gas_usd": "-0.175772",
+    "above_gas_floor": false,
+    "size_raw": 20326662563539544
+   },
+   {
+    "block": 516904750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.060928",
+    "net_pre_gas_usd": "-0.085928",
+    "above_gas_floor": false,
+    "size_raw": 20253202117781564
+   },
+   {
+    "block": 516908000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.071234",
+    "net_pre_gas_usd": "-0.096234",
+    "above_gas_floor": false,
+    "size_raw": 20272050923391920
+   },
+   {
+    "block": 516911250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.111654",
+    "net_pre_gas_usd": "-0.136654",
+    "above_gas_floor": false,
+    "size_raw": 20270683452130888
+   },
+   {
+    "block": 516914500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.096269",
+    "net_pre_gas_usd": "-0.121269",
+    "above_gas_floor": false,
+    "size_raw": 20288170667982052
+   },
+   {
+    "block": 516917750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.083696",
+    "net_pre_gas_usd": "-0.108696",
+    "above_gas_floor": false,
+    "size_raw": 20275195495772296
+   },
+   {
+    "block": 516921000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.128567",
+    "net_pre_gas_usd": "-0.153567",
+    "above_gas_floor": false,
+    "size_raw": 20132309538285612
+   },
+   {
+    "block": 516924250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.072300",
+    "net_pre_gas_usd": "-0.097300",
+    "above_gas_floor": false,
+    "size_raw": 20164914315447740
+   },
+   {
+    "block": 516927500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.050116",
+    "net_pre_gas_usd": "-0.075116",
+    "above_gas_floor": false,
+    "size_raw": 20321715526122752
+   },
+   {
+    "block": 516930750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.052317",
+    "net_pre_gas_usd": "-0.077317",
+    "above_gas_floor": false,
+    "size_raw": 20250808468273616
+   },
+   {
+    "block": 516934000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.162982",
+    "net_pre_gas_usd": "-0.187982",
+    "above_gas_floor": false,
+    "size_raw": 20251817037027712
+   },
+   {
+    "block": 516937250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.047717",
+    "net_pre_gas_usd": "-0.072717",
+    "above_gas_floor": false,
+    "size_raw": 20276380363387536
+   },
+   {
+    "block": 516940500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.153448",
+    "net_pre_gas_usd": "-0.178448",
+    "above_gas_floor": false,
+    "size_raw": 20225914347932228
+   },
+   {
+    "block": 516943750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.077711",
+    "net_pre_gas_usd": "-0.102711",
+    "above_gas_floor": false,
+    "size_raw": 20147560734821836
+   },
+   {
+    "block": 516947000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.132951",
+    "net_pre_gas_usd": "-0.157951",
+    "above_gas_floor": false,
+    "size_raw": 20096267696559536
+   },
+   {
+    "block": 516950250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.135913",
+    "net_pre_gas_usd": "-0.160913",
+    "above_gas_floor": false,
+    "size_raw": 19913297502673360
+   },
+   {
+    "block": 516953500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.129344",
+    "net_pre_gas_usd": "-0.154344",
+    "above_gas_floor": false,
+    "size_raw": 19957358950241560
+   },
+   {
+    "block": 516956750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.064701",
+    "net_pre_gas_usd": "-0.089701",
+    "above_gas_floor": false,
+    "size_raw": 50008120
+   },
+   {
+    "block": 516960000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.077310",
+    "net_pre_gas_usd": "-0.102310",
+    "above_gas_floor": false,
+    "size_raw": 19908579801551276
+   },
+   {
+    "block": 516963250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.101015",
+    "net_pre_gas_usd": "-0.126015",
+    "above_gas_floor": false,
+    "size_raw": 19955595198777608
+   },
+   {
+    "block": 516966500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.129962",
+    "net_pre_gas_usd": "-0.154962",
+    "above_gas_floor": false,
+    "size_raw": 19923811345415132
+   },
+   {
+    "block": 516969750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.094667",
+    "net_pre_gas_usd": "-0.119666",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 516973000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.085936",
+    "net_pre_gas_usd": "-0.110935",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 516976250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.048911",
+    "net_pre_gas_usd": "-0.073910",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 516979500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.149745",
+    "net_pre_gas_usd": "-0.174745",
+    "above_gas_floor": false,
+    "size_raw": 19939545173908264
+   },
+   {
+    "block": 516982750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.121797",
+    "net_pre_gas_usd": "-0.146796",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 516986000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.126957",
+    "net_pre_gas_usd": "-0.151956",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 516989250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.165163",
+    "net_pre_gas_usd": "-0.190162",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 516992500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.115164",
+    "net_pre_gas_usd": "-0.140163",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 516995750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.095095",
+    "net_pre_gas_usd": "-0.120094",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 516999000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.128898",
+    "net_pre_gas_usd": "-0.153897",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517002250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.050127",
+    "net_pre_gas_usd": "-0.075126",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517005500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.131362",
+    "net_pre_gas_usd": "-0.156362",
+    "above_gas_floor": false,
+    "size_raw": 20105150838874284
+   },
+   {
+    "block": 517008750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.053414",
+    "net_pre_gas_usd": "-0.078414",
+    "above_gas_floor": false,
+    "size_raw": 20035326520611776
+   },
+   {
+    "block": 517012000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.063369",
+    "net_pre_gas_usd": "-0.088368",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517015250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.088754",
+    "net_pre_gas_usd": "-0.113753",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517018500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.128279",
+    "net_pre_gas_usd": "-0.153278",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517021750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.158866",
+    "net_pre_gas_usd": "-0.183865",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517025000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.093288",
+    "net_pre_gas_usd": "-0.118287",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517028250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.172356",
+    "net_pre_gas_usd": "-0.197355",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517031500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.163172",
+    "net_pre_gas_usd": "-0.188172",
+    "above_gas_floor": false,
+    "size_raw": 20086111465658528
+   },
+   {
+    "block": 517034750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.063666",
+    "net_pre_gas_usd": "-0.088665",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517038000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.068897",
+    "net_pre_gas_usd": "-0.093896",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517041250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.164900",
+    "net_pre_gas_usd": "-0.189899",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517044500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.053669",
+    "net_pre_gas_usd": "-0.078668",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517047750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.126146",
+    "net_pre_gas_usd": "-0.151145",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517051000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.050297",
+    "net_pre_gas_usd": "-0.075296",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517054250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.071307",
+    "net_pre_gas_usd": "-0.096306",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517057500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.049838",
+    "net_pre_gas_usd": "-0.074837",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517060750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.088313",
+    "net_pre_gas_usd": "-0.113312",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517064000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.080987",
+    "net_pre_gas_usd": "-0.105986",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517067250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.105126",
+    "net_pre_gas_usd": "-0.130125",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517070500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.140534",
+    "net_pre_gas_usd": "-0.165533",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517073750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.167962",
+    "net_pre_gas_usd": "-0.192961",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517077000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.120409",
+    "net_pre_gas_usd": "-0.145408",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517080250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.132240",
+    "net_pre_gas_usd": "-0.157239",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517083500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.092376",
+    "net_pre_gas_usd": "-0.117376",
+    "above_gas_floor": false,
+    "size_raw": 20193046278123424
+   },
+   {
+    "block": 517086750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.160414",
+    "net_pre_gas_usd": "-0.185414",
+    "above_gas_floor": false,
+    "size_raw": 20352495452031368
+   },
+   {
+    "block": 517090000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.102097",
+    "net_pre_gas_usd": "-0.127096",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517093250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.090070",
+    "net_pre_gas_usd": "-0.115069",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517096500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.080865",
+    "net_pre_gas_usd": "-0.105865",
+    "above_gas_floor": false,
+    "size_raw": 20526144262448824
+   },
+   {
+    "block": 517099750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.050973",
+    "net_pre_gas_usd": "-0.075972",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517103000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.123582",
+    "net_pre_gas_usd": "-0.148581",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517106250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.099363",
+    "net_pre_gas_usd": "-0.124363",
+    "above_gas_floor": false,
+    "size_raw": 20503942427973728
+   },
+   {
+    "block": 517109500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.069984",
+    "net_pre_gas_usd": "-0.094983",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517112750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.115846",
+    "net_pre_gas_usd": "-0.140845",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517116000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.064991",
+    "net_pre_gas_usd": "-0.089991",
+    "above_gas_floor": false,
+    "size_raw": 20457353835988588
+   },
+   {
+    "block": 517119250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.096225",
+    "net_pre_gas_usd": "-0.121224",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517122500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.132616",
+    "net_pre_gas_usd": "-0.157615",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517125750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.141288",
+    "net_pre_gas_usd": "-0.166287",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517129000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.107818",
+    "net_pre_gas_usd": "-0.132817",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517132250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.147653",
+    "net_pre_gas_usd": "-0.172652",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517135500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.171652",
+    "net_pre_gas_usd": "-0.196651",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517138750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.043970",
+    "net_pre_gas_usd": "-0.068970",
+    "above_gas_floor": false,
+    "size_raw": 20548892143468088
+   },
+   {
+    "block": 517142000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.159905",
+    "net_pre_gas_usd": "-0.184904",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517145250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.098404",
+    "net_pre_gas_usd": "-0.123403",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517148500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.067226",
+    "net_pre_gas_usd": "-0.092225",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517151750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.113027",
+    "net_pre_gas_usd": "-0.138026",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517155000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.049297",
+    "net_pre_gas_usd": "-0.074296",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517158250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.086346",
+    "net_pre_gas_usd": "-0.111345",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517161500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.128570",
+    "net_pre_gas_usd": "-0.153569",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517164750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.112877",
+    "net_pre_gas_usd": "-0.137877",
+    "above_gas_floor": false,
+    "size_raw": 20595244904086864
+   },
+   {
+    "block": 517168000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.165097",
+    "net_pre_gas_usd": "-0.190096",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517171250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.091211",
+    "net_pre_gas_usd": "-0.116210",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517174500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.110695",
+    "net_pre_gas_usd": "-0.135694",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517177750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.157767",
+    "net_pre_gas_usd": "-0.182766",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517181000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.063168",
+    "net_pre_gas_usd": "-0.088168",
+    "above_gas_floor": false,
+    "size_raw": 20834327469051000
+   },
+   {
+    "block": 517184250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.131255",
+    "net_pre_gas_usd": "-0.156254",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517187500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.123734",
+    "net_pre_gas_usd": "-0.148733",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517190750,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.119762",
+    "net_pre_gas_usd": "-0.144761",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517194000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ab",
+    "gross_usd": "-0.123675",
+    "net_pre_gas_usd": "-0.148675",
+    "above_gas_floor": false,
+    "size_raw": 20782915471055164
+   },
+   {
+    "block": 517197250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.078338",
+    "net_pre_gas_usd": "-0.103337",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517200500,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.117102",
+    "net_pre_gas_usd": "-0.142101",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517203750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.138514",
+    "net_pre_gas_usd": "-0.163513",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517207000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.162702",
+    "net_pre_gas_usd": "-0.187701",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517210250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.110382",
+    "net_pre_gas_usd": "-0.135381",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517213500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.135996",
+    "net_pre_gas_usd": "-0.160995",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517216750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.050977",
+    "net_pre_gas_usd": "-0.075976",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517220000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.115229",
+    "net_pre_gas_usd": "-0.140228",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517223250,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.151084",
+    "net_pre_gas_usd": "-0.176083",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517226500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.097284",
+    "net_pre_gas_usd": "-0.122283",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517229750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.090791",
+    "net_pre_gas_usd": "-0.115790",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517233000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.076799",
+    "net_pre_gas_usd": "-0.101798",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517236250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ab",
+    "gross_usd": "-0.139049",
+    "net_pre_gas_usd": "-0.164049",
+    "above_gas_floor": false,
+    "size_raw": 20858857593220152
+   },
+   {
+    "block": 517239500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.160428",
+    "net_pre_gas_usd": "-0.185427",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517242750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.050243",
+    "net_pre_gas_usd": "-0.075242",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517246000,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.149181",
+    "net_pre_gas_usd": "-0.174180",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517249250,
+    "key": "WETH/USDC:Uniswap v3 0.3%->Uniswap v3 0.05%:ba",
+    "gross_usd": "-0.165399",
+    "net_pre_gas_usd": "-0.190398",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517252500,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.111666",
+    "net_pre_gas_usd": "-0.136665",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517255750,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.124950",
+    "net_pre_gas_usd": "-0.149949",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517259000,
+    "key": "WETH/USDC:Uniswap v3 0.05%->Uniswap v3 0.3%:ba",
+    "gross_usd": "-0.172290",
+    "net_pre_gas_usd": "-0.197289",
+    "above_gas_floor": false,
+    "size_raw": 50005000
+   },
+   {
+    "block": 517262250,
+    "none": true
+   },
+   {
+    "block": 517265500,
+    "none": true
+   },
+   {
+    "block": 517268750,
+    "none": true
+   },
+   {
+    "block": 517272000,
+    "none": true
+   },
+   {
+    "block": 517275250,
+    "none": true
+   },
+   {
+    "block": 517278500,
+    "none": true
+   },
+   {
+    "block": 517281750,
+    "none": true
+   },
+   {
+    "block": 517285000,
+    "none": true
+   },
+   {
+    "block": 517288250,
+    "none": true
+   },
+   {
+    "block": 517291500,
+    "none": true
+   },
+   {
+    "block": 517294750,
+    "none": true
+   },
+   {
+    "block": 517298000,
+    "none": true
+   },
+   {
+    "block": 517301250,
+    "none": true
+   },
+   {
+    "block": 517304500,
+    "none": true
+   },
+   {
+    "block": 517307750,
+    "none": true
+   },
+   {
+    "block": 517311000,
+    "none": true
+   },
+   {
+    "block": 517314250,
+    "none": true
+   },
+   {
+    "block": 517317500,
+    "none": true
+   },
+   {
+    "block": 517320750,
+    "none": true
+   },
+   {
+    "block": 517324000,
+    "none": true
+   },
+   {
+    "block": 517327250,
+    "none": true
+   },
+   {
+    "block": 517330500,
+    "none": true
+   },
+   {
+    "block": 517333750,
+    "none": true
+   },
+   {
+    "block": 517337000,
+    "none": true
+   },
+   {
+    "block": 517340250,
+    "none": true
+   },
+   {
+    "block": 517343500,
+    "none": true
+   },
+   {
+    "block": 517346750,
+    "none": true
+   },
+   {
+    "block": 517350000,
+    "none": true
+   }
+  ],
+  "assumptions": [
+   "spreads quoted at historical blocks via archive eth_call; no execution; gas floor from fork measurements"
+  ]
+ }
+}

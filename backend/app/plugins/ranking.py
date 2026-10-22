@@ -67,6 +67,7 @@ class StrategyRow:
     p_capture_model: str | None
     p_capture_assumptions: list[str]
     attainable_profit_usd: Decimal | None    # p × net − (1 − p) × failed-attempt cost; modeled
+    attainable_class: str                    # modeled | passive_yield
     frequency_observed: str                  # human sentence with the window and the count
     frequency_per_day: Decimal | None
     risk: str
@@ -142,27 +143,42 @@ def rank_one(strategy: str, network: str, arts: dict[str, dict], infra_cost: Dec
     flash_flags = [o.get("flash_loan_eligible") for o in opps if o.get("flash_loan_eligible") is not None]
     flash = (any(flash_flags) if flash_flags else None)
     flash_note = next((o.get("flash_loan_note") for o in opps if o.get("flash_loan_note")), "")
+    if kind == "yield":   # a flash loan can enter or exit a position atomically but earns nothing: the capital must be held
+        flash, flash_note = False, "capital must be held; a flash loan adds no return (it can only enter/exit a loop atomically)"
     capital = _median(caps)
     capital_note = "own capital held (passive)" if kind == "yield" else ("flash-financed: own capital is the gas float only" if flash else "own capital per attempt")
 
-    # gross / net: simulated figures win over theoretical ones, and are labeled as such
+    # gross / net: simulated figures win over theoretical ones and are labeled as such; gross and net come from the
+    # same best row (the one with the best complete net, else the best gross) so the two cells describe one opportunity
     gross_class, net_class = "theoretical", "theoretical"
-    grosses = [g for g in (_dec(s.get("gross_profit_usd")) for s in sims) if g is not None]
-    if grosses:
-        gross_class = "simulated"
-    else:
-        grosses = [g for g in (_dec(o.get("gross_profit_usd")) for o in opps) if g is not None]
-        gross_class = next((o.get("outcome_class") for o in opps if o.get("gross_profit_usd") is not None), "theoretical")
-    gross = max(grosses) if grosses else None
     complete_sims = [s for s in sims if s.get("net_profit_complete") and s.get("net_profit_usd") is not None]
+    complete_opps = [o for o in opps if o.get("net_profit_complete") and o.get("net_profit_usd") is not None]
+    best_row = None
     if complete_sims:
         nets = [_dec(s["net_profit_usd"]) for s in complete_sims]
-        net_class = "simulated"
-    else:
-        complete_opps = [o for o in opps if o.get("net_profit_complete") and o.get("net_profit_usd") is not None]
+        best_sim = max(complete_sims, key=lambda s: _dec(s["net_profit_usd"]))
+        best_row = next((r["opportunity"] for r in rows if r.get("simulation") is best_sim), None)
+        net, net_class = _dec(best_sim["net_profit_usd"]), "simulated"
+        gross, gross_class = _dec(best_sim.get("gross_profit_usd")), "simulated"
+    elif complete_opps:
         nets = [_dec(o["net_profit_usd"]) for o in complete_opps]
-        net_class = next((o.get("outcome_class") for o in complete_opps), "theoretical")
-    net = max(nets) if nets else None
+        best_row = max(complete_opps, key=lambda o: _dec(o["net_profit_usd"]))
+        net, net_class = _dec(best_row["net_profit_usd"]), best_row.get("outcome_class", "theoretical")
+        gross, gross_class = _dec(best_row.get("gross_profit_usd")), best_row.get("outcome_class", "theoretical")
+    else:
+        nets, net = [], None
+        sim_g = [(s, _dec(s.get("gross_profit_usd"))) for s in sims if s.get("gross_profit_usd") is not None]
+        if sim_g:
+            best_sim, gross = max(sim_g, key=lambda t: t[1])
+            best_row = next((r["opportunity"] for r in rows if r.get("simulation") is best_sim), None)
+            gross_class = "simulated"
+        else:
+            opp_g = [(o, _dec(o.get("gross_profit_usd"))) for o in opps if o.get("gross_profit_usd") is not None]
+            if opp_g:
+                best_row, gross = max(opp_g, key=lambda t: t[1])
+                gross_class = best_row.get("outcome_class", "theoretical")
+            else:
+                gross = None
     if net is None:
         uncertainty.append("no opportunity with a complete net profit (every cost measured or the strategy carries none)")
 
@@ -174,7 +190,8 @@ def rank_one(strategy: str, network: str, arts: dict[str, dict], infra_cost: Dec
     atts = [a for a in (_dec(c.get("attainable_net_profit_usd")) for c in comps) if a is not None]
     attainable = max(atts) if atts else None
     if p is None:
-        uncertainty.append("capture probability not estimated: " + (assumptions[0] if assumptions else "no competition model ran"))
+        why = assumptions[0] if assumptions else "no competition model ran"
+        uncertainty.append(why if why.startswith("capture probability") else "capture probability not estimated: " + why)
 
     # frequency: replay window first (historical), then shadow
     freq_txt, freq_day = "not measured", None
@@ -184,20 +201,26 @@ def rank_one(strategy: str, network: str, arts: dict[str, dict], infra_cost: Dec
         if fb is not None and tb is not None and n is not None and BLOCKS_PER_DAY.get(network):
             days = Decimal(tb - fb + 1) / Decimal(BLOCKS_PER_DAY[network])
             freq_day = quantize_usd(Decimal(n) / days) if days > 0 else None
-            freq_txt = f"{n} in {days:.1f} days (blocks {fb:,}–{tb:,}; {r.get('sample_note', '')[:120]})"
+            freq_txt = f"{n} in {days:.1f} days (blocks {fb:,}–{tb:,})"
     if sh:
         s_ = sh.get("shadow") or sh
         ticks, distinct, mins = s_.get("ticks"), s_.get("distinct_opportunities"), s_.get("minutes")
-        txt = f"shadow: {distinct} distinct opportunities over {ticks} blocks in {mins:g} min"
+        txt = f"shadow: {distinct} in {ticks} observed blocks over {mins:g} min"
         freq_txt = txt if freq_txt == "not measured" else f"{freq_txt}; {txt}"
         if freq_day is None and mins:
             freq_day = quantize_usd(Decimal(distinct) / (Decimal(str(mins)) / Decimal(1440)))
     if freq_txt == "not measured" and disc:
         freq_txt = f"{len(opps)} at the discovery block only (no replay or shadow run yet)"
+    if kind == "yield" and rep:
+        r = rep.get("replay") or rep
+        freq_txt = f"continuous: a positive rate on {r.get('net_profitable_complete', 0)} of {r.get('opportunities', 0)} sampled days (blocks {r.get('from_block', 0):,}–{r.get('to_block', 0):,})"
+        freq_day = None
 
-    # risk: the worst among opportunities
+    # risk: the best row's own risk (the ranked figures are its figures); the range over every row goes to uncertainty
     risks = [o.get("risk", "unknown") for o in opps]
-    risk = max(risks, key=lambda x: RISK_ORDER.get(x, 3)) if risks else "unknown"
+    risk = (best_row or {}).get("risk") if best_row else (max(risks, key=lambda x: RISK_ORDER.get(x, 3)) if risks else "unknown")
+    if risks and len(set(risks)) > 1:
+        uncertainty.append(f"risk ranges {min(risks, key=lambda x: RISK_ORDER.get(x, 3))}–{max(risks, key=lambda x: RISK_ORDER.get(x, 3))} across the rows; the table shows the ranked row's")
 
     # evaluation metrics
     executable = int((latest.get("summary") or {}).get("executable", 0)) if latest else 0
@@ -223,7 +246,8 @@ def rank_one(strategy: str, network: str, arts: dict[str, dict], infra_cost: Dec
     if kind == "yield":
         repeat = "passive: repeats every day the rate holds; rates float with utilisation"
     elif rep and (rr.get("opportunities") or 0) > 0:
-        repeat = f"{rr.get('simulated_success', 0)} of {rr.get('opportunities')} historical opportunities reproduced on the fork"
+        dust = sum(1 for d in rr.get("details", []) if str((d.get("simulation") or {}).get("revert_reason") or d.get("revert_reason") or "").startswith("dust"))
+        repeat = f"{rr.get('simulated_success', 0)} of {rr.get('opportunities')} historical opportunities reproduced on the fork" + (f" ({dust} not attempted: dust)" if dust else "")
     elif sh:
         s_ = sh.get("shadow") or sh
         pers = s_.get("persistence_blocks") or {}
@@ -236,7 +260,7 @@ def rank_one(strategy: str, network: str, arts: dict[str, dict], infra_cost: Dec
     if len(opps) < 10:
         uncertainty.append(f"small sample: {len(opps)} opportunities at the latest run")
     if rr and (rr.get("opportunities") or 0) < 10:
-        uncertainty.append(f"small historical sample: {rr.get('opportunities', 0)} replay opportunities")
+        uncertainty.append(f"small historical sample: {rr.get('opportunities', 0)} " + ("daily rate samples" if kind == "yield" else "replay opportunities"))
 
     # verdict
     if not opps and not rr:
@@ -261,7 +285,7 @@ def rank_one(strategy: str, network: str, arts: dict[str, dict], infra_cost: Dec
         verdict, reason = "not_estimable", "no complete net profit figure"
 
     return StrategyRow(strategy, network, kind, (latest or rep or {}).get("description") or "", capital, capital_note, flash, flash_note, gross, gross_class,
-                       net, net_class, p, model, list(assumptions or []), attainable, freq_txt, freq_day, risk, evidence,
+                       net, net_class, p, model, list(assumptions or []), attainable, "passive_yield" if kind == "yield" else "modeled", freq_txt, freq_day, risk, evidence,
                        len(opps), executable, len(sims), sim_success, net_prof, lost, expected, cap_eff, worst, infra_cost, repeat, sample, uncertainty,
                        verdict, reason, {m: {"generated_at": a.get("generated_at"), "block": a.get("block")} for m, a in arts.items()})
 

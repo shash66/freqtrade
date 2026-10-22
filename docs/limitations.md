@@ -64,3 +64,6 @@
   such. Yield figures are today's rates held for 30 days; they float with utilisation and are passive, with
   smart-contract, depeg and (for loops) liquidation risk that the numbers do not price. Infrastructure cost is an
   explicit estimate ($69/month) and not measured. Shadow windows are 30 minutes; replays cover days, not months.
+  The Alchemy Arbitrum archive endpoint answered "header not found" for the newest ~150,000 blocks of the
+  sampling window at run time (27 of 200 sampled blocks and the last daily yield sample were skipped), and
+  dRPC's 100-block `eth_getLogs` limit kept the Arbitrum Compound borrower scan to a handful of accounts.

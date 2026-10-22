@@ -1,0 +1,430 @@
+{
+ "generated_from": "docs/phase5-*.json (read-only artefacts)",
+ "infra_cost_usd_month": "69",
+ "rows": [
+  {
+   "strategy": "yield_opt",
+   "network": "base",
+   "kind": "yield",
+   "description": "",
+   "capital_usd": "10000.000000",
+   "capital_note": "own capital held (passive)",
+   "flash_loan": false,
+   "flash_loan_note": "capital must be held; a flash loan adds no return (it can only enter/exit a loop atomically)",
+   "gross_profit_usd": "45.027248",
+   "gross_class": "passive_yield",
+   "net_profit_complete_usd": "44.427248",
+   "net_class": "passive_yield",
+   "p_capture": "1.000000",
+   "p_capture_model": "none_passive",
+   "p_capture_assumptions": [
+    "passive yield has no execution race; the risk is rate drift and protocol/peg events, not competition"
+   ],
+   "attainable_profit_usd": "44.427248",
+   "attainable_class": "passive_yield",
+   "frequency_observed": "continuous: a positive rate on 8 of 8 sampled days (blocks 52,641,467\u201352,943,867)",
+   "frequency_per_day": null,
+   "risk": "low",
+   "evidence_quality": [
+    "historical",
+    "live_read"
+   ],
+   "opportunities": 5,
+   "executable": 5,
+   "simulated": 0,
+   "simulated_success": 0,
+   "net_profitable_complete": 5,
+   "lost_to_competition": null,
+   "expected_profit_per_attempt_usd": "39.879339",
+   "capital_efficiency": "0.444272% of capital per 30 days",
+   "worst_case_loss_usd": null,
+   "infra_cost_usd_month": "69",
+   "repeatability": "passive: repeats every day the rate holds; rates float with utilisation",
+   "sample_size": {
+    "opportunities": 5,
+    "simulations": 0,
+    "complete_simulations": 0,
+    "competition_rows": 5,
+    "replay_opportunities": 8,
+    "replay_simulated": 0,
+    "shadow_ticks": null
+   },
+   "uncertainty": [
+    "risk ranges low\u2013high across the rows; the table shows the ranked row's",
+    "small sample: 5 opportunities at the latest run",
+    "small historical sample: 8 daily rate samples"
+   ],
+   "verdict": "positive_passive",
+   "verdict_reason": "passive yield 44.427248 USD per 30 days on 10000.000000 USD, net of entry/exit gas; not transaction revenue; risks listed",
+   "artefacts": {
+    "discover": {
+     "generated_at": "2026-10-22T13:50:48.502995+00:00",
+     "block": "latest"
+    },
+    "replay": {
+     "generated_at": "2026-10-22T13:59:57.732244+00:00",
+     "block": "latest"
+    }
+   }
+  },
+  {
+   "strategy": "yield_opt",
+   "network": "arbitrum",
+   "kind": "yield",
+   "description": "",
+   "capital_usd": "10000.000000",
+   "capital_note": "own capital held (passive)",
+   "flash_loan": false,
+   "flash_loan_note": "capital must be held; a flash loan adds no return (it can only enter/exit a loop atomically)",
+   "gross_profit_usd": "88.312476",
+   "gross_class": "passive_yield",
+   "net_profit_complete_usd": "34.147229",
+   "net_class": "passive_yield",
+   "p_capture": "1.000000",
+   "p_capture_model": "none_passive",
+   "p_capture_assumptions": [
+    "passive yield has no execution race; the risk is rate drift and protocol/peg events, not competition"
+   ],
+   "attainable_profit_usd": "34.147229",
+   "attainable_class": "passive_yield",
+   "frequency_observed": "continuous: a positive rate on 7 of 8 sampled days (blocks 514,956,180\u2013517,375,380)",
+   "frequency_per_day": null,
+   "risk": "high",
+   "evidence_quality": [
+    "historical",
+    "live_read"
+   ],
+   "opportunities": 4,
+   "executable": 4,
+   "simulated": 0,
+   "simulated_success": 0,
+   "net_profitable_complete": 4,
+   "lost_to_competition": null,
+   "expected_profit_per_attempt_usd": "25.582798",
+   "capital_efficiency": "0.341472% of capital per 30 days",
+   "worst_case_loss_usd": null,
+   "infra_cost_usd_month": "69",
+   "repeatability": "passive: repeats every day the rate holds; rates float with utilisation",
+   "sample_size": {
+    "opportunities": 4,
+    "simulations": 0,
+    "complete_simulations": 0,
+    "competition_rows": 4,
+    "replay_opportunities": 8,
+    "replay_simulated": 0,
+    "shadow_ticks": null
+   },
+   "uncertainty": [
+    "risk ranges low\u2013high across the rows; the table shows the ranked row's",
+    "small sample: 4 opportunities at the latest run",
+    "small historical sample: 8 daily rate samples"
+   ],
+   "verdict": "positive_passive",
+   "verdict_reason": "passive yield 34.147229 USD per 30 days on 10000.000000 USD, net of entry/exit gas; not transaction revenue; risks listed",
+   "artefacts": {
+    "discover": {
+     "generated_at": "2026-10-22T13:51:56.313524+00:00",
+     "block": "latest"
+    },
+    "replay": {
+     "generated_at": "2026-10-22T14:00:35.591114+00:00",
+     "block": "latest"
+    }
+   }
+  },
+  {
+   "strategy": "dex_arb",
+   "network": "base",
+   "kind": "arbitrage",
+   "description": "",
+   "capital_usd": "0.000000",
+   "capital_note": "flash-financed: own capital is the gas float only",
+   "flash_loan": true,
+   "flash_loan_note": "flashLoanSimple(tokenIn) -> leg 1 -> leg 2 -> repay (FlashArb.sol)",
+   "gross_profit_usd": "-0.018814",
+   "gross_class": "simulated",
+   "net_profit_complete_usd": "-0.052264",
+   "net_class": "simulated",
+   "p_capture": null,
+   "p_capture_model": "spread_persistence_proxy",
+   "p_capture_assumptions": [
+    "capture probability not estimated: no shadow persistence measurement or no complete net profit"
+   ],
+   "attainable_profit_usd": null,
+   "attainable_class": "modeled",
+   "frequency_observed": "0 in 1.9 days (blocks 52,560,000\u201352,640,886); shadow: 0 in 98 observed blocks over 30 min",
+   "frequency_per_day": "0.000000",
+   "risk": "medium",
+   "evidence_quality": [
+    "historical",
+    "fork",
+    "shadow",
+    "live_read"
+   ],
+   "opportunities": 4,
+   "executable": 0,
+   "simulated": 2,
+   "simulated_success": 0,
+   "net_profitable_complete": 0,
+   "lost_to_competition": null,
+   "expected_profit_per_attempt_usd": "-0.053137",
+   "capital_efficiency": "flash-financed: no own capital at risk beyond gas",
+   "worst_case_loss_usd": "0.033490",
+   "infra_cost_usd_month": "69",
+   "repeatability": "shadow persistence: 0 opportunities, median lifetime 0 blocks",
+   "sample_size": {
+    "opportunities": 4,
+    "simulations": 2,
+    "complete_simulations": 2,
+    "competition_rows": 4,
+    "replay_opportunities": 0,
+    "replay_simulated": 0,
+    "shadow_ticks": 98
+   },
+   "uncertainty": [
+    "capture probability not estimated: no shadow persistence measurement or no complete net profit",
+    "small sample: 4 opportunities at the latest run",
+    "small historical sample: 0 replay opportunities"
+   ],
+   "verdict": "negative",
+   "verdict_reason": "simulated net profit -0.052264 USD \u2264 0 at the best opportunity",
+   "artefacts": {
+    "discover": {
+     "generated_at": "2026-10-22T13:46:05.646380+00:00",
+     "block": "latest"
+    },
+    "replay": {
+     "generated_at": "2026-10-22T14:02:21.904870+00:00",
+     "block": "latest"
+    },
+    "shadow": {
+     "generated_at": "2026-10-22T13:51:56.782572+00:00",
+     "block": "latest"
+    },
+    "simulate": {
+     "generated_at": "2026-10-22T14:06:16.582880+00:00",
+     "block": "latest"
+    }
+   }
+  },
+  {
+   "strategy": "dex_arb",
+   "network": "arbitrum",
+   "kind": "arbitrage",
+   "description": "",
+   "capital_usd": "0.000000",
+   "capital_note": "flash-financed: own capital is the gas float only",
+   "flash_loan": true,
+   "flash_loan_note": "flashLoanSimple(tokenIn) -> leg 1 -> leg 2 -> repay (FlashArb.sol)",
+   "gross_profit_usd": "-0.139949",
+   "gross_class": "simulated",
+   "net_profit_complete_usd": "-0.185498",
+   "net_class": "simulated",
+   "p_capture": null,
+   "p_capture_model": "spread_persistence_proxy",
+   "p_capture_assumptions": [
+    "capture probability not estimated: no shadow persistence measurement or no complete net profit"
+   ],
+   "attainable_profit_usd": null,
+   "attainable_class": "modeled",
+   "frequency_observed": "0 in 1.9 days (blocks 516,700,000\u2013517,350,000); shadow: 0 in 153 observed blocks over 30 min",
+   "frequency_per_day": "0.000000",
+   "risk": "medium",
+   "evidence_quality": [
+    "historical",
+    "fork",
+    "shadow",
+    "live_read"
+   ],
+   "opportunities": 2,
+   "executable": 0,
+   "simulated": 2,
+   "simulated_success": 0,
+   "net_profitable_complete": 0,
+   "lost_to_competition": null,
+   "expected_profit_per_attempt_usd": "-0.128260",
+   "capital_efficiency": "flash-financed: no own capital at risk beyond gas",
+   "worst_case_loss_usd": "0.045649",
+   "infra_cost_usd_month": "69",
+   "repeatability": "shadow persistence: 0 opportunities, median lifetime 0 blocks",
+   "sample_size": {
+    "opportunities": 2,
+    "simulations": 2,
+    "complete_simulations": 2,
+    "competition_rows": 2,
+    "replay_opportunities": 0,
+    "replay_simulated": 0,
+    "shadow_ticks": 153
+   },
+   "uncertainty": [
+    "capture probability not estimated: no shadow persistence measurement or no complete net profit",
+    "small sample: 2 opportunities at the latest run",
+    "small historical sample: 0 replay opportunities"
+   ],
+   "verdict": "negative",
+   "verdict_reason": "simulated net profit -0.185498 USD \u2264 0 at the best opportunity",
+   "artefacts": {
+    "discover": {
+     "generated_at": "2026-10-22T13:51:56.707412+00:00",
+     "block": "latest"
+    },
+    "replay": {
+     "generated_at": "2026-10-22T14:55:24.587925+00:00",
+     "block": "latest"
+    },
+    "shadow": {
+     "generated_at": "2026-10-22T14:00:46.865033+00:00",
+     "block": "latest"
+    },
+    "simulate": {
+     "generated_at": "2026-10-22T14:15:16.302986+00:00",
+     "block": "latest"
+    }
+   }
+  },
+  {
+   "strategy": "compound_v3",
+   "network": "arbitrum",
+   "kind": "liquidation",
+   "description": "",
+   "capital_usd": "0.000000",
+   "capital_note": "flash-financed: own capital is the gas float only",
+   "flash_loan": true,
+   "flash_loan_note": "flashLoanSimple(base) -> buyCollateral -> swap -> repay",
+   "gross_profit_usd": "0.004573",
+   "gross_class": "simulated",
+   "net_profit_complete_usd": null,
+   "net_class": "theoretical",
+   "p_capture": null,
+   "p_capture_model": "priority_auction_over_observed_absorb_bids",
+   "p_capture_assumptions": [
+    "no observed absorb bids or no complete net profit: capture probability not estimated"
+   ],
+   "attainable_profit_usd": null,
+   "attainable_class": "modeled",
+   "frequency_observed": "not measured",
+   "frequency_per_day": null,
+   "risk": "low",
+   "evidence_quality": [
+    "fork",
+    "live_read"
+   ],
+   "opportunities": 9,
+   "executable": 0,
+   "simulated": 1,
+   "simulated_success": 0,
+   "net_profitable_complete": 0,
+   "lost_to_competition": null,
+   "expected_profit_per_attempt_usd": null,
+   "capital_efficiency": null,
+   "worst_case_loss_usd": null,
+   "infra_cost_usd_month": "69",
+   "repeatability": "not measured",
+   "sample_size": {
+    "opportunities": 9,
+    "simulations": 1,
+    "complete_simulations": 0,
+    "competition_rows": 9,
+    "replay_opportunities": null,
+    "replay_simulated": null,
+    "shadow_ticks": null
+   },
+   "uncertainty": [
+    "no opportunity with a complete net profit (every cost measured or the strategy carries none)",
+    "capture probability not estimated: no observed absorb bids or no complete net profit: capture probability not estimated",
+    "small sample: 9 opportunities at the latest run"
+   ],
+   "verdict": "negative",
+   "verdict_reason": "nothing executable: the best opportunity is dust (0.004573 USD gross, below the 0.05 USD floor)",
+   "artefacts": {
+    "simulate": {
+     "generated_at": "2026-10-22T14:06:15.701571+00:00",
+     "block": "latest"
+    }
+   }
+  },
+  {
+   "strategy": "compound_v3",
+   "network": "base",
+   "kind": "liquidation",
+   "description": "",
+   "capital_usd": "0.000000",
+   "capital_note": "flash-financed: own capital is the gas float only",
+   "flash_loan": true,
+   "flash_loan_note": "flashLoanSimple(base) -> buyCollateral -> swap -> repay",
+   "gross_profit_usd": "0.000927",
+   "gross_class": "simulated",
+   "net_profit_complete_usd": null,
+   "net_class": "theoretical",
+   "p_capture": null,
+   "p_capture_model": "priority_auction_over_observed_absorb_bids",
+   "p_capture_assumptions": [
+    "no observed absorb bids or no complete net profit: capture probability not estimated"
+   ],
+   "attainable_profit_usd": null,
+   "attainable_class": "modeled",
+   "frequency_observed": "2 in 1.9 days (blocks 52,560,000\u201352,640,886)",
+   "frequency_per_day": "1.068157",
+   "risk": "low",
+   "evidence_quality": [
+    "historical",
+    "fork",
+    "live_read"
+   ],
+   "opportunities": 11,
+   "executable": 0,
+   "simulated": 1,
+   "simulated_success": 0,
+   "net_profitable_complete": 0,
+   "lost_to_competition": null,
+   "expected_profit_per_attempt_usd": null,
+   "capital_efficiency": null,
+   "worst_case_loss_usd": null,
+   "infra_cost_usd_month": "69",
+   "repeatability": "0 of 2 historical opportunities reproduced on the fork (2 not attempted: dust)",
+   "sample_size": {
+    "opportunities": 11,
+    "simulations": 1,
+    "complete_simulations": 0,
+    "competition_rows": 11,
+    "replay_opportunities": 2,
+    "replay_simulated": 2,
+    "shadow_ticks": null
+   },
+   "uncertainty": [
+    "no opportunity with a complete net profit (every cost measured or the strategy carries none)",
+    "capture probability not estimated: no observed absorb bids or no complete net profit: capture probability not estimated",
+    "small historical sample: 2 replay opportunities"
+   ],
+   "verdict": "negative",
+   "verdict_reason": "nothing executable: the best opportunity is dust (0.000927 USD gross, below the 0.05 USD floor)",
+   "artefacts": {
+    "discover": {
+     "generated_at": "2026-10-22T13:41:45.678740+00:00",
+     "block": "latest"
+    },
+    "replay": {
+     "generated_at": "2026-10-22T14:06:16.594612+00:00",
+     "block": "latest"
+    },
+    "simulate": {
+     "generated_at": "2026-10-22T14:06:24.090040+00:00",
+     "block": "latest"
+    }
+   }
+  }
+ ],
+ "conclusion": {
+  "strategies_with_positive_attainable_net_profit": [],
+  "strategies_with_positive_passive_yield": [
+   "yield_opt/base",
+   "yield_opt/arbitrum"
+  ],
+  "statement": "no transaction strategy qualifies on the evidence gathered; passive yield is positive but is not transaction revenue"
+ },
+ "rules": [
+  "simulated, theoretical, modeled and passive-yield figures are labeled and never summed together",
+  "complete net profit counts only simulations with every material cost measured",
+  "capture probability is reported only when a model with stated assumptions produced it"
+ ]
+}
