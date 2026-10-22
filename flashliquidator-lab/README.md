@@ -33,13 +33,16 @@ open http://localhost:3000
 
 Docs: [implementation plan](docs/implementation-plan.md), [architecture](docs/architecture.md),
 [data sources](docs/data-sources.md), [simulation methodology](docs/simulation-methodology.md),
-[deployment](docs/deployment.md), [limitations](docs/limitations.md). Contracts: [contracts/README.md](contracts/README.md).
+[deployment](docs/deployment.md), [limitations](docs/limitations.md), [Phase 2 results](docs/phase2-results.md),
+[Phase 3 results](docs/phase3-results.md). Contracts: [contracts/README.md](contracts/README.md).
 
 ## Status
 
 `docs/implementation-plan.md` has the per-milestone state and `docs/test-results.md` the deployment-readiness
-results: the Docker stack has been run end-to-end, the contract compiles, and everything that touches a real
-chain (indexing, fork simulation, Forge fork tests) is still waiting for RPC access on the target host.
+results. Live results against the real chains: `docs/phase2-results.md` (deployment verification, indexing,
+replays through the real receiver) and `docs/phase3-results.md` (profit verification with complete fee
+accounting, intra-block reconstruction, live competitive benchmark, bid/win-probability model). Phase 3 is
+reproduced with `scripts/phase3-research.sh <network>`.
 
 ## Tests
 
