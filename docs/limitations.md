@@ -29,7 +29,16 @@
   transaction, so contracts reading `block.number`/`basefee` see different values; `--relevant-only` skips
   transactions that cannot touch Aave or oracle state; the theoretical figure assumes a free instant exit of
   the collateral at oracle prices. A replay whose L1 fee or any other material cost is unknown is reported as
-  `profit_complete = false` and excluded from every profit total.
+  `profit_complete = false` and excluded from every profit total. The 150-minute live benchmark observed no
+  liquidation on the Pool and no position crossing HF < 1 in its watch set, so candidate lifetime and the
+  FCFS win probability are "not estimable" for that window; simulation latency was measured in a separate
+  short run on an Alchemy-forked Anvil because the PublicNode fork refused the fork's state calls (HTTP 403).
+- **Time-gated oracle feeds.** On Base (and for one Arbitrum event) the feed Aave reads already held the
+  price that made a position liquidatable at N−1 but revealed it only after a delay; the winner's own
+  transaction revealed it early. The public health factor this system computes lags that hidden round. A bot
+  that only reads public oracle state cannot see these opportunities before the winner acts; reading the
+  pending round from raw storage, or participating in the feed's reveal mechanism, is a separate research
+  question this project has not pursued and that may involve the feed operator's own auction.
 - **Environment in which this build was produced.** No blockchain RPC was reachable, Foundry could not be
   installed (its build needs `binaries.soliditylang.org`), and the sandbox's Docker daemon had no NAT. So: the
   contract was compiled with solc-js, not `forge`; Forge fork tests and any fork simulation were not run; the
